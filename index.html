@@ -46,6 +46,7 @@
     inset: 0;
     background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cline x1='0' y1='20' x2='20' y2='0' stroke='rgba(255,255,255,0.04)' stroke-width='1'/%3E%3C/svg%3E");
     background-repeat: repeat;
+    background-size: 20px 20px;
     pointer-events: none;
     z-index: 0;
   }
@@ -55,9 +56,11 @@
     max-width: 680px;
     margin: 0 auto;
     border-radius: 0;
-    border: 1px solid rgba(122,154,181,0.15);
-    overflow: hidden;
-    backdrop-filter: blur(12px);
+    border-top: none;
+    border-left: 1px solid rgba(122,154,181,0.15);
+    border-right: 1px solid rgba(122,154,181,0.15);
+    border-bottom: 1px solid rgba(122,154,181,0.15);
+    background: transparent;
     position: relative;
     z-index: 1;
   }
@@ -65,6 +68,7 @@
   /* Panel hero zone */
   .panel-hero {
     background: rgba(11,24,40,0.45);
+    border-radius: 0;
     padding: 3rem 2.5rem 2.5rem;
     text-align: center;
     border-bottom: 1px solid rgba(122,154,181,0.12);
@@ -72,13 +76,15 @@
 
   /* Panel body */
   .panel-body {
-    background: rgba(15,35,65,0.20);
+    background: rgba(240,236,228,0.92);
+    border-radius: 0;
     padding: 3rem 2.5rem 4rem;
   }
 
   /* Panel footer bar */
   .panel-footer {
-    background: rgba(11,24,40,0.20);
+    background: rgba(11,24,40,0.35);
+    border-radius: 0;
     padding: 1.2rem 2.5rem;
     display: flex;
     justify-content: space-between;
@@ -126,8 +132,8 @@
     width: 180px;
     height: 180px;
     border-radius: 50%;
-    border: 2px solid rgba(168,196,216,0.4);
-    outline: 6px solid rgba(168,196,216,0.08);
+    border: 2px solid rgba(168,196,216,0.5);
+    outline: 6px solid rgba(168,196,216,0.3);
     object-fit: cover;
     object-position: center top;
     display: block;
@@ -147,7 +153,7 @@
   /* Divider */
   .divider {
     border: none;
-    border-top: 1px solid rgba(122,154,181,0.12);
+    border-top: 1px solid rgba(11,24,40,0.1);
     margin: 2.5rem 0;
   }
 
@@ -156,7 +162,7 @@
     font-family: var(--mono);
     font-size: 10px;
     letter-spacing: 0.22em;
-    color: var(--gold);
+    color: #1B4A8A;
     text-transform: uppercase;
     margin-bottom: 1rem;
     display: flex;
@@ -167,7 +173,7 @@
     content: '';
     flex: 1;
     height: 1px;
-    background: var(--slate-light);
+    background: #1B4A8A;
     opacity: 0.2;
   }
 
@@ -177,7 +183,7 @@
     font-size: 1.8rem;
     font-weight: 400;
     line-height: 1.2;
-    color: var(--white);
+    color: #0b1828;
     letter-spacing: -0.01em;
     margin-bottom: 1.5rem;
   }
@@ -186,44 +192,45 @@
   .about-body p {
     font-size: 0.95rem;
     font-weight: 300;
-    color: var(--cream);
-    opacity: 0.85;
+    color: #0b1828;
+    opacity: 1;
     line-height: 1.8;
     margin-bottom: 1.2rem;
   }
   .about-body p:last-of-type { margin-bottom: 0; }
-  .about-body strong { font-weight: 400; opacity: 1; color: var(--white); }
+  .about-body strong { font-weight: 400; opacity: 1; color: #0b1828; }
 
   /* Expertise grid */
   .expertise-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     margin-top: 2rem;
+    border-radius: 8px;
     overflow: hidden;
   }
   .expertise-item {
-    background: rgba(11,24,40,0.25);
+    background: rgba(11,24,40,0.06);
     padding: 1.1rem 1.3rem;
-    border-right: 1px solid rgba(122,154,181,0.12);
-    border-bottom: 1px solid rgba(122,154,181,0.12);
+    border-right: 1px solid rgba(11,24,40,0.1);
+    border-bottom: 1px solid rgba(11,24,40,0.1);
     transition: background 0.2s;
   }
   .expertise-item:nth-child(2n) { border-right: none; }
   .expertise-item:nth-child(3),
   .expertise-item:nth-child(4) { border-bottom: none; }
-  .expertise-item:hover { background: rgba(58,125,213,0.4); }
+  .expertise-item:hover { background: rgba(11,24,40,0.12); }
   .expertise-item .label {
     font-family: var(--mono);
     font-size: 9px;
     letter-spacing: 0.15em;
-    color: var(--gold);
+    color: #1B4A8A;
     text-transform: uppercase;
     margin-bottom: 0.3rem;
   }
   .expertise-item .value {
     font-size: 0.9rem;
     font-weight: 300;
-    color: #F0ECE4;
+    color: #0b1828;
   }
 
   /* Contact headline */
@@ -232,15 +239,15 @@
     font-size: 1.8rem;
     font-weight: 400;
     line-height: 1.2;
-    color: var(--white);
+    color: #0b1828;
     letter-spacing: -0.01em;
     margin-bottom: 0.8rem;
   }
   .contact-sub {
     font-size: 0.95rem;
     font-weight: 300;
-    color: var(--cream);
-    opacity: 0.75;
+    color: #0b1828;
+    opacity: 1;
     margin-bottom: 1.8rem;
     line-height: 1.7;
   }
@@ -251,19 +258,19 @@
     align-items: center;
     justify-content: space-between;
     padding: 1rem 0;
-    border-bottom: 1px solid rgba(168,196,216,0.2);
+    border-bottom: 1px solid rgba(27,74,138,0.2);
     text-decoration: none;
-    color: var(--cream);
+    color: #0b1828;
     transition: color 0.2s, padding-left 0.2s;
   }
-  .contact-link:first-of-type { border-top: 1px solid rgba(168,196,216,0.2); }
-  .contact-link:hover { color: var(--white); padding-left: 0.4rem; }
-  .contact-link:hover .link-arrow { color: var(--gold); }
+  .contact-link:first-of-type { border-top: 1px solid rgba(27,74,138,0.2); }
+  .contact-link:hover { color: #0b1828; padding-left: 0.4rem; }
+  .contact-link:hover .link-arrow { color: #1B4A8A; }
   .link-platform {
     font-family: var(--mono);
     font-size: 10px;
     letter-spacing: 0.15em;
-    color: var(--slate);
+    color: #1B4A8A;
     text-transform: uppercase;
     min-width: 80px;
   }
@@ -272,12 +279,12 @@
     font-weight: 300;
     flex: 1;
     padding-left: 1.5rem;
-    color: var(--cream);
-    opacity: 0.85;
+    color: #0b1828;
+    opacity: 1;
   }
   .link-arrow {
     font-size: 1rem;
-    color: var(--slate);
+    color: #1B4A8A;
     transition: color 0.2s;
   }
 
@@ -304,10 +311,10 @@
   <div class="panel-body">
 
     <div class="section-label">About</div>
-    <h2 class="about-headline">Product Design &amp; strategy</h2>
+    <h2 class="about-headline">Hands-on leadership &amp; strategy</h2>
 
     <div class="about-body">
-      <p>I'm a <strong>Design Leader</strong> who leads from the front — equally comfortable setting strategic direction and rolling up my sleeves to get into the work. I've always believed the best leaders stay close to the craft, and that hands-on instinct shapes how I build teams, run critiques, and approach every problem I take on.</p>
+      <p>I'm a Design Leader who leads from the front — equally comfortable setting strategic direction and rolling up my sleeves to get into the work. I've always believed the best leaders stay close to the craft, and that hands-on instinct shapes how I build teams, run critiques, and approach every problem I take on.</p>
       <p>My work sits at the intersection of design, product, and business. I care deeply about understanding what people actually need, but I'm just as focused on what drives a business forward — and I've spent my career finding the overlap between those two things. Great design isn't just beautiful or usable; it moves the needle.</p>
       <p>I've always been drawn to emerging technology because it consistently opens doors that weren't there before. Figuring out how to bring those capabilities into the design process, and into the teams I lead, has been a throughline across my entire career.</p>
 
