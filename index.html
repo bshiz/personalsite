@@ -35,7 +35,7 @@
 
   /* ===== OUTER FRAME ===== */
   .frame {
-    max-width: 1080px;
+    max-width: 1280px;
     margin: 0 auto;
     border-left: 10px solid var(--rule);
     border-right: 10px solid var(--rule);
@@ -47,14 +47,13 @@
     display: grid;
     grid-template-columns: 55% 45%;
     border-bottom: 10px solid var(--rule);
-    min-height: 52vh;
   }
 
   .hero-left {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 3.5rem 3.5rem 4rem;
+    padding: 5rem 3.5rem 5rem;
   }
 
   .hero-eyebrow {
@@ -69,7 +68,7 @@
   .hero-name {
     font-size: clamp(3.5rem, 7.5vw, 6.5rem);
     font-weight: 900;
-    line-height: 0.9;
+    line-height: 1.05;
     letter-spacing: -0.03em;
     color: var(--ink);
   }
@@ -77,6 +76,7 @@
   .hero-right {
     position: relative;
     overflow: hidden;
+    min-height: 420px;
   }
 
   .hero-photo {
@@ -92,7 +92,7 @@
   /* ===== BODY GRID ===== */
   .body-grid {
     display: grid;
-    grid-template-columns: 55% 45%;
+    grid-template-columns: 2fr 1fr;
   }
 
   /* ===== ABOUT ===== */
