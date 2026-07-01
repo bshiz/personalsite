@@ -158,10 +158,13 @@
     padding: 0.4rem 0;
   }
   .link-list li::before {
-    content: '•';
-    color: var(--accent);
-    font-size: 1.15rem;
-    line-height: 1;
+    content: '';
+    display: inline-block;
+    width: 4px;
+    height: 1.1em;
+    background: var(--accent);
+    border-radius: 1px;
+    flex-shrink: 0;
   }
   .link-list a {
     text-decoration: none;
@@ -175,33 +178,30 @@
   /* ===== FOOTER ===== */
   footer {
     border-top: 10px solid var(--rule);
-    padding: 1.2rem 3.5rem;
+    padding: 0 3.5rem;
+    height: 80px;
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
-  footer span {
-    font-size: 1.15rem;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: #021533;
-  }
   footer .footer-name {
     font-family: 'Corinthia', cursive;
-    font-size: 2rem;
+    font-size: 2.2rem;
     font-weight: 700;
     letter-spacing: 0;
     text-transform: none;
     color: #021533;
+    line-height: 1;
+    display: block;
+    overflow: hidden;
+    padding-top: 0.35em;
+    padding-bottom: 0.1em;
   }
-
   footer .footer-copy {
-    font-size: 1.15rem;
+    font-size: 1rem;
     font-weight: 400;
-    letter-spacing: 0.05em;
-    text-transform: none;
     color: #021533;
+    line-height: 1;
   }
 
   /* ===== TABLET ===== */
@@ -282,7 +282,7 @@
     <section class="about">
       <h2 class="section-title">About</h2>
       <div class="about-body">
-        <p>I'm Brandon Houlihan, a Designer who leads from the front, equally comfortable setting strategic direction and rolling up my sleeves to get into the work. I've always believed the best leaders stay close to the craft, and that hands-on instinct shapes how I build teams, run critiques, and approach every problem I take on.</p>
+        <p>I'm Brandon Houlihan, a Design Leader who leads from the front, equally comfortable setting strategic direction and rolling up my sleeves to get into the work. I've always believed the best leaders stay close to the craft, and that hands-on instinct shapes how I build teams, run critiques, and approach every problem I take on.</p>
         <p>My work sits at the intersection of design, product, and business. I care deeply about understanding what people actually need, but I'm just as focused on what drives a business forward and I've spent my career finding the overlap between those two things. Great design isn't just beautiful or usable; it moves the needle.</p>
         <p>I've always been drawn to emerging technology because it consistently opens doors that weren't there before. Figuring out how to bring those capabilities into the design process, and into the teams I lead, has been a passion across my entire career.</p>
       </div>
@@ -304,6 +304,7 @@
         <ul class="link-list">
           <li><a href="https://www.tempo.io/" target="_blank">Tempo</a></li>
           <li><a href="https://www.findkindred.co/" target="_blank">Kindred</a></li>
+          <li><a href="https://awesomeintervals.com/" target="_blank">Awesome Intervals</a></li>
         </ul>
       </div>
 
