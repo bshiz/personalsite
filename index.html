@@ -12,7 +12,7 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --bg: #FFFFFF;
+    --bg: #E5E6EB;
     --ink: #030B1E;
     --body-text: #030B1E;
     --accent: #5A93D7;
@@ -40,6 +40,7 @@
     border-left: 10px solid var(--rule);
     border-right: 10px solid var(--rule);
     min-height: 100vh;
+    background: #FFFFFF;
   }
 
   /* ===== HERO ===== */
@@ -84,6 +85,25 @@
     object-fit: cover;
     object-position: center top;
     display: block;
+  }
+
+  .hero-tagline {
+    margin-top: 1rem;
+    font-size: 1.15rem;
+    font-weight: 400;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .hero-tagline .diamond {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    min-width: 10px;
+    background: var(--accent);
+    border-radius: 2px;
+    transform: rotate(45deg);
   }
 
   /* ===== BODY GRID ===== */
@@ -229,6 +249,7 @@
   <section class="hero">
     <div class="hero-left">
 <h1 class="hero-name">Brandon<br>Houlihan</h1>
+      <p class="hero-tagline">Design Leader <span class="diamond"></span> Apex, NC</p>
     </div>
     <div class="hero-right">
       <img class="hero-photo" src="headshot.jpeg" alt="Brandon Houlihan">
