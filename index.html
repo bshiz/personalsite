@@ -7,189 +7,299 @@
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Corinthia:wght@400;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700;900&family=Corinthia:wght@400;700&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --navy: #021533;
-    --gold: #C09352;
-    --bg: #FFFFFF;
+    --bg: #E5E6EB;
     --ink: #021533;
     --body-text: #021533;
-    --sans: 'Open Sans', sans-serif;
-    --script: 'Corinthia', cursive;
+    --accent: #C09352;
+    --rule: #021533;
+    --sans: 'Google Sans', Arial, sans-serif;
   }
 
   html { scroll-behavior: smooth; }
 
   body {
     background: var(--bg);
-    color: var(--body-text);
+    color: var(--ink);
     font-family: var(--sans);
-    font-weight: 400;
     font-size: 16px;
-    line-height: 1.75;
+    line-height: 1.6;
     min-height: 100vh;
-    overflow-x: hidden;
   }
 
-  ::selection { background: var(--navy); color: #fff; }
+  ::selection { background: var(--ink); color: #fff; }
 
-  /* ===== PAGE WRAPPER ===== */
-  .page {
-    max-width: 760px;
+  /* ===== OUTER FRAME ===== */
+  .frame {
+    max-width: 1280px;
     margin: 0 auto;
-    padding: 0 2rem 5rem;
+    border-left: 10px solid var(--rule);
+    border-right: 10px solid var(--rule);
+    min-height: 100vh;
+    background: #FFFFFF;
   }
 
-  /* ===== TOP BAR ===== */
-  .top-bar {
-    background: var(--navy);
-    height: 10px;
-    width: 100%;
-    margin-bottom: 1.5rem;
+  /* ===== HERO ===== */
+  .hero {
+    display: grid;
+    grid-template-columns: 55% 45%;
+    border-bottom: 10px solid var(--rule);
+  }
+
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 4rem 3.5rem 4rem;
   }
 
   /* ===== MONOGRAM ===== */
   .monogram {
-    text-align: center;
-    font-family: var(--script);
-    font-size: clamp(4rem, 12vw, 6rem);
-    color: var(--gold);
-    line-height: 1;
+    position: relative;
+    height: clamp(200px, 26vw, 340px);
     margin-bottom: 1.5rem;
-    font-weight: 400;
   }
-
-  /* ===== BIO ===== */
-  .bio {
-    text-align: center;
-    margin-bottom: 4rem;
-  }
-  .bio p {
-    font-size: clamp(1.05rem, 1.8vw, 1.2rem);
-    color: var(--body-text);
-    line-height: 1.85;
-    margin-bottom: 1.4rem;
-    font-weight: 400;
-  }
-  .bio p:last-child { margin-bottom: 0; }
-
-  /* ===== PHOTO + NAME SECTION ===== */
-  .photo-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-    margin-bottom: 2rem;
-    /* Extra horizontal padding so gold can extend wider than photo */
-    padding: 0 10%;
-  }
-
-  /* ===== PHOTO + NAME SECTION ===== */
-  .photo-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 2rem;
-  }
-
-  .photo-gold {
-    position: relative;
-    width: min(340px, 65vw);
-    /* Fixed aspect ratio so container has height even before image loads */
-    aspect-ratio: 1 / 1.15;
-  }
-
-  .photo-gold img {
+  .monogram-b {
+    font-family: 'Corinthia', cursive;
+    font-weight: 700;
+    font-size: clamp(10rem, 16vw, 18rem);
+    color: var(--ink);
+    line-height: 1;
     position: absolute;
-    inset: 0;
+    top: 0;
+    left: 0;
+  }
+  .monogram-h {
+    font-family: 'Corinthia', cursive;
+    font-weight: 700;
+    font-size: clamp(10rem, 16vw, 18rem);
+    color: var(--ink);
+    line-height: 1;
+    position: absolute;
+    /* H top starts at ~45% down — aligns with mid-B */
+    top: 22%;
+    /* H sits just to the right of B with a small gap */
+    left: clamp(3rem, 5vw, 7rem);
+  }
+
+  .hero-tagline {
+    margin-top: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #021533;
+    display: inline-block;
+    width: fit-content;
+    line-height: 1.4;
+    letter-spacing: 0.02em;
+    border-bottom: 3px solid #C09352;
+    padding-bottom: 0.2rem;
+  }
+
+  .hero-right {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-photo {
     width: 100%;
     height: 100%;
-    display: block;
     object-fit: cover;
     object-position: center top;
-    z-index: 1;
+    display: block;
+  }
+  .hero-tagline .bullet {
+    color: var(--accent);
+    font-size: 1.15rem;
+    line-height: 1;
   }
 
-  /* Gold: starts 45% down the photo, wider on both sides, ends at photo bottom */
+  /* ===== BODY GRID ===== */
+  .body-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+  }
 
-  /* ===== NAME ===== */
-  .script-name {
-    font-family: var(--script);
-    font-size: clamp(3.5rem, 14vw, 8rem);
-    color: var(--navy);
-    line-height: 1;
-    font-weight: 400;
-    white-space: nowrap;
-    text-align: center;
-    position: relative;
-    z-index: 2;
-    /* Pull up so name sits on top of the gold bottom edge */
+  /* ===== ABOUT ===== */
+  .about {
+    padding: 3.5rem 3.5rem 5rem;
+    border-right: 10px solid var(--rule);
+  }
+
+  .section-title {
+    font-size: clamp(2.2rem, 4vw, 3.2rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 1.6rem;
+  }
+
+  .about-body p {
+    font-size: 1.15rem;
+    color: var(--body-text);
+    line-height: 1.85;
+    margin-bottom: 1.1rem;
+    max-width: 54ch;
+  }
+  .about-body p:last-child { margin-bottom: 0; }
+
+  /* ===== SIDEBAR ===== */
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sidebar-section {
+    padding: 3rem 3rem 3.5rem;
+    border-bottom: 10px solid var(--rule);
+  }
+  .sidebar-section:last-child { border-bottom: none; }
+
+  /* ===== LINK LIST ===== */
+  .link-list {
+    list-style: none;
     margin-top: 0.5rem;
   }
-
-  /* ===== LINKS ===== */
-  .contact-links {
-    text-align: center;
-    margin-top: 1.5rem;
+  .link-list li {
     display: flex;
-    justify-content: center;
     align-items: center;
-    gap: 0.6rem;
-    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding: 0.4rem 0;
   }
-  .contact-links a {
-    font-family: var(--sans);
+  .link-list li::before {
+    content: '•';
+    color: var(--accent);
+    font-size: 1.15rem;
+    line-height: 1;
+  }
+  .link-list a {
+    text-decoration: none;
+    color: var(--body-text);
     font-size: 1.15rem;
     font-weight: 400;
-    color: var(--gold);
-    text-decoration: none;
-    transition: opacity 0.2s;
+    transition: color 0.15s;
   }
-  .contact-links a:hover { color: #021533; opacity: 1; }
-  .contact-links .sep {
-    color: #021533;
+  .link-list a:hover { color: #C09352; }
+
+  /* ===== FOOTER ===== */
+  footer {
+    border-top: 10px solid var(--rule);
+    padding: 1.2rem 3.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  footer span {
     font-size: 1.15rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #021533;
   }
 
-  /* ===== RESPONSIVE ===== */
-  @media (max-width: 520px) {
-    .page { padding: 0 1.2rem 4rem; }
-    .top-bar { margin-bottom: 2rem; }
-    .photo-section { padding: 0 5%; }
+  .footer-diamonds {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--accent);
+    font-size: 1.15rem;
+  }
+  @media (max-width: 700px) {
+    .frame {
+      border-left: none;
+      border-right: none;
+    }
+    .hero {
+      grid-template-columns: 1fr;
+      min-height: auto;
+    }
+    .hero-left {
+      padding: 2.5rem 1.8rem 2.5rem;
+      justify-content: flex-start;
+    }
+    .monogram { height: 140px; margin-bottom: 1rem; }
+    .hero-right {
+      height: 75vw;
+      border-top: 10px solid var(--rule);
+    }
+    .body-grid {
+      grid-template-columns: 1fr;
+    }
+    .about {
+      padding: 2.5rem 1.8rem 3rem;
+      border-right: none;
+      border-bottom: 10px solid var(--rule);
+    }
+    .sidebar-section {
+      padding: 2.5rem 1.8rem;
+    }
+    footer {
+      padding: 1.2rem 1.8rem;
+      flex-direction: column;
+      gap: 0.4rem;
+      text-align: center;
+    }
   }
 </style>
 </head>
 <body>
 
-<div class="top-bar"></div>
+<div class="frame">
 
-<div class="page">
-
-  <div class="monogram">H</div>
-
-  <div class="bio">
-    <p>I'm Brandon Houlihan, a Design Leader who leads from the front, equally comfortable setting strategic direction and rolling up my sleeves to get into the work. I've always believed the best leaders stay close to the craft, and that hands-on instinct shapes how I build teams, run critiques, and approach every problem I take on.</p>
-    <p>My work sits at the intersection of design, product, and business. I care deeply about understanding what people actually need, but I'm just as focused on what drives a business forward and I've spent my career finding the overlap between those two things. Great design isn't just beautiful or usable; it moves the needle.</p>
-    <p>I've always been drawn to emerging technology because it consistently opens doors that weren't there before. Figuring out how to bring those capabilities into the design process, and into the teams I lead, has been a passion across my entire career.</p>
-  </div>
-
-  <div class="photo-section">
-    <div class="photo-gold">
-      <img src="headshot.jpeg" alt="Brandon Houlihan">
+  <section class="hero">
+    <div class="hero-left">
+      <div class="monogram">
+        <span class="monogram-b">B</span>
+        <span class="monogram-h">H</span>
+      </div>
+      <p class="hero-tagline">Design Leader — Apex, NC</p>
     </div>
-    <div class="script-name">Say Hello</div>
+    <div class="hero-right">
+      <img class="hero-photo" src="headshot.jpeg" alt="Brandon Houlihan">
+    </div>
+  </section>
+
+  <div class="body-grid">
+
+    <section class="about">
+      <h2 class="section-title">About</h2>
+      <div class="about-body">
+        <p>I'm Brandon Houlihan, a Design Leader who leads from the front, equally comfortable setting strategic direction and rolling up my sleeves to get into the work. I've always believed the best leaders stay close to the craft, and that hands-on instinct shapes how I build teams, run critiques, and approach every problem I take on.</p>
+        <p>My work sits at the intersection of design, product, and business. I care deeply about understanding what people actually need, but I'm just as focused on what drives a business forward and I've spent my career finding the overlap between those two things. Great design isn't just beautiful or usable; it moves the needle.</p>
+        <p>I've always been drawn to emerging technology because it consistently opens doors that weren't there before. Figuring out how to bring those capabilities into the design process, and into the teams I lead, has been a passion across my entire career.</p>
+      </div>
+    </section>
+
+    <aside class="sidebar">
+
+      <div class="sidebar-section">
+        <h2 class="section-title">Connect</h2>
+        <ul class="link-list">
+          <li><a href="https://linkedin.com/in/brandonhoulihan" target="_blank">LinkedIn</a></li>
+          <li><a href="mailto:brandonfhoulihan@gmail.com">Email</a></li>
+          <li><a href="https://open.spotify.com/artist/5c1jKzcXqsbZVRiE3Dwnjc?si=hqxQXZkfQKaD0VOyDY5L9w&nd=1&dlsi=5745084ff4654090" target="_blank">Music</a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-section">
+        <h2 class="section-title">Building</h2>
+        <ul class="link-list">
+          <li><a href="https://www.tempo.io/" target="_blank">Tempo</a></li>
+          <li><a href="https://www.findkindred.co/" target="_blank">Kindred</a></li>
+        </ul>
+      </div>
+
+    </aside>
+
   </div>
 
-  <div class="contact-links">
-    <a href="mailto:brandonfhoulihan@gmail.com">Email</a>
-    <span class="sep">◆</span>
-    <a href="https://linkedin.com/in/brandonhoulihan" target="_blank">LinkedIn</a>
-    <span class="sep">◆</span>
-    <a href="https://open.spotify.com/artist/5c1jKzcXqsbZVRiE3Dwnjc?si=hqxQXZkfQKaD0VOyDY5L9w&nd=1&dlsi=5745084ff4654090" target="_blank">Music</a>
-  </div>
+  <footer>
+    <span>Brandon Houlihan</span>
+    <span>© 2026</span>
+  </footer>
 
 </div>
 
