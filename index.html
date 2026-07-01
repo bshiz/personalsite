@@ -7,298 +7,200 @@
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Corinthia:wght@400;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --bg: #E5E6EB;
-    --ink: #030B1E;
-    --body-text: #030B1E;
-    --accent: #5A93D7;
-    --rule: #030B1E;
-    --sans: 'Google Sans', Arial, sans-serif;
+    --navy: #021533;
+    --gold: #C09352;
+    --bg: #FFFFFF;
+    --ink: #021533;
+    --body-text: #021533;
+    --sans: 'Open Sans', sans-serif;
+    --script: 'Corinthia', cursive;
   }
 
   html { scroll-behavior: smooth; }
 
   body {
     background: var(--bg);
-    color: var(--ink);
-    font-family: var(--sans);
-    font-size: 16px;
-    line-height: 1.6;
-    min-height: 100vh;
-  }
-
-  ::selection { background: var(--ink); color: #fff; }
-
-  /* ===== OUTER FRAME ===== */
-  .frame {
-    max-width: 1280px;
-    margin: 0 auto;
-    border-left: 10px solid var(--rule);
-    border-right: 10px solid var(--rule);
-    min-height: 100vh;
-    background: #FFFFFF;
-  }
-
-  /* ===== HERO ===== */
-  .hero {
-    display: grid;
-    grid-template-columns: 55% 45%;
-    border-bottom: 10px solid var(--rule);
-  }
-
-  .hero-left {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 5rem 3.5rem 5rem;
-  }
-
-  .hero-eyebrow {
-    font-size: 0.85rem;
-    font-weight: 500;
-    letter-spacing: 0.06em;
     color: var(--body-text);
-    margin-bottom: 1rem;
-    opacity: 0.7;
-  }
-
-  .hero-name {
-    font-size: clamp(3.5rem, 7.5vw, 6.5rem);
-    font-weight: 900;
-    line-height: 1.05;
-    letter-spacing: -0.03em;
-    color: var(--ink);
-  }
-
-  .hero-right {
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hero-photo {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center top;
-    display: block;
-  }
-
-  .hero-tagline {
-    margin-top: 1rem;
-    font-size: 1.15rem;
+    font-family: var(--sans);
     font-weight: 400;
-    color: var(--ink);
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
+    font-size: 16px;
+    line-height: 1.75;
+    min-height: 100vh;
+    overflow-x: hidden;
   }
-  .hero-tagline .diamond {
-    display: inline-block;
-    width: 10px;
+
+  ::selection { background: var(--navy); color: #fff; }
+
+  /* ===== PAGE WRAPPER ===== */
+  .page {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 2rem 5rem;
+  }
+
+  /* ===== TOP BAR ===== */
+  .top-bar {
+    background: var(--navy);
     height: 10px;
-    min-width: 10px;
-    background: var(--accent);
-    border-radius: 2px;
-    transform: rotate(45deg);
+    width: 100%;
+    margin-bottom: 3rem;
   }
 
-  /* ===== BODY GRID ===== */
-  .body-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
+  /* ===== MONOGRAM ===== */
+  .monogram {
+    text-align: center;
+    font-family: var(--script);
+    font-size: clamp(4rem, 12vw, 6rem);
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 3rem;
+    font-weight: 400;
   }
 
-  /* ===== ABOUT ===== */
-  .about {
-    padding: 3.5rem 3.5rem 5rem;
-    border-right: 10px solid var(--rule);
+  /* ===== BIO ===== */
+  .bio {
+    text-align: center;
+    margin-bottom: 4rem;
   }
-
-  .section-title {
-    font-size: clamp(2.2rem, 4vw, 3.2rem);
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    color: var(--ink);
-    margin-bottom: 1.6rem;
-  }
-
-  .about-body p {
-    font-size: 1.15rem;
+  .bio p {
+    font-size: clamp(1.05rem, 1.8vw, 1.2rem);
     color: var(--body-text);
     line-height: 1.85;
-    margin-bottom: 1.1rem;
-    max-width: 54ch;
+    margin-bottom: 1.4rem;
+    font-weight: 400;
   }
-  .about-body p:last-child { margin-bottom: 0; }
+  .bio p:last-child { margin-bottom: 0; }
 
-  /* ===== SIDEBAR ===== */
-  .sidebar {
+  /* ===== PHOTO + NAME SECTION ===== */
+  .photo-section {
     display: flex;
     flex-direction: column;
-  }
-
-  .sidebar-section {
-    padding: 3rem 3rem 3.5rem;
-    border-bottom: 10px solid var(--rule);
-  }
-  .sidebar-section:last-child { border-bottom: none; }
-
-  /* ===== LINK LIST ===== */
-  .link-list {
-    list-style: none;
-    margin-top: 0.5rem;
-  }
-  .link-list li {
-    display: flex;
     align-items: center;
-    gap: 0.75rem;
-    padding: 0.4rem 0;
+    position: relative;
+    margin-bottom: 2rem;
+    /* Extra horizontal padding so gold can extend wider than photo */
+    padding: 0 10%;
   }
-  .link-list li::before {
+
+  /* ===== PHOTO + NAME SECTION ===== */
+  .photo-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+
+  .photo-gold {
+    position: relative;
+    width: min(340px, 65vw);
+    /* Fixed aspect ratio so container has height even before image loads */
+    aspect-ratio: 1 / 1.15;
+  }
+
+  .photo-gold img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: center top;
+    z-index: 1;
+  }
+
+  /* Gold: starts 45% down the photo, wider on both sides, ends at photo bottom */
+  .photo-gold::after {
     content: '';
-    width: 10px;
-    height: 10px;
-    min-width: 10px;
-    background: var(--accent);
-    border-radius: 2px;
-    transform: rotate(45deg);
+    position: absolute;
+    top: 45%;
+    bottom: 0;
+    left: -22%;
+    right: -22%;
+    background: var(--gold);
+    z-index: 0;
   }
-  .link-list a {
-    text-decoration: none;
-    color: var(--body-text);
+
+  /* ===== NAME ===== */
+  .script-name {
+    font-family: var(--script);
+    font-size: clamp(3.5rem, 14vw, 8rem);
+    color: var(--navy);
+    line-height: 1;
+    font-weight: 400;
+    white-space: nowrap;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    /* Pull up so name sits on top of the gold bottom edge */
+    margin-top: -0.55em;
+  }
+
+  /* ===== LINKS ===== */
+  .contact-links {
+    text-align: center;
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+  .contact-links a {
+    font-family: var(--sans);
     font-size: 1.15rem;
     font-weight: 400;
-    transition: color 0.15s;
+    color: var(--gold);
+    text-decoration: none;
+    transition: opacity 0.2s;
   }
-  .link-list a:hover { color: #5A93D7; }
-
-  /* ===== FOOTER ===== */
-  footer {
-    border-top: 10px solid var(--rule);
-    padding: 1.2rem 3.5rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  footer span {
-    font-size: 0.75rem;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: #030B1E;
+  .contact-links a:hover { opacity: 0.7; }
+  .contact-links .sep {
+    color: #021533;
+    font-size: 1.15rem;
   }
 
-  .footer-diamonds {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  .diamond {
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    background: var(--accent);
-    border-radius: 2px;
-    transform: rotate(45deg);
-  }
-  @media (max-width: 700px) {
-    .frame {
-      border-left: none;
-      border-right: none;
-    }
-    .hero {
-      grid-template-columns: 1fr;
-      min-height: auto;
-    }
-    .hero-left {
-      padding: 2.5rem 1.8rem 2.5rem;
-      justify-content: flex-start;
-    }
-    .hero-right {
-      height: 75vw;
-      border-top: 10px solid var(--rule);
-    }
-    .body-grid {
-      grid-template-columns: 1fr;
-    }
-    .about {
-      padding: 2.5rem 1.8rem 3rem;
-      border-right: none;
-      border-bottom: 10px solid var(--rule);
-    }
-    .sidebar-section {
-      padding: 2.5rem 1.8rem;
-    }
-    footer {
-      padding: 1.2rem 1.8rem;
-      flex-direction: column;
-      gap: 0.4rem;
-      text-align: center;
-    }
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 520px) {
+    .page { padding: 0 1.2rem 4rem; }
+    .top-bar { margin-bottom: 2rem; }
+    .photo-section { padding: 0 5%; }
   }
 </style>
 </head>
 <body>
 
-<div class="frame">
+<div class="top-bar"></div>
 
-  <section class="hero">
-    <div class="hero-left">
-<h1 class="hero-name">Brandon<br>Houlihan</h1>
-      <p class="hero-tagline">Design Leader <span class="diamond"></span> Apex, NC</p>
-    </div>
-    <div class="hero-right">
-      <img class="hero-photo" src="headshot.jpeg" alt="Brandon Houlihan">
-    </div>
-  </section>
+<div class="page">
 
-  <div class="body-grid">
+  <div class="monogram">H</div>
 
-    <section class="about">
-      <h2 class="section-title">About</h2>
-      <div class="about-body">
-        <p>I'm a Design Leader who leads from the front — equally comfortable setting strategic direction and rolling up my sleeves to get into the work. I've always believed the best leaders stay close to the craft, and that hands-on instinct shapes how I build teams, run critiques, and approach every problem I take on.</p>
-        <p>My work sits at the intersection of design, product, and business. I care deeply about understanding what people actually need, but I'm just as focused on what drives a business forward — and I've spent my career finding the overlap between those two things. Great design isn't just beautiful or usable; it moves the needle.</p>
-        <p>I've always been drawn to emerging technology because it consistently opens doors that weren't there before. Figuring out how to bring those capabilities into the design process, and into the teams I lead, has been a throughline across my entire career.</p>
-      </div>
-    </section>
-
-    <aside class="sidebar">
-
-      <div class="sidebar-section">
-        <h2 class="section-title">Connect</h2>
-        <ul class="link-list">
-          <li><a href="https://linkedin.com/in/brandonhoulihan" target="_blank">LinkedIn</a></li>
-          <li><a href="mailto:brandonfhoulihan@gmail.com">Email</a></li>
-          <li><a href="https://open.spotify.com/artist/5c1jKzcXqsbZVRiE3Dwnjc?si=hqxQXZkfQKaD0VOyDY5L9w&nd=1&dlsi=5745084ff4654090" target="_blank">Music</a></li>
-        </ul>
-      </div>
-
-      <div class="sidebar-section">
-        <h2 class="section-title">Building</h2>
-        <ul class="link-list">
-          <li><a href="https://www.tempo.io/" target="_blank">Tempo</a></li>
-          <li><a href="https://www.findkindred.co/" target="_blank">Kindred</a></li>
-        </ul>
-      </div>
-
-    </aside>
-
+  <div class="bio">
+    <p>I'm Brandon Houlihan, a Designer based in Apex, NC. Over the course of my career I've done a little bit of everything: UX/UI design, research, product management, and launching my own apps and websites. That broad experience helps me work on equal footing with peers across different roles.</p>
+    <p>I'm currently working as the Director of Design at <a href="https://www.tempo.io/" target="_blank" style="color: var(--gold); text-decoration: none;">Tempo</a>, where I lead the Design and Research teams for two product lines. As a leader I'm equally comfortable setting strategic direction and rolling up my sleeves to get into the work. I think the best leaders stay close to the craft, and that hands-on approach shapes how I build teams and tackle every problem I take on.</p>
+    <p>I've always been drawn to emerging technology because it consistently opens doors that weren't there before. Figuring out how to bring those capabilities into the design process and to the teams I lead has been a passion across my entire career.</p>
+    <p>Thanks for stopping by.</p>
   </div>
 
-  <footer>
-    <span>Brandon Houlihan</span>
-    <span class="footer-diamonds">
-      <span class="diamond"></span>
-      <span class="diamond"></span>
-      <span class="diamond"></span>
-    </span>
-    <span>© 2026</span>
-  </footer>
+  <div class="photo-section">
+    <div class="photo-gold">
+      <img src="headshot.jpeg" alt="Brandon Houlihan">
+    </div>
+    <div class="script-name">Say Hello</div>
+  </div>
+
+  <div class="contact-links">
+    <a href="mailto:brandonfhoulihan@gmail.com">Email</a>
+    <span class="sep">•</span>
+    <a href="https://linkedin.com/in/brandonhoulihan" target="_blank">LinkedIn</a>
+    <span class="sep">•</span>
+    <a href="https://open.spotify.com/artist/5c1jKzcXqsbZVRiE3Dwnjc?si=hqxQXZkfQKaD0VOyDY5L9w&nd=1&dlsi=5745084ff4654090" target="_blank">Music</a>
+  </div>
 
 </div>
 
