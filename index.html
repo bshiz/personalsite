@@ -35,7 +35,7 @@
 
   /* ===== OUTER FRAME ===== */
   .frame {
-    max-width: 1280px;
+    max-width: 1200px;
     margin: 0 auto;
     border-left: 10px solid var(--rule);
     border-right: 10px solid var(--rule);
@@ -52,18 +52,16 @@
 
   .hero-left {
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 4rem 3.5rem 4rem;
-    text-align: center;
+    padding: 3rem 3.5rem;
+    overflow: hidden;
   }
 
   /* ===== MONOGRAM ===== */
   .monogram {
     position: relative;
-    height: clamp(200px, 26vw, 340px);
-    width: clamp(200px, 26vw, 340px);
+    line-height: 1;
   }
   .monogram-b {
     font-family: 'Corinthia', cursive;
@@ -71,9 +69,7 @@
     font-size: clamp(10rem, 16vw, 18rem);
     color: var(--ink);
     line-height: 1;
-    position: absolute;
-    top: 0;
-    left: 0;
+    display: block;
   }
   .monogram-h {
     font-family: 'Corinthia', cursive;
@@ -81,9 +77,9 @@
     font-size: clamp(10rem, 16vw, 18rem);
     color: var(--ink);
     line-height: 1;
-    position: absolute;
-    top: 22%;
-    left: clamp(3rem, 5vw, 7rem);
+    display: block;
+    margin-top: -0.6em;
+    margin-left: clamp(3rem, 5vw, 7rem);
   }
 
 
@@ -207,12 +203,8 @@
   /* ===== TABLET ===== */
   @media (max-width: 900px) {
     .hero { grid-template-columns: 1fr 1fr; }
-    .monogram {
-      height: clamp(160px, 20vw, 260px);
-      width: clamp(160px, 20vw, 260px);
-    }
     .monogram-b { font-size: clamp(7rem, 13vw, 12rem); }
-    .monogram-h { font-size: clamp(7rem, 13vw, 12rem); left: clamp(2.5rem, 5vw, 6rem); }
+    .monogram-h { font-size: clamp(7rem, 13vw, 12rem); margin-left: clamp(2.5rem, 5vw, 6rem); }
     .hero-left { padding: 3rem 2rem; }
     .about { padding: 2.5rem 2rem 4rem; }
     .sidebar-section { padding: 2rem 2rem 2.5rem; }
@@ -234,12 +226,8 @@
       justify-content: center;
       align-items: center;
     }
-    .monogram {
-      height: 160px;
-      width: 200px;
-    }
-    .monogram-b { font-size: 7rem; }
-    .monogram-h { font-size: 7rem; top: 22%; left: 3.5rem; }
+    .monogram-b { font-size: 6rem; }
+    .monogram-h { font-size: 6rem; margin-left: 3rem; }
     .hero-right {
       height: 80vw;
       border-top: 10px solid var(--rule);
@@ -268,8 +256,8 @@
   <section class="hero">
     <div class="hero-left">
       <div class="monogram">
-        <span class="monogram-b">B</span>
-        <span class="monogram-h">H</span>
+        <div class="monogram-b">B</div>
+        <div class="monogram-h">H</div>
       </div>
     </div>
     <div class="hero-right">
