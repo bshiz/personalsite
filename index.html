@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Brandon Houlihan — Abducted</title>
-<link rel="icon" type="image/png" href="favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Press+Start+2P&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
@@ -151,20 +150,27 @@
     width: clamp(70px, 8vw, 120px);
     aspect-ratio: 1;
     border-radius: 50%;
-    background: var(--moon);
+    background: radial-gradient(circle at 35% 32%, #f2f0ea 0%, #d8d5cb 50%, #b0aca0 100%);
     box-shadow:
-      0 0 40px 12px rgba(233,237,255,0.35),
-      0 0 120px 50px rgba(165,190,255,0.16),
-      0 0 220px 110px rgba(126,230,212,0.07);
+      0 0 40px 12px rgba(235,233,225,0.32),
+      0 0 120px 50px rgba(200,205,225,0.14),
+      0 0 220px 110px rgba(126,230,212,0.06);
   }
   .moon::after {
     content: '';
     position: absolute; inset: 0;
     border-radius: 50%;
     background:
-      radial-gradient(circle at 30% 35%, rgba(150,160,205,0.5) 0 9%, transparent 10%),
-      radial-gradient(circle at 62% 60%, rgba(150,160,205,0.45) 0 7%, transparent 8%),
-      radial-gradient(circle at 48% 22%, rgba(150,160,205,0.4) 0 5%, transparent 6%);
+      radial-gradient(ellipse 30% 24% at 58% 36%, rgba(138,134,122,0.55), transparent 70%),
+      radial-gradient(ellipse 26% 22% at 38% 58%, rgba(138,134,122,0.48), transparent 70%),
+      radial-gradient(ellipse 18% 15% at 66% 62%, rgba(148,144,132,0.42), transparent 70%),
+      radial-gradient(circle at 28% 32%, rgba(118,114,103,0.55) 0 6%, transparent 7.5%),
+      radial-gradient(circle at 72% 24%, rgba(118,114,103,0.5) 0 4%, transparent 5.5%),
+      radial-gradient(circle at 50% 78%, rgba(118,114,103,0.55) 0 5%, transparent 6.5%),
+      radial-gradient(circle at 20% 66%, rgba(118,114,103,0.45) 0 3.5%, transparent 5%),
+      radial-gradient(circle at 62% 48%, rgba(118,114,103,0.4) 0 3%, transparent 4.5%),
+      radial-gradient(circle at 82% 52%, rgba(118,114,103,0.4) 0 2.5%, transparent 4%),
+      radial-gradient(circle at 35% 32%, transparent 52%, rgba(58,56,72,0.38) 88%);
   }
 
   /* ============ LANDSCAPE ============ */
@@ -421,30 +427,70 @@
     pointer-events: none;
     z-index: 3;
   }
+  .windshield .w-shoot {
+    position: absolute;
+    width: 90px; height: 2px;
+    border-radius: 2px;
+    background: linear-gradient(to right, transparent, #fff);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .windshield .w-shoot.s1 {
+    top: 16%; left: 4%;
+    animation: wshoot1 8s linear infinite;
+    animation-delay: 1.5s;
+  }
+  .windshield .w-shoot.s2 {
+    top: 55%; left: 46%;
+    width: 70px;
+    animation: wshoot2 11s linear infinite;
+    animation-delay: 6s;
+  }
+  @keyframes wshoot1 {
+    0%  { opacity: 0; transform: translate(0, 0) rotate(16deg); }
+    3%  { opacity: 1; }
+    11% { opacity: 0; transform: translate(240px, 70px) rotate(16deg); }
+    100%{ opacity: 0; transform: translate(240px, 70px) rotate(16deg); }
+  }
+  @keyframes wshoot2 {
+    0%  { opacity: 0; transform: translate(0, 0) rotate(24deg); }
+    3%  { opacity: 1; }
+    10% { opacity: 0; transform: translate(190px, 85px) rotate(24deg); }
+    100%{ opacity: 0; transform: translate(190px, 85px) rotate(24deg); }
+  }
   .windshield .earth {
     position: absolute;
     right: 9%; bottom: -34%;
     width: 34%; aspect-ratio: 1;
     border-radius: 50%;
-    background: radial-gradient(circle at 35% 30%, #6fd6ff 0%, #2e8fd8 45%, #14509a 80%);
+    background: radial-gradient(circle at 35% 30%, #5fc4f5 0%, #2e8fd8 45%, #14509a 82%);
     box-shadow: 0 0 34px rgba(110,200,255,0.5);
+    overflow: hidden;
+  }
+  .windshield .earth svg {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
   }
   .windshield .earth::after {
     content: '';
     position: absolute; inset: 0; border-radius: 50%;
     background:
-      radial-gradient(circle at 28% 40%, rgba(126,240,160,0.85) 0 10%, transparent 11%),
-      radial-gradient(circle at 55% 25%, rgba(126,240,160,0.8) 0 8%, transparent 9%),
-      radial-gradient(circle at 45% 62%, rgba(126,240,160,0.7) 0 7%, transparent 8%);
+      radial-gradient(circle at 30% 26%, rgba(255,255,255,0.28), transparent 42%),
+      radial-gradient(circle at 72% 80%, rgba(5,12,44,0.45), transparent 62%);
+    pointer-events: none;
   }
   .windshield .little-moon {
     position: absolute;
     left: 12%; top: 18%;
     width: 7%; aspect-ratio: 1;
     border-radius: 50%;
-    background: var(--moon);
-    opacity: 0.9;
-    box-shadow: 0 0 16px rgba(233,237,255,0.4);
+    background:
+      radial-gradient(circle at 62% 58%, rgba(118,114,103,0.5) 0 14%, transparent 18%),
+      radial-gradient(circle at 32% 30%, rgba(118,114,103,0.45) 0 10%, transparent 14%),
+      radial-gradient(circle at 35% 32%, #eeece6 0%, #d2cfc5 55%, #a9a599 100%);
+    opacity: 0.95;
+    box-shadow: 0 0 16px rgba(230,228,220,0.35);
   }
 
   /* Specimen tube */
@@ -463,16 +509,55 @@
     border-radius: 4px 4px 8px 8px;
     box-shadow: 0 5px 0 #0a121c;
   }
+  .tube .glass-wrap { position: relative; }
   .tube .glass {
     position: relative;
     width: 100%;
     aspect-ratio: 1 / 2;
-    border-radius: 999px;
-    background: linear-gradient(to bottom, rgba(126,240,160,0.16), rgba(126,240,160,0.05));
-    border: 3px solid rgba(126,230,212,0.5);
+    border-radius: 14px;
+    /* horizontal shading curve = cylindrical glass */
+    background: linear-gradient(to right,
+      rgba(126,240,160,0.20) 0%,
+      rgba(126,240,160,0.07) 22%,
+      rgba(126,240,160,0.13) 50%,
+      rgba(126,240,160,0.05) 78%,
+      rgba(126,240,160,0.18) 100%);
+    border-left: 3px solid rgba(126,230,212,0.55);
+    border-right: 3px solid rgba(126,230,212,0.55);
     overflow: hidden;
-    box-shadow: inset 0 0 25px rgba(126,240,160,0.25), 0 0 20px rgba(126,240,160,0.18);
+    box-shadow: inset 0 0 25px rgba(126,240,160,0.22), 0 0 20px rgba(126,240,160,0.18);
   }
+  .tube .glass::before {
+    /* liquid fill with surface line */
+    content: '';
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    top: 11%;
+    background: linear-gradient(to bottom, rgba(126,240,160,0.14), rgba(126,240,160,0.26));
+    border-top: 2px solid rgba(190,255,215,0.55);
+  }
+  .tube .glass::after {
+    /* vertical glass reflection */
+    content: '';
+    position: absolute;
+    left: 12%; top: 3%; bottom: 3%;
+    width: 9%;
+    border-radius: 8px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.4), rgba(255,255,255,0.06));
+    filter: blur(1px);
+  }
+  .tube .rim {
+    position: absolute;
+    left: -3px; right: -3px;
+    height: 15px;
+    border-radius: 50%;
+    border: 3px solid rgba(126,230,212,0.6);
+    background: rgba(126,240,160,0.10);
+    z-index: 2;
+    pointer-events: none;
+  }
+  .tube .rim.top { top: -8px; }
+  .tube .rim.bottom { bottom: -8px; background: rgba(126,240,160,0.2); }
   .tube .glass svg {
     position: absolute;
     left: 50%; top: 50%;
@@ -801,7 +886,7 @@
     .tube .glass svg, .tube .bubble, .press-start,
     .console .lights i, .interior-hint, .interior-header .sys,
     .gauge::after, .interior.alarm, .interior.alarm .alarm-overlay,
-    .god-rays, .mote {
+    .god-rays, .mote, .w-shoot {
       animation: none !important;
     }
   }
@@ -895,7 +980,6 @@
         <rect x="31" y="94" width="13" height="8" rx="4" fill="#0d1326"/>
         <!-- body / jacket -->
         <rect x="16" y="38" width="28" height="38" rx="10" fill="#e2574c"/>
-        <rect x="27" y="40" width="6" height="32" rx="3" fill="#b83e35"/>
         <!-- arms -->
         <rect x="9"  y="42" width="9" height="26" rx="4.5" fill="#c94a40"/>
         <rect x="42" y="42" width="9" height="26" rx="4.5" fill="#c94a40"/>
@@ -972,13 +1056,38 @@
 
     <div class="windshield" id="windshield">
       <span class="little-moon"></span>
-      <div class="earth"></div>
+      <div class="earth">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <!-- Greenland -->
+          <path d="M82,24 Q92,18 99,26 Q97,36 87,37 Q80,31 82,24 Z" fill="#eef6f2"/>
+          <!-- North America -->
+          <path d="M34,50 Q44,36 62,36 Q80,37 84,50 Q76,54 78,63 Q68,61 63,72 Q58,84 49,80 Q38,72 41,62 Q32,58 34,50 Z" fill="#5fbf72"/>
+          <!-- Central America -->
+          <path d="M58,82 Q66,84 71,93 L64,95 Q58,88 58,82 Z" fill="#5fbf72"/>
+          <!-- South America -->
+          <path d="M68,97 Q83,94 88,107 Q91,121 83,137 Q77,150 72,139 Q65,122 65,108 Q65,99 68,97 Z" fill="#6fcf7f"/>
+          <!-- Europe -->
+          <path d="M110,44 Q122,37 131,44 Q127,53 116,55 Q108,50 110,44 Z" fill="#5fbf72"/>
+          <!-- Africa -->
+          <path d="M112,60 Q129,53 140,64 Q147,75 142,89 Q137,106 127,116 Q118,109 114,94 Q107,76 112,60 Z" fill="#6fcf7f"/>
+          <!-- Asia -->
+          <path d="M134,40 Q157,29 176,42 Q187,53 180,66 Q169,77 154,72 Q142,66 138,55 Q131,47 134,40 Z" fill="#5fbf72"/>
+          <!-- Australia -->
+          <path d="M156,124 Q169,117 178,126 Q178,137 167,139 Q156,135 156,124 Z" fill="#6fcf7f"/>
+          <!-- polar ice cap -->
+          <path d="M66,14 Q100,3 134,14 Q100,24 66,14 Z" fill="#eef6f2" opacity="0.92"/>
+        </svg>
+      </div>
+      <span class="w-shoot s1"></span>
+      <span class="w-shoot s2"></span>
       <span class="strut left"></span>
       <span class="strut right"></span>
       <span class="glare"></span>
     </div>
 
     <div class="tube" aria-hidden="true">
+      <div class="glass-wrap">
+      <span class="rim top"></span>
       <div class="glass">
         <svg viewBox="0 0 60 104" xmlns="http://www.w3.org/2000/svg">
           <rect x="21" y="70" width="8" height="28" rx="4" fill="#22304e"/>
@@ -997,6 +1106,8 @@
         <span class="bubble" style="left:20%; animation-delay:0s"></span>
         <span class="bubble" style="left:55%; animation-delay:1.2s"></span>
         <span class="bubble" style="left:75%; animation-delay:2.3s"></span>
+      </div>
+      <span class="rim bottom"></span>
       </div>
       <div class="pedestal"></div>
       <p class="tube-label">SPECIMEN<br>B.HOULIHAN</p>
@@ -1173,13 +1284,22 @@
     const ufoY = -120 + u * 122; /* % of its own height: parks near top */
     el.ufo.style.transform = `translate(-50%, ${ufoY}%)`;
 
-    /* Person: gets yoinked (0.50 → 0.66) */
+    /* Person: gets yoinked (0.50 → 0.66), rising no higher than the dome */
     const lift = ease(phase(p, 0.50, 0.66));
     const sway = Math.sin(lift * Math.PI * 3) * 8;
-    const rise = lift * 72; /* vh */
+    let risePx = 0;
+    if (lift > 0) {
+      const ufoRect = el.ufo.getBoundingClientRect();
+      const ph = el.person.offsetHeight;
+      /* dome glass center sits ~41% down the UFO artwork */
+      const domeCenterY = ufoRect.top + ufoRect.height * 0.41;
+      const restBottom = window.innerHeight * 0.84; /* person's resting bottom edge (bottom: 16vh) */
+      const targetBottom = domeCenterY + ph * 0.5;
+      risePx = Math.max(0, restBottom - targetBottom) * lift;
+    }
     const shrink = 1 - lift * 0.45;
     el.person.style.transform =
-      `translateX(-50%) translate(${sway}px, ${-rise}vh) rotate(${sway * 1.2}deg) scale(${shrink})`;
+      `translateX(-50%) translate(${sway}px, ${-risePx}px) rotate(${sway * 1.2}deg) scale(${shrink})`;
     el.person.style.opacity = 1 - phase(p, 0.63, 0.665);
 
     /* Flash (0.66 → 0.74) */
