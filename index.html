@@ -3,359 +3,1316 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Brandon Houlihan</title>
-<link rel="icon" type="image/png" href="favicon.png">
+<title>Brandon Houlihan — Abducted</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700;900&family=Corinthia:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Press+Start+2P&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   :root {
-    --bg: #E5E6EB;
-    --ink: #021533;
-    --body-text: #021533;
-    --accent: #C09352;
-    --rule: #021533;
-    --sans: 'Google Sans', Arial, sans-serif;
+    --sky-top: #070516;
+    --sky-mid: #171240;
+    --sky-low: #2c2060;
+    --hill-back: #1c1650;
+    --hill-front: #120d38;
+    --ground: #0b0726;
+    --grass: #080517;
+    --moon: #e9edff;
+    --gold: #ffd97a;
+    --gold-deep: #f4b74a;
+    --alien: #7ef0a0;
+    --teal: #7ee6d4;
+    --metal-dark: #101a26;
+    --metal: #1b2c3d;
+    --metal-light: #2c445c;
+    --screen-glow: #0c2b1a;
+    --white: #f2f4ff;
+    --hud: 'Press Start 2P', monospace;
+    --display: 'Bungee', sans-serif;
+    --body: 'Outfit', sans-serif;
   }
 
-  html { scroll-behavior: smooth; }
-
+  html { scroll-behavior: auto; }
   body {
-    background: var(--bg);
-    color: var(--ink);
-    font-family: var(--sans);
-    font-size: 16px;
-    line-height: 1.6;
-    min-height: 100vh;
+    height: 760vh; /* scroll runway */
+    background: var(--sky-top);
+    font-family: var(--body);
+    color: var(--white);
+    overflow-x: hidden;
   }
 
-  ::selection { background: var(--ink); color: #fff; }
-
-  /* ===== OUTER FRAME ===== */
-  .frame {
-    max-width: 1200px;
-    margin: 0 auto;
-    border-left: 10px solid var(--rule);
-    border-right: 10px solid var(--rule);
-    min-height: 100vh;
-    background: #FFFFFF;
+  /* ============ FIXED STAGE ============ */
+  .stage {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
   }
 
-  /* ===== HERO ===== */
-  .hero {
-    display: grid;
-    grid-template-columns: 55% 45%;
-    border-bottom: 10px solid var(--rule);
+  /* ============ SKY ============ */
+  .sky {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 55% 40% at 78% 20%, rgba(126,230,212,0.10), transparent 70%),
+      radial-gradient(ellipse 70% 55% at 18% 55%, rgba(130,85,215,0.13), transparent 70%),
+      radial-gradient(ellipse 95% 60% at 55% 105%, rgba(90,55,160,0.28), transparent 75%),
+      linear-gradient(to bottom, var(--sky-top) 0%, var(--sky-mid) 55%, var(--sky-low) 100%);
+  }
+  .god-rays {
+    position: absolute; inset: -8%;
+    background:
+      linear-gradient(112deg, transparent 28%, rgba(190,170,255,0.055) 33%, transparent 40%),
+      linear-gradient(105deg, transparent 54%, rgba(126,230,212,0.05) 59%, transparent 67%),
+      linear-gradient(118deg, transparent 71%, rgba(190,170,255,0.045) 76%, transparent 83%);
+    mix-blend-mode: screen;
+    pointer-events: none;
+    animation: raysShimmer 16s ease-in-out infinite alternate;
+  }
+  @keyframes raysShimmer {
+    from { opacity: 0.55; transform: translateX(-1.5%); }
+    to   { opacity: 1;    transform: translateX(1.5%); }
+  }
+  .mist {
+    position: absolute; left: -5%; right: -5%;
+    pointer-events: none;
+    filter: blur(16px);
+  }
+  .mist.m1 {
+    bottom: 19vh; height: 11vh;
+    background: radial-gradient(ellipse 65% 100% at 45% 60%, rgba(150,125,225,0.16), transparent 75%);
+  }
+  .mist.m2 {
+    bottom: 13vh; height: 8vh;
+    background: radial-gradient(ellipse 70% 100% at 60% 60%, rgba(126,230,212,0.09), transparent 75%);
+  }
+  .foliage {
+    position: absolute;
+    bottom: -2.5vh;
+    width: clamp(190px, 27vw, 400px);
+    filter: blur(5px);
+    opacity: 0.97;
+    z-index: 7;
+    pointer-events: none;
+  }
+  .foliage svg { width: 100%; height: auto; display: block; }
+  .foliage.left { left: -3vw; }
+  .foliage.right { right: -3vw; transform: scaleX(-1); }
+  .mote {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(224,255,246,0.95), rgba(126,230,212,0.3) 55%, transparent 75%);
+    filter: blur(0.6px);
+    pointer-events: none;
+    animation: moteFloat linear infinite;
+  }
+  @keyframes moteFloat {
+    0%   { transform: translate(0, 0); opacity: 0; }
+    12%  { opacity: 0.9; }
+    85%  { opacity: 0.45; }
+    100% { transform: translate(6vw, -48vh); opacity: 0; }
+  }
+  .vignette {
+    position: absolute; inset: 0;
+    pointer-events: none;
+    z-index: 28;
+    background: radial-gradient(ellipse 125% 105% at 50% 42%, transparent 52%, rgba(4,2,14,0.6) 100%);
+  }
+  .star {
+    position: absolute;
+    background: #fff;
+    border-radius: 50%;
+    animation: twinkle 3s ease-in-out infinite;
+  }
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.25; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1.15); }
+  }
+  .shooting-star {
+    position: absolute;
+    top: 12%; left: -10%;
+    width: 130px; height: 2px;
+    background: linear-gradient(to right, transparent, #fff);
+    border-radius: 2px;
+    opacity: 0;
+    transform: rotate(18deg);
+    animation: shoot 9s linear infinite;
+    animation-delay: 3s;
+  }
+  @keyframes shoot {
+    0% { opacity: 0; transform: translate(0,0) rotate(18deg); }
+    3% { opacity: 1; }
+    9% { opacity: 0; transform: translate(60vw, 22vh) rotate(18deg); }
+    100% { opacity: 0; transform: translate(60vw, 22vh) rotate(18deg); }
   }
 
-  .hero-left {
+  .moon {
+    position: absolute;
+    top: 9%; right: 12%;
+    width: clamp(70px, 8vw, 120px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--moon);
+    box-shadow:
+      0 0 40px 12px rgba(233,237,255,0.35),
+      0 0 120px 50px rgba(165,190,255,0.16),
+      0 0 220px 110px rgba(126,230,212,0.07);
+  }
+  .moon::after {
+    content: '';
+    position: absolute; inset: 0;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 30% 35%, rgba(150,160,205,0.5) 0 9%, transparent 10%),
+      radial-gradient(circle at 62% 60%, rgba(150,160,205,0.45) 0 7%, transparent 8%),
+      radial-gradient(circle at 48% 22%, rgba(150,160,205,0.4) 0 5%, transparent 6%);
+  }
+
+  /* ============ LANDSCAPE ============ */
+  .hills { position: absolute; left: 0; right: 0; bottom: 0; line-height: 0; }
+  .hills svg { width: 100%; height: auto; display: block; }
+  .hills.back { bottom: 14vh; filter: blur(1.6px); opacity: 0.92; }
+  .hills.front { bottom: 8vh; }
+
+  .ground {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 18vh;
+    background: linear-gradient(to bottom, var(--ground), #05081c);
+  }
+  .grass {
+    position: absolute;
+    left: 0; right: 0; bottom: 15.2vh;
+    height: 4vh;
+    line-height: 0;
+  }
+  .grass svg { width: 100%; height: 100%; display: block; }
+
+  .firefly {
+    position: absolute;
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 10px 4px rgba(255,217,122,0.65), 0 0 26px 10px rgba(255,217,122,0.18);
+    filter: blur(0.4px);
+    animation: drift 7s ease-in-out infinite alternate;
+  }
+  @keyframes drift {
+    0% { transform: translate(0,0); opacity: 0.2; }
+    30% { opacity: 1; }
+    60% { opacity: 0.35; }
+    100% { transform: translate(4vw, -5vh); opacity: 0.9; }
+  }
+
+  /* ============ CHARACTERS & PROPS ============ */
+  .person {
+    position: absolute;
+    left: 50%;
+    bottom: 16vh;
+    width: clamp(46px, 5vw, 70px);
+    transform: translateX(-50%);
+    will-change: transform;
+    z-index: 5;
+  }
+  .person svg { width: 100%; height: auto; display: block; }
+
+  .beam {
+    position: absolute;
+    left: 50%;
+    bottom: 14.5vh;
+    width: min(46vw, 560px);
+    height: 86vh;
+    transform: translateX(-50%) scaleY(0);
+    transform-origin: top center;
+    clip-path: polygon(41% 0, 59% 0, 100% 100%, 0 100%);
+    background: linear-gradient(to bottom,
+      rgba(255,255,255,0.95) 0%,
+      rgba(255,246,214,0.55) 28%,
+      rgba(255,217,122,0.38) 58%,
+      rgba(255,217,122,0.08) 100%);
+    filter: blur(1.5px);
+    mix-blend-mode: screen;
+    opacity: 0;
+    z-index: 4;
+    will-change: transform, opacity;
+  }
+  .beam-glow {
+    position: absolute;
+    left: 50%;
+    bottom: 12.5vh;
+    width: min(38vw, 460px);
+    height: 7vh;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(255,235,180,0.65) 0%, rgba(255,217,122,0.3) 40%, transparent 72%);
+    filter: blur(4px);
+    opacity: 0;
+    z-index: 3;
+  }
+
+  .ufo {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: clamp(260px, 34vw, 480px);
+    transform: translate(-50%, -120%);
+    z-index: 6;
+    will-change: transform;
+    filter: drop-shadow(0 10px 36px rgba(126,230,212,0.35)) drop-shadow(0 0 60px rgba(255,217,122,0.14));
+  }
+  .ufo svg { width: 100%; height: auto; display: block; }
+  .ufo-light { animation: blinkLight 1.1s steps(2) infinite; }
+  .ufo-light:nth-child(2n) { animation-delay: 0.55s; }
+  @keyframes blinkLight { 0%,100% { opacity: 1; } 50% { opacity: 0.25; } }
+  .ufo-bob { animation: bob 3.5s ease-in-out infinite; }
+  @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
+
+  /* ============ HUD ============ */
+  .caption {
+    position: absolute;
+    left: 50%; bottom: 6vh;
+    transform: translateX(-50%);
+    font-family: var(--hud);
+    font-size: clamp(9px, 1.4vw, 13px);
+    line-height: 1.9;
+    letter-spacing: 0.06em;
+    color: var(--white);
+    text-shadow: 0 2px 0 rgba(0,0,0,0.6);
+    text-align: center;
+    padding: 0 1.5rem;
+    opacity: 0;
+    transition: opacity 0.4s;
+    z-index: 20;
+    pointer-events: none;
+  }
+  .caption.show { opacity: 1; }
+
+  .hud-meter {
+    position: absolute;
+    top: 1.4rem; left: 1.4rem;
+    font-family: var(--hud);
+    font-size: 8px;
+    letter-spacing: 0.08em;
+    color: var(--alien);
+    z-index: 35;
+    text-shadow: 0 1px 0 rgba(0,0,0,0.7);
+    transition: opacity 0.3s;
+    pointer-events: none;
+  }
+  .hud-meter .bar {
+    display: inline-block;
+    margin-left: 6px;
+  }
+
+  .title-screen {
+    position: absolute; inset: 0;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    padding: 3rem 3.5rem;
-    overflow: hidden;
+    justify-content: center;
+    text-align: center;
+    z-index: 15;
+    pointer-events: none;
+    padding: 0 1rem;
   }
-
-  /* ===== MONOGRAM ===== */
-  .monogram {
-    position: relative;
-    line-height: 1;
+  .title-screen .eyebrow {
+    font-family: var(--hud);
+    font-size: clamp(8px, 1.2vw, 11px);
+    color: var(--gold);
+    letter-spacing: 0.25em;
+    margin-bottom: 1.4rem;
   }
-  .monogram-b {
-    font-family: 'Corinthia', cursive;
-    font-weight: 700;
-    font-size: clamp(10rem, 16vw, 18rem);
-    color: var(--ink);
-    line-height: 1;
-    display: block;
-  }
-  .monogram-h {
-    font-family: 'Corinthia', cursive;
-    font-weight: 700;
-    font-size: clamp(10rem, 16vw, 18rem);
-    color: var(--ink);
-    line-height: 1;
-    display: block;
-    margin-top: -0.6em;
-    margin-left: clamp(3rem, 5vw, 7rem);
-  }
-
-
-  .hero-right {
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hero-photo {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center top;
-    display: block;
-  }
-  .hero-tagline .bullet {
-    color: var(--accent);
-    font-size: 1.15rem;
-    line-height: 1;
-  }
-
-  /* ===== BODY GRID ===== */
-  .body-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-  }
-
-  /* ===== ABOUT ===== */
-  .about {
-    padding: 3.5rem 3.5rem 5rem;
-    border-right: 10px solid var(--rule);
-  }
-
-  .section-title {
-    font-size: clamp(2.2rem, 4vw, 3.2rem);
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    color: var(--ink);
+  .title-screen h1 {
+    font-family: var(--display);
+    font-size: clamp(2.2rem, 7.5vw, 5.5rem);
+    line-height: 1.05;
+    color: var(--white);
+    text-shadow: 0 6px 0 rgba(0,0,0,0.35), 0 0 40px rgba(126,230,212,0.3), 0 0 110px rgba(160,130,255,0.25);
     margin-bottom: 1.6rem;
   }
-
-  .about-body p {
-    font-size: 1.15rem;
-    color: var(--body-text);
-    line-height: 1.85;
-    margin-bottom: 1.1rem;
-    max-width: 54ch;
+  .title-screen h1 span { color: var(--teal); }
+  .title-screen .press-start {
+    font-family: var(--hud);
+    font-size: clamp(8px, 1.3vw, 12px);
+    color: var(--white);
+    letter-spacing: 0.15em;
+    animation: pulse 1.4s steps(2) infinite;
   }
-  .about-body p:last-child { margin-bottom: 0; }
+  @keyframes pulse { 50% { opacity: 0.15; } }
 
-  /* ===== SIDEBAR ===== */
-  .sidebar {
+  .flash {
+    position: absolute; inset: 0;
+    background: #eafff2;
+    opacity: 0;
+    z-index: 30;
+    pointer-events: none;
+  }
+
+  /* ============ UFO INTERIOR ============ */
+  .interior {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 45% 40% at 16% 28%, rgba(126,230,212,0.06), transparent 65%),
+      radial-gradient(ellipse 45% 40% at 84% 24%, rgba(150,110,235,0.08), transparent 65%),
+      radial-gradient(ellipse at 50% 120%, #24404f 0%, transparent 55%),
+      linear-gradient(to bottom, #0c1420 0%, var(--metal-dark) 45%, var(--metal) 100%);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 25;
     display: flex;
     flex-direction: column;
   }
+  .interior.active { pointer-events: auto; }
 
-  .sidebar-section {
-    padding: 3rem 3rem 3.5rem;
-    border-bottom: 10px solid var(--rule);
+  .interior-header {
+    text-align: center;
+    padding-top: clamp(1.2rem, 3vh, 2.5rem);
   }
-  .sidebar-section:last-child { border-bottom: none; }
+  .interior-header .sys {
+    font-family: var(--hud);
+    font-size: clamp(7px, 1vw, 10px);
+    color: var(--alien);
+    letter-spacing: 0.2em;
+    margin-bottom: 0.7rem;
+    animation: pulse 2s steps(2) infinite;
+  }
+  .interior-header h2 {
+    font-family: var(--display);
+    font-size: clamp(1.3rem, 3.4vw, 2.4rem);
+    color: var(--white);
+    text-shadow: 0 4px 0 rgba(0,0,0,0.4);
+  }
+  .interior-header p {
+    font-family: var(--hud);
+    font-size: clamp(7px, 1vw, 10px);
+    color: var(--teal);
+    letter-spacing: 0.1em;
+    margin-top: 0.8rem;
+    opacity: 0.8;
+  }
 
-  /* ===== LINK LIST ===== */
-  .link-list {
-    list-style: none;
-    margin-top: 0.5rem;
+  .windshield {
+    position: relative;
+    width: min(880px, 76vw);
+    height: clamp(220px, 38vh, 400px);
+    margin: clamp(0.8rem, 2.5vh, 2rem) auto 0;
+    border-radius: 54px 54px 22px 22px;
+    border: 9px solid var(--metal-light);
+    background: linear-gradient(to bottom, #04081e 0%, #0c1440 70%, #14204f 100%);
+    overflow: hidden;
+    box-shadow:
+      inset 0 0 60px rgba(0,0,0,0.85),
+      0 0 0 4px #0a121c,
+      0 14px 34px rgba(0,0,0,0.45);
   }
-  .link-list li {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.4rem 0;
+  .windshield .p-star { position: absolute; background: #fff; border-radius: 50%; animation: twinkle 2.5s ease-in-out infinite; }
+  .windshield .strut {
+    position: absolute;
+    top: -5%; bottom: -5%;
+    width: clamp(9px, 1.2vw, 15px);
+    background: linear-gradient(to right, #16222f, var(--metal-light) 50%, #16222f);
+    box-shadow: 0 0 12px rgba(0,0,0,0.65);
+    z-index: 2;
   }
-  .link-list li::before {
+  .windshield .strut.left  { left: 29%; transform: rotate(5deg); }
+  .windshield .strut.right { right: 29%; transform: rotate(-5deg); }
+  .windshield .glare {
+    position: absolute; inset: 0;
+    background: linear-gradient(115deg, transparent 42%, rgba(210,230,255,0.06) 46%, rgba(210,230,255,0.06) 54%, transparent 58%);
+    pointer-events: none;
+    z-index: 3;
+  }
+  .windshield .earth {
+    position: absolute;
+    right: 9%; bottom: -34%;
+    width: 34%; aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #6fd6ff 0%, #2e8fd8 45%, #14509a 80%);
+    box-shadow: 0 0 34px rgba(110,200,255,0.5);
+  }
+  .windshield .earth::after {
     content: '';
-    display: inline-block;
-    width: 7px;
-    height: 7px;
-    background: var(--accent);
-    border-radius: 1px;
-    transform: rotate(45deg);
-    flex-shrink: 0;
+    position: absolute; inset: 0; border-radius: 50%;
+    background:
+      radial-gradient(circle at 28% 40%, rgba(126,240,160,0.85) 0 10%, transparent 11%),
+      radial-gradient(circle at 55% 25%, rgba(126,240,160,0.8) 0 8%, transparent 9%),
+      radial-gradient(circle at 45% 62%, rgba(126,240,160,0.7) 0 7%, transparent 8%);
   }
-  .link-list a {
+  .windshield .little-moon {
+    position: absolute;
+    left: 12%; top: 18%;
+    width: 7%; aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--moon);
+    opacity: 0.9;
+    box-shadow: 0 0 16px rgba(233,237,255,0.4);
+  }
+
+  /* Specimen tube */
+  .tube {
+    position: absolute;
+    left: clamp(0.6rem, 2.5vw, 3rem);
+    bottom: clamp(14rem, 31vh, 19rem);
+    width: clamp(70px, 8vw, 110px);
+    z-index: 2;
+    text-align: center;
+  }
+  .tube .pedestal {
+    height: 16px;
+    margin-top: -4px;
+    background: linear-gradient(to bottom, var(--metal-light), var(--metal));
+    border-radius: 4px 4px 8px 8px;
+    box-shadow: 0 5px 0 #0a121c;
+  }
+  .tube .glass {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 2;
+    border-radius: 999px;
+    background: linear-gradient(to bottom, rgba(126,240,160,0.16), rgba(126,240,160,0.05));
+    border: 3px solid rgba(126,230,212,0.5);
+    overflow: hidden;
+    box-shadow: inset 0 0 25px rgba(126,240,160,0.25), 0 0 20px rgba(126,240,160,0.18);
+  }
+  .tube .glass svg {
+    position: absolute;
+    left: 50%; top: 50%;
+    width: 55%;
+    transform: translate(-50%, -50%);
+    animation: floaty 4s ease-in-out infinite;
+  }
+  @keyframes floaty {
+    0%,100% { transform: translate(-50%, -52%) rotate(-3deg); }
+    50% { transform: translate(-50%, -46%) rotate(3deg); }
+  }
+  .tube .bubble {
+    position: absolute;
+    bottom: -10%;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: rgba(126,240,160,0.5);
+    animation: rise 3.6s linear infinite;
+  }
+  @keyframes rise {
+    0% { transform: translateY(0); opacity: 0; }
+    15% { opacity: 1; }
+    100% { transform: translateY(-22vh); opacity: 0; }
+  }
+  .tube .tube-label {
+    margin-top: 0.6rem;
+    font-family: var(--hud);
+    font-size: 7px;
+    letter-spacing: 0.1em;
+    color: var(--alien);
+    line-height: 1.8;
+  }
+
+  /* ============ COCKPIT DASHBOARD ============ */
+  .dashboard {
+    margin-top: auto;
+    position: relative;
+    background: linear-gradient(to bottom, #2c445c 0%, var(--metal) 26%, #14202e 100%);
+    border-top: 6px solid #3d5b78;
+    box-shadow: 0 -14px 34px rgba(0,0,0,0.55);
+    padding: clamp(1rem, 2.6vh, 1.8rem) clamp(0.8rem, 3vw, 2.5rem) clamp(0.8rem, 2vh, 1.4rem);
+    z-index: 3;
+  }
+  .dashboard::before {
+    content: '';
+    position: absolute;
+    top: -22px; left: 0; right: 0;
+    height: 17px;
+    background: #22374b;
+    clip-path: polygon(0 100%, 3.5% 0, 96.5% 0, 100% 100%);
+  }
+  .dash-row {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    gap: clamp(0.7rem, 1.8vw, 1.5rem);
+    transform: perspective(1100px) rotateX(5deg);
+    transform-origin: bottom center;
+  }
+  .console {
+    appearance: none;
+    border: none;
+    cursor: pointer;
+    background: linear-gradient(to bottom, #12202e, #0a121c);
+    border-radius: 12px;
+    padding: 9px 9px 11px;
+    width: clamp(140px, 16vw, 200px);
+    box-shadow:
+      inset 0 2px 0 rgba(255,255,255,0.07),
+      0 5px 0 #050b12,
+      0 10px 20px rgba(0,0,0,0.45);
+    transition: transform 0.15s, box-shadow 0.15s;
+    font-family: inherit;
+  }
+  .console:hover, .console:focus-visible {
+    transform: translateY(-4px);
+    box-shadow:
+      inset 0 2px 0 rgba(255,255,255,0.07),
+      0 9px 0 #050b12,
+      0 16px 26px rgba(0,0,0,0.5);
+  }
+  .console:focus-visible { outline: 3px solid var(--alien); outline-offset: 3px; }
+  .console:active { transform: translateY(-1px); }
+  .console:hover .screen { box-shadow: inset 0 0 18px rgba(0,0,0,0.7), 0 0 18px rgba(126,240,160,0.35); }
+  .console .screen {
+    display: block;
+    background: radial-gradient(ellipse at 50% 30%, #123c24, var(--screen-glow));
+    border: 2px solid #06110a;
+    border-radius: 8px;
+    padding: clamp(0.7rem, 1.7vh, 1.1rem) 0.4rem;
+    color: var(--alien);
+    text-shadow: 0 0 8px rgba(126,240,160,0.8);
+    box-shadow: inset 0 0 18px rgba(0,0,0,0.7), 0 0 14px rgba(126,240,160,0.18);
+    position: relative;
+    overflow: hidden;
+    transition: box-shadow 0.15s;
+  }
+  .console .screen::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(to bottom, rgba(255,255,255,0.04) 0 1px, transparent 1px 3px);
+    pointer-events: none;
+  }
+  .console .icon { font-size: clamp(1.3rem, 2.6vw, 1.9rem); line-height: 1; display: block; }
+  .console .name {
+    font-family: var(--hud);
+    font-size: clamp(6.5px, 0.85vw, 8.5px);
+    letter-spacing: 0.08em;
+    margin-top: 0.6rem;
+    display: block;
+    line-height: 1.7;
+  }
+  .console .lights {
+    display: flex;
+    justify-content: center;
+    gap: 7px;
+    margin-top: 9px;
+  }
+  .console .lights i {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--gold);
+    animation: blinkLight 1.3s steps(2) infinite;
+  }
+  .console .lights i:nth-child(2) { background: var(--teal); animation-delay: 0.4s; }
+  .console .lights i:nth-child(3) { background: #ff7a6e; animation-delay: 0.8s; }
+
+  /* Decorative gizmos between screens */
+  .gizmo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  .gizmo .gizmo-label {
+    font-family: var(--hud);
+    font-size: 6.5px;
+    letter-spacing: 0.14em;
+    color: rgba(242,244,255,0.45);
+  }
+  .gauge {
+    width: clamp(42px, 4vw, 56px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 40%, #101c2a, #060c14);
+    border: 3px solid #3d5b78;
+    position: relative;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.8), 0 3px 0 #050b12;
+    overflow: hidden;
+  }
+  .gauge::before {
+    content: '';
+    position: absolute; inset: 6px;
+    border-radius: 50%;
+    background:
+      conic-gradient(from 220deg, rgba(126,240,160,0.25) 0 80deg, rgba(255,217,122,0.25) 80deg 140deg, rgba(255,122,110,0.3) 140deg 180deg, transparent 180deg);
+  }
+  .gauge::after {
+    content: '';
+    position: absolute;
+    left: calc(50% - 1px); bottom: 50%;
+    width: 2px; height: 38%;
+    background: var(--gold);
+    border-radius: 2px;
+    transform-origin: bottom center;
+    animation: needle 4.5s ease-in-out infinite alternate;
+  }
+  @keyframes needle {
+    from { transform: rotate(-52deg); }
+    to   { transform: rotate(52deg); }
+  }
+  .switches { display: flex; gap: 8px; }
+  .switch {
+    width: 13px; height: 32px;
+    border-radius: 7px;
+    background: #060c14;
+    border: 2px solid #3d5b78;
+    position: relative;
+  }
+  .switch::after {
+    content: '';
+    position: absolute;
+    left: 50%; transform: translateX(-50%);
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: var(--teal);
+    box-shadow: 0 0 6px rgba(126,230,212,0.7);
+  }
+  .switch.up::after { top: 3px; }
+  .switch.down::after { bottom: 3px; background: var(--gold); box-shadow: 0 0 6px rgba(255,217,122,0.7); }
+
+  .big-red {
+    appearance: none;
+    border: 4px solid #5c0e08;
+    width: clamp(50px, 5vw, 68px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #ff9188, #d8352a 60%, #8e1810);
+    box-shadow: 0 7px 0 #4a0b06, 0 12px 18px rgba(0,0,0,0.5), inset 0 -6px 12px rgba(0,0,0,0.35);
+    cursor: pointer;
+    transition: transform 0.08s, box-shadow 0.08s;
+  }
+  .big-red:hover { filter: brightness(1.08); }
+  .big-red:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+  .big-red:active {
+    transform: translateY(5px);
+    box-shadow: 0 2px 0 #4a0b06, 0 5px 10px rgba(0,0,0,0.5), inset 0 -4px 10px rgba(0,0,0,0.4);
+  }
+
+  /* Alarm easter egg */
+  .alarm-overlay {
+    position: absolute; inset: 0;
+    background: rgba(255,60,40,0.2);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 6;
+  }
+  .interior.alarm { animation: shake 0.35s linear 3; }
+  .interior.alarm .alarm-overlay { animation: alarmPulse 0.42s steps(2) 3; }
+  @keyframes shake {
+    0%, 100% { transform: translate(0, 0); }
+    25% { transform: translate(-7px, 3px); }
+    75% { transform: translate(7px, -3px); }
+  }
+  @keyframes alarmPulse { 50% { opacity: 1; } }
+
+  .interior-hint {
+    text-align: center;
+    margin-top: clamp(0.7rem, 1.8vh, 1.2rem);
+    font-family: var(--hud);
+    font-size: 7.5px;
+    letter-spacing: 0.12em;
+    color: rgba(242,244,255,0.55);
+    animation: pulse 1.6s steps(2) infinite;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  /* ============ READOUT MODAL ============ */
+  .readout-backdrop {
+    position: absolute; inset: 0;
+    background: rgba(4,8,14,0.7);
+    backdrop-filter: blur(2px);
+    z-index: 40;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 1.2rem;
+  }
+  .readout-backdrop.open { display: flex; }
+  .readout {
+    width: min(620px, 94vw);
+    max-height: 82vh;
+    overflow-y: auto;
+    background: radial-gradient(ellipse at 50% 0%, #10331f, #071a10);
+    border: 3px solid var(--alien);
+    border-radius: 10px;
+    box-shadow: 0 0 40px rgba(126,240,160,0.3), inset 0 0 30px rgba(0,0,0,0.6);
+    padding: clamp(1.2rem, 3vw, 2rem);
+    position: relative;
+    color: var(--alien);
+  }
+  .readout::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(to bottom, rgba(255,255,255,0.035) 0 1px, transparent 1px 3px);
+    pointer-events: none;
+    border-radius: 7px;
+  }
+  .readout-title {
+    font-family: var(--hud);
+    font-size: clamp(10px, 1.6vw, 14px);
+    letter-spacing: 0.1em;
+    margin-bottom: 1.2rem;
+    text-shadow: 0 0 10px rgba(126,240,160,0.8);
+    padding-right: 3rem;
+    line-height: 1.8;
+  }
+  .readout-body {
+    font-family: var(--body);
+    font-weight: 300;
+    font-size: clamp(0.95rem, 1.6vw, 1.1rem);
+    line-height: 1.8;
+    color: #d7ffe4;
+  }
+  .readout-body .row {
+    font-family: var(--hud);
+    font-size: clamp(7.5px, 1.1vw, 9.5px);
+    line-height: 2.4;
+    letter-spacing: 0.05em;
+    color: var(--alien);
+  }
+  .readout-body .divider {
+    border: none;
+    border-top: 1px dashed rgba(126,240,160,0.35);
+    margin: 1.1rem 0;
+  }
+  .readout-body p { margin-bottom: 0.9rem; }
+  .readout-body a {
+    color: var(--gold);
     text-decoration: none;
-    color: var(--body-text);
-    font-size: 1.15rem;
-    font-weight: 400;
+    border-bottom: 1px dashed var(--gold-deep);
     transition: color 0.15s;
   }
-  .link-list a:hover { color: #C09352; }
+  .readout-body a:hover { color: #ffe9b0; }
+  .readout-close {
+    position: absolute;
+    top: 0.9rem; right: 0.9rem;
+    appearance: none;
+    background: transparent;
+    border: 2px solid var(--alien);
+    border-radius: 6px;
+    color: var(--alien);
+    font-family: var(--hud);
+    font-size: 9px;
+    padding: 7px 9px;
+    cursor: pointer;
+    z-index: 2;
+  }
+  .readout-close:hover, .readout-close:focus-visible { background: rgba(126,240,160,0.15); }
 
-  /* ===== FOOTER ===== */
-  footer {
-    border-top: 10px solid var(--rule);
-    padding: 0 3.5rem;
-    height: 80px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  /* ============ ACCESSIBILITY / MOBILE ============ */
+  @media (prefers-reduced-motion: reduce) {
+    .star, .shooting-star, .firefly, .ufo-light, .ufo-bob,
+    .tube .glass svg, .tube .bubble, .press-start,
+    .console .lights i, .interior-hint, .interior-header .sys,
+    .gauge::after, .interior.alarm, .interior.alarm .alarm-overlay,
+    .god-rays, .mote {
+      animation: none !important;
+    }
   }
-  footer .footer-name {
-    font-family: 'Corinthia', cursive;
-    font-size: 2.2rem;
-    font-weight: 700;
-    letter-spacing: 0;
-    text-transform: none;
-    color: #021533;
-    line-height: 1;
-    display: block;
-    overflow: hidden;
-    padding-top: 0.35em;
-    padding-bottom: 0.1em;
-  }
-  footer .footer-copy {
-    font-size: 1rem;
-    font-weight: 400;
-    color: #021533;
-    line-height: 1;
-  }
-  .footer-flourish {
-    display: flex;
-    align-items: center;
-    flex: 1;
-    margin: 0 1.5rem 0 1.5rem;
-  }
-  .flourish-line {
-    flex: 1;
-    height: 1px;
-    background: #C09352;
-  }
-  .flourish-diamond {
-    width: 7px;
-    height: 7px;
-    background: #C09352;
-    border-radius: 1px;
-    transform: rotate(45deg);
-    margin: 0 10px;
-    flex-shrink: 0;
-  }
-
-  /* ===== TABLET ===== */
   @media (max-width: 900px) {
-    .hero { grid-template-columns: 1fr 1fr; }
-    .monogram-b { font-size: clamp(7rem, 13vw, 12rem); }
-    .monogram-h { font-size: clamp(7rem, 13vw, 12rem); margin-left: clamp(2.5rem, 5vw, 6rem); }
-    .hero-left { padding: 3rem 2rem; }
-    .about { padding: 2.5rem 2rem 4rem; }
-    .sidebar-section { padding: 2rem 2rem 2.5rem; }
-    footer {
-      padding: 1.2rem 2rem;
-      height: auto;
-      min-height: 80px;
-    }
-    .footer-flourish { flex: 0; margin: 0 1rem; }
+    .tube, .gizmo { display: none; }
+    .dash-row { flex-wrap: wrap; transform: none; }
+    .console { width: 44%; }
   }
-
-  @media (max-width: 720px) {
-    footer {
-      flex-direction: column;
-      height: auto;
-      padding: 1.5rem 2rem;
-      gap: 0.5rem;
-      text-align: center;
-    }
-    .footer-flourish {
-      flex: none;
-      width: 120px;
-      margin: 0.25rem auto;
-    }
-  }
-
-  /* ===== MOBILE ===== */
-  @media (max-width: 600px) {
-    .frame {
-      border-left: none;
-      border-right: none;
-    }
-    .hero {
-      grid-template-columns: 1fr;
-      min-height: auto;
-    }
-    .hero-left {
-      padding: 3rem 1.5rem 2.5rem;
-      justify-content: center;
-      align-items: center;
-    }
-    .monogram-b { font-size: 6rem; }
-    .monogram-h { font-size: 6rem; margin-left: 3rem; }
-    .hero-right {
-      height: 80vw;
-      border-top: 10px solid var(--rule);
-    }
-    .body-grid { grid-template-columns: 1fr; }
-    .about {
-      padding: 2.5rem 1.5rem 3rem;
-      border-right: none;
-      border-bottom: 10px solid var(--rule);
-    }
-    .sidebar-section { padding: 2rem 1.5rem; }
-    .section-title { font-size: 2rem; }
-    footer {
-      padding: 1.5rem 1.5rem;
-      flex-direction: column;
-      gap: 0.5rem;
-      text-align: center;
-    }
-    .footer-flourish {
-      flex: none;
-      width: 120px;
-      margin: 0.25rem auto;
-    }
+  @media (max-width: 640px) {
+    .beam { width: 78vw; }
+    .windshield { width: 90vw; height: 30vh; }
   }
 </style>
 </head>
 <body>
 
-<div class="frame">
+<div class="stage" id="stage">
 
-  <section class="hero">
-    <div class="hero-left">
-      <div class="monogram">
-        <div class="monogram-b">B</div>
-        <div class="monogram-h">H</div>
+  <!-- Exterior scene -->
+  <div class="exterior" id="exterior">
+    <div class="sky"></div>
+    <div class="god-rays"></div>
+    <div id="stars"></div>
+    <div class="shooting-star"></div>
+    <div class="moon"></div>
+
+    <div class="hills back">
+      <svg viewBox="0 0 1440 220" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" style="height:22vh">
+        <defs>
+          <linearGradient id="hillBackGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#382a78"/>
+            <stop offset="45%" stop-color="#221a58"/>
+            <stop offset="100%" stop-color="#171243"/>
+          </linearGradient>
+        </defs>
+        <path d="M0,220 L0,140 Q180,60 380,120 T760,100 Q950,60 1130,120 T1440,110 L1440,220 Z" fill="url(#hillBackGrad)"/>
+      </svg>
+    </div>
+    <div class="mist m1"></div>
+    <div class="hills front">
+      <svg viewBox="0 0 1440 180" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" style="height:16vh">
+        <defs>
+          <linearGradient id="hillFrontGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#241a5e"/>
+            <stop offset="50%" stop-color="#171040"/>
+            <stop offset="100%" stop-color="#100b30"/>
+          </linearGradient>
+        </defs>
+        <path d="M0,180 L0,120 Q240,40 520,110 T1020,90 Q1240,60 1440,105 L1440,180 Z" fill="url(#hillFrontGrad)"/>
+      </svg>
+    </div>
+    <div class="mist m2"></div>
+
+    <div class="beam" id="beam"></div>
+    <div class="beam-glow" id="beamGlow"></div>
+
+    <div class="ufo" id="ufo">
+      <div class="ufo-bob">
+        <svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg">
+          <!-- dome -->
+          <ellipse cx="150" cy="62" rx="52" ry="44" fill="#a9f5e3" opacity="0.35"/>
+          <ellipse cx="150" cy="62" rx="52" ry="44" fill="none" stroke="#7ee6d4" stroke-width="3" opacity="0.8"/>
+          <!-- little pilot -->
+          <ellipse cx="150" cy="72" rx="16" ry="18" fill="#7ef0a0"/>
+          <ellipse cx="144" cy="68" rx="4.5" ry="6" fill="#0a1f12"/>
+          <ellipse cx="156" cy="68" rx="4.5" ry="6" fill="#0a1f12"/>
+          <!-- saucer -->
+          <ellipse cx="150" cy="98" rx="138" ry="32" fill="#31465e"/>
+          <ellipse cx="150" cy="92" rx="138" ry="30" fill="#4a6a8c"/>
+          <ellipse cx="150" cy="88" rx="120" ry="22" fill="#5f83a8"/>
+          <!-- underside -->
+          <ellipse cx="150" cy="112" rx="76" ry="18" fill="#22364a"/>
+          <ellipse cx="150" cy="118" rx="42" ry="10" fill="#ffd97a" opacity="0.9"/>
+          <!-- rim lights -->
+          <circle class="ufo-light" cx="40" cy="96" r="6" fill="#ffd97a"/>
+          <circle class="ufo-light" cx="95" cy="104" r="6" fill="#ff7a6e"/>
+          <circle class="ufo-light" cx="150" cy="107" r="6" fill="#7ef0a0"/>
+          <circle class="ufo-light" cx="205" cy="104" r="6" fill="#ff7a6e"/>
+          <circle class="ufo-light" cx="260" cy="96" r="6" fill="#ffd97a"/>
+        </svg>
       </div>
     </div>
-    <div class="hero-right">
-      <img class="hero-photo" src="headshot.jpeg" alt="Brandon Houlihan">
+
+    <div class="person" id="person">
+      <svg viewBox="0 0 60 104" xmlns="http://www.w3.org/2000/svg">
+        <!-- legs -->
+        <rect x="21" y="70" width="8" height="28" rx="4" fill="#22304e"/>
+        <rect x="32" y="70" width="8" height="28" rx="4" fill="#1a2540"/>
+        <!-- shoes -->
+        <rect x="18" y="94" width="13" height="8" rx="4" fill="#0d1326"/>
+        <rect x="31" y="94" width="13" height="8" rx="4" fill="#0d1326"/>
+        <!-- body / jacket -->
+        <rect x="16" y="38" width="28" height="38" rx="10" fill="#e2574c"/>
+        <rect x="27" y="40" width="6" height="32" rx="3" fill="#b83e35"/>
+        <!-- arms -->
+        <rect x="9"  y="42" width="9" height="26" rx="4.5" fill="#c94a40"/>
+        <rect x="42" y="42" width="9" height="26" rx="4.5" fill="#c94a40"/>
+        <!-- head, tilted up -->
+        <g transform="rotate(-10 30 24)">
+          <circle cx="30" cy="24" r="13" fill="#f0c9a2"/>
+          <path d="M18 20 Q22 8 34 11 Q44 13 42 22 Q38 16 30 16 Q22 16 18 20 Z" fill="#3b2a1e"/>
+          <circle cx="27" cy="23" r="1.6" fill="#1a1a1a"/>
+          <circle cx="35" cy="22" r="1.6" fill="#1a1a1a"/>
+          <ellipse cx="31" cy="29" rx="2.6" ry="3" fill="#1a1a1a"/> <!-- mouth open, looking up -->
+        </g>
+      </svg>
     </div>
-  </section>
 
-  <div class="body-grid">
+    <div class="grass">
+      <svg viewBox="0 0 1440 40" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,40 L0,26 L10,10 L16,26 L26,6 L33,26 L44,12 L50,26 L62,8 L70,26 L82,14 L90,26 L102,6 L110,26 L124,12 L132,26 L146,8 L154,26 L168,14 L176,26 L190,6 L198,26 L212,10 L220,26 L236,8 L244,26 L258,14 L266,26 L280,6 L288,26 L304,12 L312,26 L328,8 L336,26 L352,14 L360,26 L376,6 L384,26 L400,10 L408,26 L424,8 L432,26 L448,14 L456,26 L472,6 L480,26 L496,12 L504,26 L520,8 L528,26 L544,14 L552,26 L568,6 L576,26 L592,10 L600,26 L616,8 L624,26 L640,14 L648,26 L664,6 L672,26 L688,12 L696,26 L712,8 L720,26 L736,14 L744,26 L760,6 L768,26 L784,10 L792,26 L808,8 L816,26 L832,14 L840,26 L856,6 L864,26 L880,12 L888,26 L904,8 L912,26 L928,14 L936,26 L952,6 L960,26 L976,10 L984,26 L1000,8 L1008,26 L1024,14 L1032,26 L1048,6 L1056,26 L1072,12 L1080,26 L1096,8 L1104,26 L1120,14 L1128,26 L1144,6 L1152,26 L1168,10 L1176,26 L1192,8 L1200,26 L1216,14 L1224,26 L1240,6 L1248,26 L1264,12 L1272,26 L1288,8 L1296,26 L1312,14 L1320,26 L1336,6 L1344,26 L1360,10 L1368,26 L1384,8 L1392,26 L1408,14 L1416,26 L1432,10 L1440,26 L1440,40 Z" fill="#080517"/>
+      </svg>
+    </div>
+    <div class="ground"></div>
 
-    <section class="about">
-      <h2 class="section-title">About</h2>
-      <div class="about-body">
-        <p>I'm Brandon Houlihan, a Designer who leads from the front, equally comfortable setting strategic direction and rolling up my sleeves to get into the work. I've always believed the best leaders stay close to the craft, and that hands-on instinct shapes how I build teams, run critiques, and approach every problem I take on.</p>
-        <p>My work sits at the intersection of design, product, and business. I care deeply about understanding what people actually need, but I'm just as focused on what drives a business forward and I've spent my career finding the overlap between those two things. Great design isn't just beautiful or usable; it moves the needle.</p>
-        <p>I've always been drawn to emerging technology because it consistently opens doors that weren't there before. Figuring out how to bring those capabilities into the design process, and into the teams I lead, has been a passion across my entire career.</p>
-      </div>
-    </section>
-
-    <aside class="sidebar">
-
-      <div class="sidebar-section">
-        <h2 class="section-title">Connect</h2>
-        <ul class="link-list">
-          <li><a href="https://linkedin.com/in/brandonhoulihan" target="_blank">LinkedIn</a></li>
-          <li><a href="mailto:brandonfhoulihan@gmail.com">Email</a></li>
-          <li><a href="https://open.spotify.com/artist/5c1jKzcXqsbZVRiE3Dwnjc?si=hqxQXZkfQKaD0VOyDY5L9w&nd=1&dlsi=5745084ff4654090" target="_blank">Music</a></li>
-        </ul>
-      </div>
-
-      <div class="sidebar-section">
-        <h2 class="section-title">Building</h2>
-        <ul class="link-list">
-          <li><a href="https://www.tempo.io/" target="_blank">Tempo</a></li>
-          <li><a href="https://www.findkindred.co/" target="_blank">Kindred</a></li>
-          <li><a href="https://awesomeintervals.com/" target="_blank">Awesome Intervals</a></li>
-        </ul>
-      </div>
-
-    </aside>
-
+    <!-- Blurred foreground framing (depth of field) -->
+    <div class="foliage left" aria-hidden="true">
+      <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,200 L0,60 Q10,90 22,70 Q26,110 40,88 Q48,130 62,105 L58,200 Z" fill="#0a0620"/>
+        <ellipse cx="70" cy="150" rx="46" ry="34" fill="#140a2e"/>
+        <ellipse cx="120" cy="178" rx="58" ry="30" fill="#0a0620"/>
+        <path d="M96,150 Q100,96 122,84 Q118,120 128,132 Q142,100 160,102 Q146,126 150,144 Z" fill="#171040"/>
+        <ellipse cx="176" cy="188" rx="52" ry="22" fill="#241030"/>
+        <path d="M210,190 Q214,140 236,128 Q250,150 244,176 Z" fill="#54203a"/>
+        <ellipse cx="248" cy="196" rx="40" ry="16" fill="#0a0620"/>
+        <path d="M26,200 Q22,150 8,140 M52,200 Q56,158 44,148" stroke="#171040" stroke-width="7" fill="none" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="foliage right" aria-hidden="true">
+      <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,200 L0,60 Q10,90 22,70 Q26,110 40,88 Q48,130 62,105 L58,200 Z" fill="#0a0620"/>
+        <ellipse cx="70" cy="150" rx="46" ry="34" fill="#140a2e"/>
+        <ellipse cx="120" cy="178" rx="58" ry="30" fill="#0a0620"/>
+        <path d="M96,150 Q100,96 122,84 Q118,120 128,132 Q142,100 160,102 Q146,126 150,144 Z" fill="#171040"/>
+        <ellipse cx="176" cy="188" rx="52" ry="22" fill="#2a1030"/>
+        <path d="M210,190 Q214,140 236,128 Q250,150 244,176 Z" fill="#6e2438"/>
+        <ellipse cx="248" cy="196" rx="40" ry="16" fill="#0a0620"/>
+        <path d="M26,200 Q22,150 8,140 M52,200 Q56,158 44,148" stroke="#171040" stroke-width="7" fill="none" stroke-linecap="round"/>
+      </svg>
+    </div>
   </div>
 
-  <footer>
-    <span class="footer-name">Brandon Houlihan</span>
-    <span class="footer-flourish">
-      <span class="flourish-line"></span>
-      <span class="flourish-diamond"></span>
-      <span class="flourish-line"></span>
-    </span>
-  </footer>
+  <!-- Title screen -->
+  <div class="title-screen" id="titleScreen">
+    <p class="eyebrow">A NORMAL NIGHT IN APEX, NC</p>
+    <h1>BRANDON<br><span>HOULIHAN</span></h1>
+    <p class="press-start">▼ SCROLL TO BEGIN ▼</p>
+  </div>
+
+  <!-- HUD -->
+  <div class="hud-meter" id="hudMeter">ABDUCTION <span class="bar" id="hudBar">░░░░░░░░░░</span> <span id="hudPct">0%</span></div>
+  <p class="caption" id="caption"></p>
+
+  <!-- Vignette -->
+  <div class="vignette" aria-hidden="true"></div>
+
+  <!-- Flash -->
+  <div class="flash" id="flash"></div>
+
+  <!-- Interior -->
+  <div class="interior" id="interior">
+    <div class="alarm-overlay" aria-hidden="true"></div>
+    <div class="interior-header">
+      <p class="sys">◉ SPECIMEN ACQUIRED</p>
+      <h2>ABOARD THE SHIP</h2>
+      <p>SELECT A CONSOLE TO ANALYZE SUBJECT</p>
+    </div>
+
+    <div class="windshield" id="windshield">
+      <span class="little-moon"></span>
+      <div class="earth"></div>
+      <span class="strut left"></span>
+      <span class="strut right"></span>
+      <span class="glare"></span>
+    </div>
+
+    <div class="tube" aria-hidden="true">
+      <div class="glass">
+        <svg viewBox="0 0 60 104" xmlns="http://www.w3.org/2000/svg">
+          <rect x="21" y="70" width="8" height="28" rx="4" fill="#22304e"/>
+          <rect x="32" y="70" width="8" height="28" rx="4" fill="#1a2540"/>
+          <rect x="18" y="94" width="13" height="8" rx="4" fill="#0d1326"/>
+          <rect x="31" y="94" width="13" height="8" rx="4" fill="#0d1326"/>
+          <rect x="16" y="38" width="28" height="38" rx="10" fill="#e2574c"/>
+          <rect x="9"  y="42" width="9" height="26" rx="4.5" fill="#c94a40"/>
+          <rect x="42" y="42" width="9" height="26" rx="4.5" fill="#c94a40"/>
+          <circle cx="30" cy="24" r="13" fill="#f0c9a2"/>
+          <path d="M18 20 Q22 8 34 11 Q44 13 42 22 Q38 16 30 16 Q22 16 18 20 Z" fill="#3b2a1e"/>
+          <line x1="25" y1="23" x2="29" y2="23" stroke="#1a1a1a" stroke-width="1.6"/>
+          <line x1="33" y1="23" x2="37" y2="23" stroke="#1a1a1a" stroke-width="1.6"/>
+          <path d="M26 31 Q30 33 34 31" stroke="#1a1a1a" stroke-width="1.6" fill="none"/>
+        </svg>
+        <span class="bubble" style="left:20%; animation-delay:0s"></span>
+        <span class="bubble" style="left:55%; animation-delay:1.2s"></span>
+        <span class="bubble" style="left:75%; animation-delay:2.3s"></span>
+      </div>
+      <div class="pedestal"></div>
+      <p class="tube-label">SPECIMEN<br>B.HOULIHAN</p>
+    </div>
+
+    <div class="dashboard">
+      <div class="dash-row">
+        <button class="console" data-panel="specimen">
+          <span class="screen">
+            <span class="icon">👤</span>
+            <span class="name">SPECIMEN FILE</span>
+          </span>
+          <span class="lights"><i></i><i></i><i></i></span>
+        </button>
+        <div class="gizmo" aria-hidden="true">
+          <div class="gauge"></div>
+          <div class="switches"><span class="switch up"></span><span class="switch down"></span><span class="switch up"></span></div>
+          <p class="gizmo-label">PWR</p>
+        </div>
+        <button class="console" data-panel="sidequests">
+          <span class="screen">
+            <span class="icon">🛠️</span>
+            <span class="name">SIDE QUESTS</span>
+          </span>
+          <span class="lights"><i></i><i></i><i></i></span>
+        </button>
+        <div class="gizmo">
+          <button class="big-red" id="bigRed" aria-label="Do not press"></button>
+          <p class="gizmo-label">DO NOT PRESS</p>
+        </div>
+        <button class="console" data-panel="audio">
+          <span class="screen">
+            <span class="icon">🎧</span>
+            <span class="name">AUDIO INTERCEPTS</span>
+          </span>
+          <span class="lights"><i></i><i></i><i></i></span>
+        </button>
+        <div class="gizmo" aria-hidden="true">
+          <div class="gauge"></div>
+          <div class="switches"><span class="switch down"></span><span class="switch up"></span><span class="switch down"></span></div>
+          <p class="gizmo-label">NAV</p>
+        </div>
+        <button class="console" data-panel="channel">
+          <span class="screen">
+            <span class="icon">📡</span>
+            <span class="name">OPEN CHANNEL</span>
+          </span>
+          <span class="lights"><i></i><i></i><i></i></span>
+        </button>
+      </div>
+      <p class="interior-hint">TAP A CONSOLE · SCROLL UP TO ESCAPE</p>
+    </div>
+  </div>
+
+  <!-- Readout modal -->
+  <div class="readout-backdrop" id="readoutBackdrop">
+    <div class="readout" role="dialog" aria-modal="true" aria-labelledby="readoutTitle">
+      <button class="readout-close" id="readoutClose">✕ CLOSE</button>
+      <p class="readout-title" id="readoutTitle"></p>
+      <div class="readout-body" id="readoutBody"></div>
+    </div>
+  </div>
 
 </div>
+
+<script>
+(function () {
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+  const phase = (p, s, e) => clamp((p - s) / (e - s), 0, 1);
+  const ease = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+  /* ---------- Generate stars & fireflies ---------- */
+  const starsEl = document.getElementById('stars');
+  for (let i = 0; i < 90; i++) {
+    const s = document.createElement('span');
+    s.className = 'star';
+    const size = Math.random() * 2.2 + 0.8;
+    s.style.width = s.style.height = size + 'px';
+    s.style.left = Math.random() * 100 + '%';
+    s.style.top = Math.random() * 62 + '%';
+    s.style.animationDelay = (Math.random() * 3) + 's';
+    s.style.animationDuration = (2 + Math.random() * 3) + 's';
+    if (Math.random() < 0.28) {
+      s.style.background = '#a9f0e0';
+      s.style.boxShadow = '0 0 6px rgba(126,230,212,0.8)';
+    } else if (Math.random() < 0.12) {
+      s.style.background = '#cdb8ff';
+      s.style.boxShadow = '0 0 6px rgba(180,150,255,0.8)';
+    }
+    starsEl.appendChild(s);
+  }
+  const exterior = document.getElementById('exterior');
+  for (let i = 0; i < 14; i++) {
+    const m = document.createElement('span');
+    m.className = 'mote';
+    const size = 3 + Math.random() * 4.5;
+    m.style.width = m.style.height = size + 'px';
+    m.style.left = (Math.random() * 100) + '%';
+    m.style.bottom = (10 + Math.random() * 55) + 'vh';
+    const dur = 13 + Math.random() * 14;
+    m.style.animationDuration = dur + 's';
+    m.style.animationDelay = (-Math.random() * dur) + 's';
+    exterior.appendChild(m);
+  }
+  for (let i = 0; i < 6; i++) {
+    const f = document.createElement('span');
+    f.className = 'firefly';
+    f.style.left = (8 + Math.random() * 84) + '%';
+    f.style.bottom = (16 + Math.random() * 10) + 'vh';
+    f.style.animationDelay = (Math.random() * 6) + 's';
+    f.style.animationDuration = (5 + Math.random() * 5) + 's';
+    exterior.appendChild(f);
+  }
+  const windshield = document.getElementById('windshield');
+  for (let i = 0; i < 46; i++) {
+    const s = document.createElement('span');
+    s.className = 'p-star';
+    const size = Math.random() * 2.2 + 1;
+    s.style.width = s.style.height = size + 'px';
+    s.style.left = Math.random() * 100 + '%';
+    s.style.top = Math.random() * 100 + '%';
+    s.style.animationDelay = (Math.random() * 2.5) + 's';
+    windshield.appendChild(s);
+  }
+
+  /* ---------- Scroll-driven timeline ---------- */
+  const el = {
+    title: document.getElementById('titleScreen'),
+    beam: document.getElementById('beam'),
+    beamGlow: document.getElementById('beamGlow'),
+    ufo: document.getElementById('ufo'),
+    person: document.getElementById('person'),
+    flash: document.getElementById('flash'),
+    interior: document.getElementById('interior'),
+    caption: document.getElementById('caption'),
+    hudBar: document.getElementById('hudBar'),
+    hudPct: document.getElementById('hudPct'),
+    hudMeter: document.getElementById('hudMeter'),
+    exterior: exterior
+  };
+
+  const captions = [
+    { s: 0.04, e: 0.13, text: "A QUIET FIELD. 11:47 PM.<br>NOTHING EVER HAPPENS HERE." },
+    { s: 0.16, e: 0.28, text: "...WHAT IS THAT LIGHT?" },
+    { s: 0.32, e: 0.46, text: "OH. OH NO." },
+    { s: 0.50, e: 0.63, text: "UH, I GUESS THIS IS HAPPENING" }
+  ];
+
+  let currentCaption = '';
+  let ticking = false;
+
+  function render() {
+    ticking = false;
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const p = max > 0 ? clamp(window.scrollY / max, 0, 1) : 0;
+
+    /* Title screen: fade + drift up (0 → 0.08) */
+    const tOut = phase(p, 0.0, 0.08);
+    el.title.style.opacity = 1 - tOut;
+    el.title.style.transform = `translateY(${-tOut * 12}vh)`;
+
+    /* Beam: descends from sky (0.14 → 0.26) */
+    const b = ease(phase(p, 0.14, 0.26));
+    el.beam.style.opacity = b * 0.95;
+    el.beam.style.transform = `translateX(-50%) scaleY(${b})`;
+    el.beamGlow.style.opacity = b;
+    /* painted rim light: cool moonlight at rest, warm gold once the beam hits */
+    el.person.style.filter = b < 0.02
+      ? 'drop-shadow(0 0 5px rgba(126,230,212,0.25))'
+      : `drop-shadow(0 0 ${5 + b * 13}px rgba(255,220,140,${0.2 + b * 0.55}))`;
+
+    /* UFO: drops into view (0.28 → 0.46) */
+    const u = ease(phase(p, 0.28, 0.46));
+    const ufoY = -120 + u * 122; /* % of its own height: parks near top */
+    el.ufo.style.transform = `translate(-50%, ${ufoY}%)`;
+
+    /* Person: gets yoinked (0.50 → 0.66) */
+    const lift = ease(phase(p, 0.50, 0.66));
+    const sway = Math.sin(lift * Math.PI * 3) * 8;
+    const rise = lift * 72; /* vh */
+    const shrink = 1 - lift * 0.45;
+    el.person.style.transform =
+      `translateX(-50%) translate(${sway}px, ${-rise}vh) rotate(${sway * 1.2}deg) scale(${shrink})`;
+    el.person.style.opacity = 1 - phase(p, 0.63, 0.665);
+
+    /* Flash (0.66 → 0.74) */
+    const f = phase(p, 0.66, 0.70) - phase(p, 0.70, 0.74);
+    el.flash.style.opacity = clamp(f, 0, 1);
+
+    /* Interior crossfade (0.70 → 0.76) */
+    const inn = phase(p, 0.70, 0.76);
+    el.interior.style.opacity = inn;
+    el.interior.classList.toggle('active', inn > 0.9);
+    el.exterior.style.opacity = 1 - inn;
+
+    /* HUD abduction meter */
+    const pct = Math.round(p * 100);
+    const filled = Math.round(p * 10);
+    el.hudBar.textContent = '▓'.repeat(filled) + '░'.repeat(10 - filled);
+    el.hudPct.textContent = pct + '%';
+    el.hudMeter.style.opacity = tOut > 0.5 ? 1 : 0;
+    el.hudMeter.style.color = inn > 0.5 ? 'var(--alien)' : 'var(--gold)';
+
+    /* Captions */
+    let text = '';
+    for (const c of captions) {
+      if (p >= c.s && p <= c.e) { text = c.text; break; }
+    }
+    if (text !== currentCaption) {
+      currentCaption = text;
+      if (text) {
+        el.caption.innerHTML = text;
+        el.caption.classList.add('show');
+      } else {
+        el.caption.classList.remove('show');
+      }
+    }
+  }
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) { ticking = true; requestAnimationFrame(render); }
+  }, { passive: true });
+  window.addEventListener('resize', render);
+  render();
+
+  /* ---------- Console readouts ---------- */
+  /* TODO Brandon: drop in real URLs for Kindred, Awesome Intervals, and Spotify */
+  const panels = {
+    specimen: {
+      title: '>> SPECIMEN FILE: B. HOULIHAN',
+      body: `
+        <p class="row">SUBJECT ........ BRANDON HOULIHAN</p>
+        <p class="row">ORIGIN ......... APEX, NORTH CAROLINA</p>
+        <p class="row">OCCUPATION ..... DESIGN DIRECTOR @ TEMPO</p>
+        <p class="row">CLASSIFICATION . PLAYER-COACH</p>
+        <hr class="divider">
+        <p><strong>ANALYSIS:</strong> Subject leads Design and Research teams across two product lines. Displays a rare dual capability — hands-on craft <em>and</em> organizational strategy — operating comfortably at both the pixel level and the business level.</p>
+        <p>Long-documented interest in emerging technology, predating Earth hype cycles. Standards: high. Feedback: generous. Recommend continued observation.</p>`
+    },
+    sidequests: {
+      title: '>> SIDE QUESTS DETECTED',
+      body: `
+        <p class="row">STATUS ......... ACTIVE, MULTIPLE</p>
+        <hr class="divider">
+        <p>◆ <a href="#" target="_blank" rel="noopener">KINDRED</a> — side project, under observation.</p>
+        <p>◆ <a href="#" target="_blank" rel="noopener">AWESOME INTERVALS</a> — side project, under observation.</p>
+        <hr class="divider">
+        <p><strong>NOTE:</strong> Subject appears physically incapable of not building things. This is consistent with the player-coach classification.</p>`
+    },
+    audio: {
+      title: '>> AUDIO INTERCEPTS',
+      body: `
+        <p class="row">SIGNAL TYPE .... ORIGINAL MUSIC</p>
+        <p class="row">FREQUENCY ...... EARTH SERVICE "SPOTIFY"</p>
+        <hr class="divider">
+        <p>Intercepted transmissions confirm the subject releases original music to Earth's streaming networks.</p>
+        <p>◆ <a href="#" target="_blank" rel="noopener">LISTEN ON SPOTIFY →</a></p>`
+    },
+    channel: {
+      title: '>> OPEN A CHANNEL',
+      body: `
+        <p class="row">STATUS ......... RECEIVING</p>
+        <hr class="divider">
+        <p>◆ EMAIL — <a href="mailto:brandonfhoulihan@gmail.com">brandonfhoulihan@gmail.com</a></p>
+        <p>◆ LINKEDIN — <a href="https://linkedin.com/in/brandonhoulihan" target="_blank" rel="noopener">/in/brandonhoulihan</a></p>
+        <hr class="divider">
+        <p><strong>NOTE:</strong> Response time: faster than light. Usually.</p>`
+    }
+  };
+
+  const backdrop = document.getElementById('readoutBackdrop');
+  const readoutTitle = document.getElementById('readoutTitle');
+  const readoutBody = document.getElementById('readoutBody');
+  let lastFocused = null;
+
+  function openPanel(key) {
+    const data = panels[key];
+    if (!data) return;
+    readoutTitle.textContent = data.title;
+    readoutBody.innerHTML = data.body;
+    backdrop.classList.add('open');
+    lastFocused = document.activeElement;
+    document.getElementById('readoutClose').focus();
+  }
+  function closePanel() {
+    backdrop.classList.remove('open');
+    if (lastFocused) lastFocused.focus();
+  }
+
+  document.querySelectorAll('.console').forEach(btn => {
+    btn.addEventListener('click', () => openPanel(btn.dataset.panel));
+  });
+  document.getElementById('readoutClose').addEventListener('click', closePanel);
+  backdrop.addEventListener('click', e => { if (e.target === backdrop) closePanel(); });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && backdrop.classList.contains('open')) closePanel();
+  });
+
+  /* ---------- Do-not-press button ---------- */
+  const bigRed = document.getElementById('bigRed');
+  const interiorEl = document.getElementById('interior');
+  const hintEl = document.querySelector('.interior-hint');
+  const hintDefault = hintEl.textContent;
+  let alarmTimer = null;
+  bigRed.addEventListener('click', () => {
+    interiorEl.classList.remove('alarm');
+    void interiorEl.offsetWidth; /* restart animation */
+    interiorEl.classList.add('alarm');
+    hintEl.textContent = 'PLEASE DO NOT PRESS THAT AGAIN.';
+    clearTimeout(alarmTimer);
+    alarmTimer = setTimeout(() => {
+      interiorEl.classList.remove('alarm');
+      hintEl.textContent = hintDefault;
+    }, 2600);
+  });
+})();
+</script>
 
 </body>
 </html>
