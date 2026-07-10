@@ -826,6 +826,13 @@
     animation: pulse 1.6s steps(2) infinite;
     pointer-events: none;
     white-space: nowrap;
+    transition: color 0.2s, font-size 0.2s;
+  }
+  .interior-hint.warn {
+    color: #ff8a7a;
+    font-size: clamp(9px, 1.3vw, 12px);
+    text-shadow: 0 0 10px rgba(255,90,74,0.6);
+    animation: pulse 0.7s steps(2) infinite;
   }
 
   /* ============ READOUT MODAL ============ */
@@ -911,13 +918,227 @@
   }
   .readout-close:hover, .readout-close:focus-visible { background: rgba(126,240,160,0.15); }
 
+  /* ============ CARGO HOLD ============ */
+  body.hold-unlocked { height: 850vh; }
+
+  .interior.gravity { animation: shake 0.4s linear 4; }
+  .interior.gravity .alarm-overlay {
+    background: rgba(150,90,255,0.22);
+    animation: alarmPulse 0.48s steps(2) 4;
+  }
+  .interior.gravity .dash-row { animation: gravRow 2s ease-in-out; }
+  @keyframes gravRow {
+    0%, 100% { transform: perspective(1100px) rotateX(5deg) translateY(0); }
+    30% { transform: perspective(1100px) rotateX(5deg) translateY(-16px) rotate(0.6deg); }
+    65% { transform: perspective(1100px) rotateX(5deg) translateY(-7px) rotate(-0.5deg); }
+  }
+  .interior.gravity .tube .glass svg { animation: gravFloat 2s ease-in-out; }
+  @keyframes gravFloat {
+    0%, 100% { top: 50%; }
+    40%, 70% { top: 24%; }
+  }
+
+  .hold {
+    position: absolute; inset: 0;
+    z-index: 26;
+    transform: translateY(102%);
+    background:
+      radial-gradient(ellipse 60% 40% at 50% 0%, rgba(150,110,235,0.10), transparent 65%),
+      radial-gradient(ellipse 70% 50% at 50% 115%, rgba(126,230,212,0.06), transparent 65%),
+      linear-gradient(to bottom, #0a1119 0%, #0e1a26 40%, #142230 100%);
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    will-change: transform;
+  }
+  .hold.active { pointer-events: auto; }
+  .hold-header { text-align: center; padding-top: clamp(1rem, 2.4vh, 2rem); }
+  .hold-header .sys {
+    font-family: var(--hud);
+    font-size: clamp(7px, 1vw, 10px);
+    color: #cdaaff;
+    letter-spacing: 0.2em;
+    margin-bottom: 0.7rem;
+    animation: pulse 2s steps(2) infinite;
+  }
+  .hold-header h2 {
+    font-family: var(--display);
+    font-size: clamp(1.3rem, 3.4vw, 2.4rem);
+    color: var(--white);
+    text-shadow: 0 4px 0 rgba(0,0,0,0.4);
+  }
+  .hold-header p:last-child {
+    font-family: var(--hud);
+    font-size: clamp(7px, 1vw, 10px);
+    color: var(--teal);
+    letter-spacing: 0.1em;
+    margin-top: 0.8rem;
+    opacity: 0.8;
+  }
+
+  .shelves {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(0.6rem, 1.6vw, 1.1rem);
+    width: min(1060px, 94vw);
+    margin: clamp(0.8rem, 2.2vh, 1.6rem) auto 0;
+  }
+  .alcove {
+    appearance: none; border: none; cursor: pointer; font-family: inherit;
+    position: relative;
+    background: linear-gradient(to bottom, #0b141e, #08101a 70%, #0d1826);
+    border: 3px solid #2a4258;
+    border-radius: 10px;
+    padding: clamp(0.5rem, 1.2vh, 0.9rem) 0.4rem calc(clamp(0.5rem, 1.2vh, 0.9rem) + 16px);
+    box-shadow: inset 0 0 24px rgba(0,0,0,0.75), inset 0 -8px 14px rgba(126,230,212,0.05), 0 4px 0 #060c14;
+    transition: transform 0.15s, box-shadow 0.15s;
+    overflow: hidden;
+  }
+  .alcove::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(115deg, transparent 32%, rgba(126,240,190,0.07) 46%, transparent 60%);
+    pointer-events: none;
+  }
+  .alcove:hover, .alcove:focus-visible {
+    transform: translateY(-4px);
+    box-shadow: inset 0 0 24px rgba(0,0,0,0.75), 0 8px 0 #060c14, 0 0 18px rgba(126,240,190,0.25);
+  }
+  .alcove:focus-visible { outline: 3px solid var(--alien); outline-offset: 2px; }
+  .alcove svg {
+    width: auto;
+    height: clamp(62px, 11vh, 100px);
+    max-width: 88%;
+    display: block;
+    margin: 0 auto;
+  }
+  .alcove .tag {
+    position: absolute; left: 0; right: 0; bottom: 7px;
+    font-family: var(--hud);
+    font-size: 6.5px;
+    letter-spacing: 0.1em;
+    color: var(--alien);
+    opacity: 0.85;
+    line-height: 1.6;
+  }
+  .alcove .floaty-item { animation: itemFloat 4s ease-in-out infinite; }
+  @keyframes itemFloat { 50% { transform: translateY(-3px); } }
+  .blink-red { animation: blinkLight 1.4s steps(2) infinite; }
+
+  /* the triangle's alcove */
+  .alcove.dark {
+    background: linear-gradient(to bottom, #05080e, #04070c 70%, #071018);
+    border-color: #3a2a4e;
+  }
+  .alcove.dark::before {
+    content: '';
+    position: absolute; left: 50%; top: 0;
+    transform: translateX(-50%);
+    width: 58%; height: 100%;
+    background: linear-gradient(to bottom, rgba(200,160,255,0.15), transparent 75%);
+    clip-path: polygon(38% 0, 62% 0, 100% 100%, 0 100%);
+    pointer-events: none;
+  }
+  .alcove.dark .tag { color: #cdaaff; }
+  .alcove.dark:hover, .alcove.dark:focus-visible {
+    box-shadow: inset 0 0 24px rgba(0,0,0,0.8), 0 8px 0 #060c14, 0 0 20px rgba(200,160,255,0.3);
+  }
+
+  .hold-terminal-row {
+    display: flex;
+    justify-content: center;
+    margin: clamp(0.9rem, 2.4vh, 1.8rem) auto clamp(0.4rem, 1.2vh, 0.8rem);
+  }
+  .terminal {
+    appearance: none; border: none; cursor: pointer; font-family: inherit;
+    background: linear-gradient(to bottom, #12202e, #0a121c);
+    border-radius: 12px;
+    padding: 10px 14px 12px;
+    width: min(560px, 88vw);
+    box-shadow: inset 0 2px 0 rgba(255,255,255,0.07), 0 5px 0 #050b12, 0 10px 20px rgba(0,0,0,0.45);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .terminal:hover, .terminal:focus-visible {
+    transform: translateY(-4px);
+    box-shadow: inset 0 2px 0 rgba(255,255,255,0.07), 0 9px 0 #050b12, 0 16px 26px rgba(0,0,0,0.5), 0 0 20px rgba(255,217,122,0.2);
+  }
+  .terminal:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+  .terminal .screen {
+    display: block;
+    background: radial-gradient(ellipse at 50% 30%, #3c2c10, #1d1406);
+    border: 2px solid #120c04;
+    border-radius: 8px;
+    padding: clamp(0.7rem, 1.6vh, 1rem) 0.6rem;
+    color: var(--gold);
+    text-shadow: 0 0 8px rgba(255,217,122,0.7);
+    box-shadow: inset 0 0 18px rgba(0,0,0,0.7), 0 0 14px rgba(255,217,122,0.12);
+    font-family: var(--hud);
+    font-size: clamp(7.5px, 1.1vw, 10px);
+    letter-spacing: 0.08em;
+    line-height: 2;
+    position: relative;
+    overflow: hidden;
+  }
+  .terminal .screen::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(to bottom, rgba(255,255,255,0.04) 0 1px, transparent 1px 3px);
+    pointer-events: none;
+  }
+  .terminal .screen .sub { display: block; opacity: 0.7; font-size: 0.82em; }
+
+  .hold-hint {
+    text-align: center;
+    margin: auto auto clamp(0.8rem, 2vh, 1.4rem);
+    font-family: var(--hud);
+    font-size: 7.5px;
+    letter-spacing: 0.12em;
+    color: rgba(242,244,255,0.55);
+    animation: pulse 1.6s steps(2) infinite;
+    pointer-events: none;
+  }
+
+  /* Classified archive readouts */
+  .file-row {
+    display: block; width: 100%; text-align: left;
+    appearance: none; cursor: pointer;
+    background: rgba(126,240,160,0.06);
+    border: 1px solid rgba(126,240,160,0.35);
+    border-radius: 6px;
+    color: var(--alien);
+    font-family: var(--hud);
+    font-size: clamp(7.5px, 1.1vw, 9.5px);
+    letter-spacing: 0.05em;
+    line-height: 1.9;
+    padding: 9px 11px;
+    margin-bottom: 8px;
+  }
+  .file-row:hover, .file-row:focus-visible { background: rgba(126,240,160,0.14); }
+  .file-row .stamp { float: right; color: #ff8a7a; opacity: 0.9; }
+  .file-row.back { width: auto; display: inline-block; margin-bottom: 12px; }
+  .file-row.lvl5 { border-color: var(--gold); color: var(--gold); }
+  .file-row.lvl5:hover, .file-row.lvl5:focus-visible { background: rgba(255,217,122,0.12); }
+  .redact {
+    background: #040704;
+    color: transparent;
+    padding: 0 4px;
+    border-radius: 2px;
+    cursor: help;
+    transition: color 0.15s, background 0.15s;
+    user-select: none;
+  }
+  .redact:hover { color: #7ef0a0; background: rgba(4,7,4,0.35); }
+
   /* ============ ACCESSIBILITY / MOBILE ============ */
   @media (prefers-reduced-motion: reduce) {
     .star, .shooting-star, .firefly, .ufo-light, .ufo-bob,
     .tube .glass svg, .tube .bubble, .press-start,
     .console .lights i, .interior-hint, .interior-header .sys,
     .gauge::after, .interior.alarm, .interior.alarm .alarm-overlay,
-    .god-rays, .mote, .w-shoot {
+    .god-rays, .mote, .w-shoot,
+    .interior.gravity, .interior.gravity .dash-row, .interior.gravity .tube .glass svg,
+    .alcove .floaty-item, .blink-red, .hold-hint, .hold-header .sys {
       animation: none !important;
     }
   }
@@ -927,6 +1148,7 @@
     .console { width: 44%; }
     .tube { width: clamp(84px, 20vw, 130px); bottom: clamp(15rem, 30vh, 20rem); }
     .dome-earth { width: 88vw; right: -18%; }
+    .shelves { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
   @media (max-width: 640px) {
     .beam { width: 78vw; }
@@ -1068,7 +1290,7 @@
   </div>
 
   <!-- HUD -->
-  <div class="hud-meter" id="hudMeter">ABDUCTION <span class="bar" id="hudBar">░░░░░░░░░░</span> <span id="hudPct">0%</span></div>
+  <div class="hud-meter" id="hudMeter"><span id="hudLabel">ABDUCTION</span> <span class="bar" id="hudBar">░░░░░░░░░░</span> <span id="hudPct">0%</span></div>
   <p class="caption" id="caption"></p>
 
   <!-- Vignette -->
@@ -1194,6 +1416,203 @@
     </div>
   </div>
 
+  <!-- Cargo hold (secret area) -->
+  <div class="hold" id="hold">
+    <div class="hold-header">
+      <p class="sys">◉ THE COLLECTION</p>
+      <h2>CARGO HOLD</h2>
+      <p>ITEMS RECOVERED FROM EARTH: 12</p>
+    </div>
+
+    <div class="shelves">
+      <button class="alcove" data-panel="itemCow">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <ellipse cx="50" cy="90" rx="26" ry="4" fill="rgba(126,240,190,0.15)"/>
+          <g class="floaty-item">
+            <ellipse cx="54" cy="50" rx="23" ry="14" fill="#f2efe8"/>
+            <ellipse cx="48" cy="46" rx="7" ry="5" fill="#2b2b33"/>
+            <ellipse cx="63" cy="55" rx="6" ry="4" fill="#2b2b33"/>
+            <rect x="42" y="61" width="4" height="11" rx="2" fill="#e8e4da"/>
+            <rect x="50" y="62" width="4" height="11" rx="2" fill="#e8e4da"/>
+            <rect x="60" y="61" width="4" height="11" rx="2" fill="#e8e4da"/>
+            <ellipse cx="30" cy="42" rx="9" ry="8" fill="#f2efe8"/>
+            <ellipse cx="27" cy="46" rx="6" ry="4" fill="#e8b8c8"/>
+            <circle cx="29" cy="40" r="1.5" fill="#1a1a1a"/>
+            <ellipse cx="36" cy="35" rx="3.5" ry="2" fill="#e8e4da"/>
+          </g>
+        </svg>
+        <span class="tag">ITEM 001 · BOVINE</span>
+      </button>
+
+      <button class="alcove" data-panel="itemDebris">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <polygon points="22,68 38,50 46,64 30,74" fill="#8fa2b8"/>
+          <polygon points="52,72 60,48 74,58 66,76" fill="#7288a0"/>
+          <polygon points="38,82 48,72 58,82 46,88" fill="#5f7690"/>
+          <rect x="58" y="28" width="24" height="13" rx="2" fill="#e8e0c8" transform="rotate(6 70 34)"/>
+          <line x1="62" y1="33" x2="78" y2="35" stroke="#8a6c3e" stroke-width="1.6"/>
+          <line x1="62" y1="37" x2="74" y2="38.5" stroke="#8a6c3e" stroke-width="1.6"/>
+          <line x1="58" y1="30" x2="50" y2="48" stroke="#c9a96e" stroke-width="1.2"/>
+        </svg>
+        <span class="tag">ITEM 002 · DEBRIS '47</span>
+      </button>
+
+      <button class="alcove" data-panel="itemMap">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <g transform="rotate(-3 50 50)">
+            <rect x="22" y="20" width="56" height="62" rx="3" fill="#1b2a3c" stroke="#c9a96e" stroke-width="3"/>
+            <circle cx="38" cy="36" r="3" fill="#fff"/>
+            <circle cx="58" cy="42" r="2.2" fill="#fff"/>
+            <circle cx="66" cy="60" r="2.6" fill="#fff"/>
+            <circle cx="44" cy="56" r="1.8" fill="#fff"/>
+            <circle cx="34" cy="68" r="2" fill="#fff"/>
+            <circle cx="54" cy="70" r="1.5" fill="#fff"/>
+            <line x1="38" y1="36" x2="58" y2="42" stroke="rgba(255,255,255,0.55)" stroke-width="1.2"/>
+            <line x1="58" y1="42" x2="66" y2="60" stroke="rgba(255,255,255,0.55)" stroke-width="1.2"/>
+            <line x1="58" y1="42" x2="44" y2="56" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" stroke-dasharray="3 2"/>
+            <line x1="44" y1="56" x2="34" y2="68" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" stroke-dasharray="3 2"/>
+          </g>
+        </svg>
+        <span class="tag">ITEM 003 · STAR MAP</span>
+      </button>
+
+      <button class="alcove" data-panel="itemTicTac">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="24" y="24" width="52" height="56" rx="6" fill="rgba(160,220,255,0.10)" stroke="#7ee6d4" stroke-width="2"/>
+          <rect x="38" y="32" width="24" height="40" rx="12" fill="#f4f6f8"/>
+          <rect x="42" y="36" width="6" height="18" rx="3" fill="#ffffff"/>
+          <rect x="28" y="80" width="44" height="6" rx="2" fill="#2a4258"/>
+        </svg>
+        <span class="tag">ITEM 004 · "TIC TAC"</span>
+      </button>
+
+      <button class="alcove" data-panel="itemE115">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="32" y="26" width="36" height="10" rx="4" fill="#37536e"/>
+          <rect x="34" y="34" width="32" height="42" rx="8" fill="rgba(150,110,235,0.22)" stroke="#9a7ad8" stroke-width="2.5"/>
+          <ellipse cx="50" cy="60" rx="11" ry="10" fill="#b48aff"/>
+          <ellipse cx="50" cy="58" rx="5.5" ry="5" fill="#e8d2ff"/>
+          <line x1="40" y1="44" x2="46" y2="41" stroke="rgba(232,210,255,0.6)" stroke-width="1.6"/>
+          <rect x="40" y="80" width="20" height="7" rx="2" fill="#e8e0c8"/>
+          <line x1="44" y1="83.5" x2="56" y2="83.5" stroke="#8a6c3e" stroke-width="1.6"/>
+        </svg>
+        <span class="tag">ITEM 005 · ELEMENT 115</span>
+      </button>
+
+      <button class="alcove" data-panel="itemVHS">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="20" y="34" width="60" height="36" rx="3" fill="#15181d" stroke="#2b3038" stroke-width="2"/>
+          <circle cx="37" cy="55" r="6.5" fill="#0a0c10" stroke="#4a525e" stroke-width="2"/>
+          <circle cx="63" cy="55" r="6.5" fill="#0a0c10" stroke="#4a525e" stroke-width="2"/>
+          <rect x="43.5" y="52" width="13" height="6" fill="#0a0c10"/>
+          <rect x="26" y="38" width="48" height="8" rx="1.5" fill="#e8e0c8"/>
+          <line x1="30" y1="42" x2="52" y2="42" stroke="#b0392e" stroke-width="2"/>
+          <line x1="56" y1="42" x2="68" y2="42" stroke="#8a6c3e" stroke-width="2"/>
+        </svg>
+        <span class="tag">ITEM 006 · AUTOPSY VHS</span>
+      </button>
+
+      <button class="alcove" data-panel="itemFlyer">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <g transform="rotate(3 50 50)">
+            <rect x="28" y="22" width="44" height="60" rx="2" fill="#e8e4da"/>
+            <rect x="34" y="30" width="32" height="7" rx="1" fill="#b0392e"/>
+            <rect x="34" y="41" width="32" height="4" rx="1" fill="#5a5a62"/>
+            <rect x="34" y="48" width="26" height="4" rx="1" fill="#5a5a62"/>
+            <circle cx="50" cy="64" r="8" fill="#6fcf7f"/>
+            <ellipse cx="47" cy="63" rx="2" ry="3" fill="#0a1f12"/>
+            <ellipse cx="53" cy="63" rx="2" ry="3" fill="#0a1f12"/>
+            <rect x="34" y="75" width="32" height="3" rx="1" fill="#8a8a92"/>
+          </g>
+          <circle cx="50" cy="20" r="3.5" fill="#ff5a4a"/>
+        </svg>
+        <span class="tag">ITEM 007 · AREA 51 FLYER</span>
+      </button>
+
+      <button class="alcove" data-panel="itemVoyager">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="50" cy="51" r="27" fill="#d4a63f"/>
+          <circle cx="50" cy="51" r="22" fill="none" stroke="#b8892e" stroke-width="1.4" opacity="0.7"/>
+          <circle cx="50" cy="51" r="17" fill="none" stroke="#b8892e" stroke-width="1.4" opacity="0.55"/>
+          <circle cx="50" cy="51" r="12" fill="none" stroke="#b8892e" stroke-width="1.4" opacity="0.4"/>
+          <circle cx="50" cy="51" r="7" fill="#efd08a"/>
+          <line x1="50" y1="51" x2="66" y2="40" stroke="#8a6c3e" stroke-width="1.2"/>
+          <line x1="50" y1="51" x2="60" y2="66" stroke="#8a6c3e" stroke-width="1.2"/>
+          <line x1="50" y1="51" x2="35" y2="38" stroke="#8a6c3e" stroke-width="1.2"/>
+          <circle cx="50" cy="51" r="1.8" fill="#8a6c3e"/>
+        </svg>
+        <span class="tag">ITEM 008 · GOLDEN RECORD</span>
+      </button>
+
+      <button class="alcove" data-panel="itemWatch">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M34,18 q-10,10 2,18" stroke="#c9a96e" fill="none" stroke-width="2.5"/>
+          <rect x="45" y="18" width="10" height="7" rx="2.5" fill="#c9a96e"/>
+          <circle cx="50" cy="54" r="25" fill="#efe6cc" stroke="#c9a96e" stroke-width="4"/>
+          <line x1="50" y1="33" x2="50" y2="37" stroke="#8a6c3e" stroke-width="2"/>
+          <line x1="50" y1="71" x2="50" y2="75" stroke="#8a6c3e" stroke-width="2"/>
+          <line x1="29" y1="54" x2="33" y2="54" stroke="#8a6c3e" stroke-width="2"/>
+          <line x1="67" y1="54" x2="71" y2="54" stroke="#8a6c3e" stroke-width="2"/>
+          <line x1="50" y1="54" x2="34.5" y2="50.8" stroke="#3b2f1a" stroke-width="2.4" stroke-linecap="round"/>
+          <line x1="50" y1="54" x2="48.6" y2="43.5" stroke="#3b2f1a" stroke-width="3.2" stroke-linecap="round"/>
+          <circle cx="50" cy="54" r="2" fill="#3b2f1a"/>
+        </svg>
+        <span class="tag">ITEM 009 · 11:47 PM</span>
+      </button>
+
+      <button class="alcove" data-panel="itemGlocke">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <line x1="28" y1="14" x2="42" y2="30" stroke="#55606e" stroke-width="2.5" stroke-dasharray="4 3"/>
+          <line x1="72" y1="14" x2="58" y2="30" stroke="#55606e" stroke-width="2.5" stroke-dasharray="4 3"/>
+          <path d="M50,26 q-19,4 -21,30 q-1,13 6,17 h30 q7,-4 6,-17 q-2,-26 -21,-30 z" fill="#3a4450" stroke="#242c36" stroke-width="2"/>
+          <line x1="31" y1="48" x2="69" y2="48" stroke="#242c36" stroke-width="2"/>
+          <line x1="30" y1="60" x2="70" y2="60" stroke="#242c36" stroke-width="2"/>
+          <path d="M40,54 l3,-3 M48,54 l3,-3 M56,54 l3,-3" stroke="#8a5ce0" stroke-width="1.8"/>
+          <path d="M62,73 q2,6 0,10" stroke="#8a5ce0" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <ellipse cx="50" cy="86" rx="17" ry="4" fill="#8a5ce0" opacity="0.75"/>
+        </svg>
+        <span class="tag">ITEM 010 · DIE GLOCKE</span>
+      </button>
+
+      <button class="alcove dark" data-panel="itemTriangle">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="40" y="68" width="20" height="8" fill="#1d1830"/>
+          <rect x="32" y="76" width="36" height="8" rx="2" fill="#2a2138"/>
+          <polygon points="50,24 75,64 25,64" fill="#0b0b12" stroke="#241d33" stroke-width="2"/>
+          <circle cx="50" cy="31" r="2" fill="#55556a"/>
+          <circle cx="30" cy="60" r="2" fill="#55556a"/>
+          <circle cx="70" cy="60" r="2" fill="#55556a"/>
+          <circle class="blink-red" cx="50" cy="51" r="3.2" fill="#ff3b30"/>
+        </svg>
+        <span class="tag">ITEM 011 · [REDACTED]</span>
+      </button>
+
+      <button class="alcove" data-panel="itemHighjump">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <polygon points="30,38 62,30 76,50 70,80 36,84 22,58" fill="rgba(160,220,255,0.32)" stroke="#bfe6ff" stroke-width="2"/>
+          <line x1="30" y1="38" x2="46" y2="56" stroke="rgba(191,230,255,0.5)" stroke-width="1.4"/>
+          <line x1="62" y1="30" x2="58" y2="48" stroke="rgba(191,230,255,0.5)" stroke-width="1.4"/>
+          <rect x="45" y="50" width="13" height="20" rx="1.5" fill="#37536e" stroke="#22364a" stroke-width="1.6"/>
+          <circle cx="55" cy="60" r="1.4" fill="#c9a96e"/>
+          <circle cx="23" cy="88" r="5" fill="none" stroke="#3b3f4a" stroke-width="2.5"/>
+          <circle cx="35" cy="88" r="5" fill="none" stroke="#3b3f4a" stroke-width="2.5"/>
+          <line x1="28" y1="88" x2="30" y2="88" stroke="#3b3f4a" stroke-width="2.5"/>
+        </svg>
+        <span class="tag">ITEM 012 · HIGHJUMP '47</span>
+      </button>
+    </div>
+
+    <div class="hold-terminal-row">
+      <button class="terminal" data-panel="archive">
+        <span class="screen">⚠ RESTRICTED — ARCHIVE ACCESS
+          <span class="sub">CLASSIFIED DOCUMENTS: 5 · CLEARANCE REQUIRED: NONE, APPARENTLY</span>
+        </span>
+      </button>
+    </div>
+
+    <p class="hold-hint">▲ RETURN TO MAIN DECK</p>
+  </div>
+
   <!-- Readout modal -->
   <div class="readout-backdrop" id="readoutBackdrop">
     <div class="readout" role="dialog" aria-modal="true" aria-labelledby="readoutTitle">
@@ -1274,12 +1693,16 @@
     person: document.getElementById('person'),
     flash: document.getElementById('flash'),
     interior: document.getElementById('interior'),
+    hold: document.getElementById('hold'),
     caption: document.getElementById('caption'),
+    hudLabel: document.getElementById('hudLabel'),
     hudBar: document.getElementById('hudBar'),
     hudPct: document.getElementById('hudPct'),
     hudMeter: document.getElementById('hudMeter'),
     exterior: exterior
   };
+
+  let holdUnlocked = false;
 
   const captions = [
     { s: 0.05, e: 0.16, text: "A QUIET FIELD. 11:47 PM.<br>NOTHING EVER HAPPENS HERE." },
@@ -1293,8 +1716,15 @@
 
   function render() {
     ticking = false;
-    const max = document.documentElement.scrollHeight - window.innerHeight;
-    const p = max > 0 ? clamp(window.scrollY / max, 0, 1) : 0;
+    const vh = window.innerHeight;
+    /* main timeline is anchored to the original 600vh runway (500vh scrollable),
+       so unlocking the hold never shifts the existing scenes */
+    const mainMax = vh * 5;
+    const y = window.scrollY;
+    const p = clamp(y / mainMax, 0, 1);
+    /* descent into the hold: the extra 250vh unlocked by the button */
+    const d = holdUnlocked ? clamp((y - mainMax) / (vh * 2.5), 0, 1) : 0;
+    const dE = ease(d);
 
     /* Title screen: fade + drift up (0 → 0.10) */
     const tOut = phase(p, 0.0, 0.10);
@@ -1341,16 +1771,23 @@
     /* Interior crossfade (0.89 → 0.96) */
     const inn = phase(p, 0.89, 0.96);
     el.interior.style.opacity = inn;
-    el.interior.classList.toggle('active', inn > 0.9);
+    el.interior.classList.toggle('active', inn > 0.9 && d < 0.05);
     el.exterior.style.opacity = 1 - inn;
 
-    /* HUD abduction meter */
-    const pct = Math.round(p * 100);
-    const filled = Math.round(p * 10);
+    /* Descent: main deck slides up, cargo hold rises from below */
+    el.interior.style.transform = `translateY(${-dE * 100}%)`;
+    el.hold.style.transform = `translateY(${(1 - dE) * 102}%)`;
+    el.hold.classList.toggle('active', d > 0.9);
+
+    /* HUD meter: abduction on the way up, clearance on the way down */
+    const meterVal = d > 0.001 ? d : p;
+    const pct = Math.round(meterVal * 100);
+    const filled = Math.round(meterVal * 10);
+    el.hudLabel.textContent = d > 0.001 ? 'CLEARANCE' : 'ABDUCTION';
     el.hudBar.textContent = '▓'.repeat(filled) + '░'.repeat(10 - filled);
     el.hudPct.textContent = pct + '%';
     el.hudMeter.style.opacity = tOut > 0.5 ? 1 : 0;
-    el.hudMeter.style.color = inn > 0.5 ? 'var(--alien)' : 'var(--gold)';
+    el.hudMeter.style.color = (inn > 0.5 || d > 0.001) ? 'var(--alien)' : 'var(--gold)';
 
     /* Captions */
     let text = '';
@@ -1416,6 +1853,180 @@
         <p>◆ LINKEDIN — <a href="https://linkedin.com/in/brandonhoulihan" target="_blank" rel="noopener">/in/brandonhoulihan</a></p>
         <hr class="divider">
         <p><strong>NOTE:</strong> Response time: faster than light. Usually.</p>`
+    },
+    /* ---- cargo hold collection ---- */
+    itemCow: {
+      title: '>> ITEM 001 — BOVINE SPECIMEN',
+      body: `
+        <p class="row">ACQUIRED ....... NEBRASKA, 1974</p>
+        <p class="row">STATUS ......... UNBOTHERED</p>
+        <hr class="divider">
+        <p>Subject remains unbothered. We have questions too.</p>`
+    },
+    itemDebris: {
+      title: '>> ITEM 002 — SAUCER DEBRIS',
+      body: `
+        <p class="row">RECOVERED ...... ROSWELL, NM — 1947</p>
+        <p class="row">MATERIAL ....... OURS, EMBARRASSINGLY</p>
+        <hr class="divider">
+        <p>It does not bend. It does not burn. It does hold fridge magnets.</p>`
+    },
+    itemMap: {
+      title: '>> ITEM 003 — THE HILL STAR MAP',
+      body: `
+        <p class="row">SOURCE ......... BETTY HILL, 1961</p>
+        <p class="row">SUBJECT ........ ZETA RETICULI ROUTES</p>
+        <p class="row">ACCURACY ....... CONFIRMED</p>
+        <hr class="divider">
+        <p>She drew it from memory after a single visit. She got it right.</p>
+        <p><strong>NOTE:</strong> we have since updated our security procedures.</p>`
+    },
+    itemTicTac: {
+      title: '>> ITEM 004 — "TIC TAC"',
+      body: `
+        <p class="row">CONTEXT ........ USS NIMITZ, 2004</p>
+        <p class="row">ENCOUNTER ...... CONFIRMED. ONE OF OURS.</p>
+        <p class="row">CONTENTS ....... ONE (1) BREATH MINT</p>
+        <hr class="divider">
+        <p>The pilots' description was accurate.</p>
+        <p><strong>NOTE:</strong> Engineering keeps this mint on the shelf as a reminder to consider silhouettes earlier in the design process.</p>`
+    },
+    itemE115: {
+      title: '>> ITEM 005 — ELEMENT 115',
+      body: `
+        <p class="row">SOURCE ......... S4 FACILITY</p>
+        <p class="row">STATE .......... GLOWING. ALWAYS GLOWING.</p>
+        <hr class="divider">
+        <p>Lazar described the fuel correctly. This remains a problem.</p>
+        <p><strong>WARNING:</strong> do not shake. Seriously. Not like the red button — this one matters.</p>`
+    },
+    itemVHS: {
+      title: '>> ITEM 006 — ALIEN AUTOPSY VHS',
+      body: `
+        <p class="row">RELEASED ....... EARTH TELEVISION, 1995</p>
+        <p class="row">PRODUCED BY .... HUMANS</p>
+        <p class="row">PURPOSE ........ MAKE THE REAL THING LOOK RIDICULOUS</p>
+        <hr class="divider">
+        <p>It worked. We archive it as an example of Earth's most effective disinformation.</p>
+        <p><strong>NOTE:</strong> he looks nothing like Steve.</p>`
+    },
+    itemFlyer: {
+      title: '>> ITEM 007 — "STORM AREA 51" FLYER',
+      body: `
+        <p class="row">EVENT .......... SEPTEMBER 20, 2019</p>
+        <p class="row">EXPECTED ....... 2,000,000</p>
+        <p class="row">ATTENDED ....... 3</p>
+        <hr class="divider">
+        <p>We were ready for two million. Still hurts.</p>`
+    },
+    itemVoyager: {
+      title: '>> ITEM 008 — VOYAGER GOLDEN RECORD',
+      body: `
+        <p class="row">LAUNCHED ....... 1977, EARNESTLY</p>
+        <p class="row">FORMAT ......... ANALOG. RESPECT.</p>
+        <hr class="divider">
+        <p>Track 7 slaps. We are sending a reply.</p>`
+    },
+    itemWatch: {
+      title: '>> ITEM 009 — POCKET WATCH, STOPPED',
+      body: `
+        <p class="row">TIME READS ..... 11:47 PM</p>
+        <p class="row">PHENOMENON ..... "MISSING TIME"</p>
+        <hr class="divider">
+        <p>Time is not missing. It's in this drawer.</p>`
+    },
+    itemGlocke: {
+      title: '>> ITEM 010 — DIE GLOCKE',
+      body: `
+        <p class="row">RECOVERED ...... SILESIA, 1945</p>
+        <p class="row">LEAKING ........ XERUM 525 (VIOLET)</p>
+        <hr class="divider">
+        <p>The humans got uncomfortably close to antigravity. We took it back.</p>
+        <p><strong>WARNING:</strong> do not touch the violet goo.</p>`
+    },
+    itemTriangle: {
+      title: '>> ITEM 011 — [DESIGNATION WITHHELD]',
+      body: `
+        <p class="row">SHAPE .......... TRIANGLE. BLACK.</p>
+        <p class="row">ORIGIN ......... NOT US</p>
+        <p class="row">CONTAINMENT .... POINTS BOTH WAYS</p>
+        <hr class="divider">
+        <p>Our competitor's model. We keep it for benchmarking.</p>
+        <p><strong>NOTE:</strong> if it is facing you, it was already facing you.</p>`
+    },
+    itemHighjump: {
+      title: '>> ITEM 012 — HIGHJUMP ICE CORE',
+      body: `
+        <p class="row">EXPEDITION ..... OPERATION HIGHJUMP, 1946–47</p>
+        <p class="row">CONTENTS ....... ONE (1) SEALED ENTRANCE</p>
+        <hr class="divider">
+        <p>The Admiral got too close in '47. The entrance remains sealed.</p>
+        <p><strong>NOTE:</strong> the penguins signed NDAs.</p>`
+    },
+    /* ---- classified terminal ---- */
+    archive: {
+      title: '>> CLASSIFIED ARCHIVE — FILE INDEX',
+      body: `
+        <p style="margin-bottom:0.9rem">Five files recovered from Earth intelligence services. Hover the black bars.</p>
+        <button class="file-row" data-doc="l1">LEVEL 1 — INCIDENT REPORT: ROSWELL <span class="stamp">DECLASSIFIED-ISH</span></button>
+        <button class="file-row" data-doc="l2">LEVEL 2 — RECOVERY MEMO: DIE GLOCKE <span class="stamp">SEALED</span></button>
+        <button class="file-row" data-doc="l3">LEVEL 3 — AFTER-ACTION: OPERATION HIGHJUMP <span class="stamp">FROZEN</span></button>
+        <button class="file-row" data-doc="l4">LEVEL 4 — INTERNAL COMPLAINT: "TIC TAC" <span class="stamp">HR REVIEWED</span></button>
+        <button class="file-row lvl5" data-doc="l5">LEVEL 5 — EYES ONLY: WHAT THE HUMANS ACTUALLY KNOW <span class="stamp">REAL</span></button>`
+    }
+  };
+
+  /* Classified documents (levels 1-4 parody, level 5 factual) */
+  const docs = {
+    l1: {
+      title: '>> LEVEL 1 — INCIDENT REPORT: ROSWELL, NM — JULY 1947',
+      body: `
+        <p>Craft recovered by <span class="redact">a rancher, then basically everyone</span>.</p>
+        <p>Cause of crash: pilot was <span class="redact">reading the star map upside down</span> during a <span class="redact">routine cattle survey</span>.</p>
+        <p>Cover story issued by the humans: "weather balloon." Resources spent maintaining it: <span class="redact">more than the craft cost</span>.</p>
+        <hr class="divider">
+        <p><strong>RECOMMENDATION:</strong> never let <span class="redact">Gleep</span> fly again.</p>`
+    },
+    l2: {
+      title: '>> LEVEL 2 — RECOVERY MEMO: SILESIA, 1945',
+      body: `
+        <p class="row">DEVICE ......... BELL-SHAPED</p>
+        <p class="row">CONTENTS ....... XERUM 525 (VIOLET, UNCOOPERATIVE)</p>
+        <hr class="divider">
+        <p>The humans achieved <span class="redact">73%</span> of antigravity by <span class="redact">complete accident</span>. Device reclaimed.</p>
+        <p>General Kammler's whereabouts: <span class="redact">he is fine and runs a bakery now</span>.</p>
+        <hr class="divider">
+        <p><strong>NOTE:</strong> the goo stains. Nothing removes it. NOTHING.</p>`
+    },
+    l3: {
+      title: '>> LEVEL 3 — AFTER-ACTION: OPERATION HIGHJUMP, 1947',
+      body: `
+        <p>Admiral Byrd deployed 13 ships and roughly 4,700 men to "map the coastline." Sure.</p>
+        <p>Expedition concluded <span class="redact">months ahead of schedule</span> after encountering <span class="redact">the front door</span>.</p>
+        <hr class="divider">
+        <p>Entrance re-sealed. Witness statements handled per protocol: <span class="redact">the penguins signed NDAs</span>.</p>`
+    },
+    l4: {
+      title: '>> LEVEL 4 — INTERNAL COMPLAINT: DESIGNATION "TIC TAC", 2004',
+      body: `
+        <p>The USS Nimitz pilots compared our <span class="redact">flagship reconnaissance craft</span> to a breath mint.</p>
+        <p>Engineering morale: <span class="redact">devastated</span>. Legal has advised we cannot sue <span class="redact">an entire navy</span>.</p>
+        <hr class="divider">
+        <p><strong>RESOLUTION:</strong> design review scheduled. The resemblance is <span class="redact">honestly fair</span>.</p>`
+    },
+    l5: {
+      title: '>> LEVEL 5 — EYES ONLY: WHAT THE HUMANS ACTUALLY KNOW',
+      body: `
+        <p><strong>NOTICE:</strong> everything below is real, declassified Earth history. Verify it yourself.</p>
+        <hr class="divider">
+        <p><strong>1947–1969 — PROJECT SIGN → GRUDGE → BLUE BOOK.</strong> The US Air Force logged 12,618 UFO sightings over 22 years; 701 were never explained. Astronomer J. Allen Hynek served as its scientific consultant.</p>
+        <p><strong>1953 & 1969 — ROBERTSON PANEL / CONDON REPORT.</strong> Two studies steered the government toward publicly downplaying the subject; the Condon Report's conclusions led to Blue Book closing on December 17, 1969.</p>
+        <p><strong>2007–2012 — AATIP.</strong> A secret $22M Pentagon program quietly studied military UAP encounters. The New York Times revealed its existence on December 16, 2017.</p>
+        <p><strong>APRIL 2020.</strong> The Pentagon officially released the FLIR1, GIMBAL, and GOFAST Navy videos, confirming them as genuine and unexplained.</p>
+        <p><strong>JUNE 25, 2021 — ODNI PRELIMINARY ASSESSMENT.</strong> Of 144 military UAP reports reviewed from 2004–2021, only one was explained.</p>
+        <p><strong>2022–2023 — AARO & THE HEARINGS.</strong> The Pentagon established a permanent UAP office (AARO, July 15, 2022), and July 2023 congressional hearings put whistleblower testimony under oath.</p>
+        <hr class="divider">
+        <p><strong>ASSESSMENT:</strong> they are closer than they think.</p>`
     }
   };
 
@@ -1438,8 +2049,20 @@
     if (lastFocused) lastFocused.focus();
   }
 
-  document.querySelectorAll('.console').forEach(btn => {
+  document.querySelectorAll('.console, .alcove, .terminal').forEach(btn => {
     btn.addEventListener('click', () => openPanel(btn.dataset.panel));
+  });
+  /* archive file navigation inside the readout */
+  readoutBody.addEventListener('click', e => {
+    const t = e.target.closest('[data-doc]');
+    if (!t) return;
+    const key = t.dataset.doc;
+    if (key === 'archive') { openPanel('archive'); return; }
+    const doc = docs[key];
+    if (!doc) return;
+    readoutTitle.textContent = doc.title;
+    readoutBody.innerHTML =
+      `<button class="file-row back" data-doc="archive">◀ BACK TO ARCHIVE</button>` + doc.body;
   });
   document.getElementById('readoutClose').addEventListener('click', closePanel);
   backdrop.addEventListener('click', e => { if (e.target === backdrop) closePanel(); });
@@ -1451,18 +2074,56 @@
   const bigRed = document.getElementById('bigRed');
   const interiorEl = document.getElementById('interior');
   const hintEl = document.querySelector('.interior-hint');
-  const hintDefault = hintEl.textContent;
+  let hintDefault = hintEl.textContent;
   let alarmTimer = null;
-  bigRed.addEventListener('click', () => {
+  let redPresses = 0;
+
+  function alarmGag(message) {
     interiorEl.classList.remove('alarm');
     void interiorEl.offsetWidth; /* restart animation */
     interiorEl.classList.add('alarm');
-    hintEl.textContent = 'PLEASE DO NOT PRESS THAT AGAIN.';
+    hintEl.textContent = message;
+    hintEl.classList.add('warn');
     clearTimeout(alarmTimer);
     alarmTimer = setTimeout(() => {
       interiorEl.classList.remove('alarm');
+      hintEl.classList.remove('warn');
       hintEl.textContent = hintDefault;
-    }, 2600);
+    }, 6000);
+  }
+
+  bigRed.addEventListener('click', () => {
+    redPresses++;
+    if (redPresses === 1) {
+      alarmGag('⚠ WHATEVER YOU DO — DO NOT PRESS IT AGAIN ⚠');
+      return;
+    }
+    if (holdUnlocked) {
+      alarmGag('THE DAMAGE IS DONE.');
+      return;
+    }
+    /* second press: gravity fails, hold unseals, ship pulls you down */
+    clearTimeout(alarmTimer);
+    interiorEl.classList.remove('alarm');
+    hintEl.classList.remove('warn');
+    interiorEl.classList.add('gravity');
+    hintEl.textContent = '⚠ GRAVITY ANOMALY DETECTED ⚠';
+    setTimeout(() => {
+      interiorEl.classList.remove('gravity');
+      holdUnlocked = true;
+      document.body.classList.add('hold-unlocked');
+      hintDefault = '▼ CARGO HOLD UNSEALED ▼';
+      hintEl.textContent = hintDefault;
+      const redLabel = bigRed.nextElementSibling;
+      if (redLabel) redLabel.textContent = 'WHAT DID YOU DO';
+      render();
+      /* the ship drags you down into the hold */
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.scrollTo({
+        top: document.documentElement.scrollHeight,
+        behavior: reduced ? 'auto' : 'smooth'
+      });
+    }, 1400);
   });
 })();
 </script>
