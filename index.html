@@ -35,7 +35,7 @@
 
   html { scroll-behavior: auto; }
   body {
-    height: 760vh; /* scroll runway */
+    height: 600vh; /* scroll runway */
     background: var(--sky-top);
     font-family: var(--body);
     color: var(--white);
@@ -1251,10 +1251,10 @@
   };
 
   const captions = [
-    { s: 0.04, e: 0.13, text: "A QUIET FIELD. 11:47 PM.<br>NOTHING EVER HAPPENS HERE." },
-    { s: 0.16, e: 0.28, text: "...WHAT IS THAT LIGHT?" },
-    { s: 0.32, e: 0.46, text: "OH. OH NO." },
-    { s: 0.50, e: 0.63, text: "UH, I GUESS THIS IS HAPPENING" }
+    { s: 0.05, e: 0.16, text: "A QUIET FIELD. 11:47 PM.<br>NOTHING EVER HAPPENS HERE." },
+    { s: 0.20, e: 0.35, text: "...WHAT IS THAT LIGHT?" },
+    { s: 0.41, e: 0.58, text: "OH. OH NO." },
+    { s: 0.63, e: 0.80, text: "UH, I GUESS THIS IS HAPPENING" }
   ];
 
   let currentCaption = '';
@@ -1265,13 +1265,13 @@
     const max = document.documentElement.scrollHeight - window.innerHeight;
     const p = max > 0 ? clamp(window.scrollY / max, 0, 1) : 0;
 
-    /* Title screen: fade + drift up (0 → 0.08) */
-    const tOut = phase(p, 0.0, 0.08);
+    /* Title screen: fade + drift up (0 → 0.10) */
+    const tOut = phase(p, 0.0, 0.10);
     el.title.style.opacity = 1 - tOut;
     el.title.style.transform = `translateY(${-tOut * 12}vh)`;
 
-    /* Beam: descends from sky (0.14 → 0.26) */
-    const b = ease(phase(p, 0.14, 0.26));
+    /* Beam: descends from sky (0.18 → 0.33) */
+    const b = ease(phase(p, 0.18, 0.33));
     el.beam.style.opacity = b * 0.95;
     el.beam.style.transform = `translateX(-50%) scaleY(${b})`;
     el.beamGlow.style.opacity = b;
@@ -1280,13 +1280,13 @@
       ? 'drop-shadow(0 0 5px rgba(126,230,212,0.25))'
       : `drop-shadow(0 0 ${5 + b * 13}px rgba(255,220,140,${0.2 + b * 0.55}))`;
 
-    /* UFO: drops into view (0.28 → 0.46) */
-    const u = ease(phase(p, 0.28, 0.46));
+    /* UFO: drops into view (0.36 → 0.58) */
+    const u = ease(phase(p, 0.36, 0.58));
     const ufoY = -120 + u * 122; /* % of its own height: parks near top */
     el.ufo.style.transform = `translate(-50%, ${ufoY}%)`;
 
-    /* Person: gets yoinked (0.50 → 0.66), rising no higher than the dome */
-    const lift = ease(phase(p, 0.50, 0.66));
+    /* Person: gets yoinked (0.63 → 0.84), rising no higher than the dome */
+    const lift = ease(phase(p, 0.63, 0.84));
     const sway = Math.sin(lift * Math.PI * 3) * 8;
     let risePx = 0;
     if (lift > 0) {
@@ -1301,14 +1301,14 @@
     const shrink = 1 - lift * 0.45;
     el.person.style.transform =
       `translateX(-50%) translate(${sway}px, ${-risePx}px) rotate(${sway * 1.2}deg) scale(${shrink})`;
-    el.person.style.opacity = 1 - phase(p, 0.63, 0.665);
+    el.person.style.opacity = 1 - phase(p, 0.80, 0.84);
 
-    /* Flash (0.66 → 0.74) */
-    const f = phase(p, 0.66, 0.70) - phase(p, 0.70, 0.74);
+    /* Flash (0.84 → 0.94) */
+    const f = phase(p, 0.84, 0.89) - phase(p, 0.89, 0.94);
     el.flash.style.opacity = clamp(f, 0, 1);
 
-    /* Interior crossfade (0.70 → 0.76) */
-    const inn = phase(p, 0.70, 0.76);
+    /* Interior crossfade (0.89 → 0.96) */
+    const inn = phase(p, 0.89, 0.96);
     el.interior.style.opacity = inn;
     el.interior.classList.toggle('active', inn > 0.9);
     el.exterior.style.opacity = 1 - inn;
