@@ -373,6 +373,8 @@
   .interior-header {
     text-align: center;
     padding-top: clamp(1.2rem, 3vh, 2.5rem);
+    position: relative;
+    z-index: 5;
   }
   .interior-header .sys {
     font-family: var(--hud);
@@ -397,111 +399,139 @@
     opacity: 0.8;
   }
 
-  .windshield {
-    position: relative;
-    width: min(880px, 76vw);
-    height: clamp(220px, 38vh, 400px);
-    margin: clamp(0.8rem, 2.5vh, 2rem) auto 0;
-    border-radius: 54px 54px 22px 22px;
-    border: 9px solid var(--metal-light);
-    background: linear-gradient(to bottom, #04081e 0%, #0c1440 70%, #14204f 100%);
-    overflow: hidden;
-    box-shadow:
-      inset 0 0 60px rgba(0,0,0,0.85),
-      0 0 0 4px #0a121c,
-      0 14px 34px rgba(0,0,0,0.45);
-  }
-  .windshield .p-star { position: absolute; background: #fff; border-radius: 50%; animation: twinkle 2.5s ease-in-out infinite; }
-  .windshield .strut {
-    position: absolute;
-    top: -5%; bottom: -5%;
-    width: clamp(9px, 1.2vw, 15px);
-    background: linear-gradient(to right, #16222f, var(--metal-light) 50%, #16222f);
-    box-shadow: 0 0 12px rgba(0,0,0,0.65);
-    z-index: 2;
-  }
-  .windshield .strut.left  { left: 29%; transform: rotate(5deg); }
-  .windshield .strut.right { right: 29%; transform: rotate(-5deg); }
-  .windshield .glare {
+  /* Full-bleed dome view: space fills the cabin behind everything */
+  .dome-space {
     position: absolute; inset: 0;
-    background: linear-gradient(115deg, transparent 42%, rgba(210,230,255,0.06) 46%, rgba(210,230,255,0.06) 54%, transparent 58%);
-    pointer-events: none;
-    z-index: 3;
-  }
-  .windshield .w-shoot {
-    position: absolute;
-    width: 90px; height: 2px;
-    border-radius: 2px;
-    background: linear-gradient(to right, transparent, #fff);
-    opacity: 0;
-    pointer-events: none;
+    background:
+      radial-gradient(ellipse 70% 55% at 74% 62%, rgba(60,110,200,0.14), transparent 70%),
+      radial-gradient(ellipse 55% 45% at 18% 26%, rgba(130,90,215,0.10), transparent 70%),
+      linear-gradient(to bottom, #04071c 0%, #0a1038 60%, #131a4e 100%);
     z-index: 1;
   }
-  .windshield .w-shoot.s1 {
-    top: 16%; left: 4%;
-    animation: wshoot1 8s linear infinite;
-    animation-delay: 1.5s;
-  }
-  .windshield .w-shoot.s2 {
-    top: 55%; left: 46%;
-    width: 70px;
-    animation: wshoot2 11s linear infinite;
-    animation-delay: 6s;
-  }
-  @keyframes wshoot1 {
-    0%  { opacity: 0; transform: translate(0, 0) rotate(16deg); }
-    3%  { opacity: 1; }
-    11% { opacity: 0; transform: translate(240px, 70px) rotate(16deg); }
-    100%{ opacity: 0; transform: translate(240px, 70px) rotate(16deg); }
-  }
-  @keyframes wshoot2 {
-    0%  { opacity: 0; transform: translate(0, 0) rotate(24deg); }
-    3%  { opacity: 1; }
-    10% { opacity: 0; transform: translate(190px, 85px) rotate(24deg); }
-    100%{ opacity: 0; transform: translate(190px, 85px) rotate(24deg); }
-  }
-  .windshield .earth {
+  .dome-space .p-star { position: absolute; background: #fff; border-radius: 50%; animation: twinkle 2.5s ease-in-out infinite; }
+  .dome-moon {
     position: absolute;
-    right: 9%; bottom: -34%;
-    width: 34%; aspect-ratio: 1;
-    border-radius: 50%;
-    background: radial-gradient(circle at 35% 30%, #5fc4f5 0%, #2e8fd8 45%, #14509a 82%);
-    box-shadow: 0 0 34px rgba(110,200,255,0.5);
-    overflow: hidden;
-  }
-  .windshield .earth svg {
-    position: absolute; inset: 0;
-    width: 100%; height: 100%;
-  }
-  .windshield .earth::after {
-    content: '';
-    position: absolute; inset: 0; border-radius: 50%;
-    background:
-      radial-gradient(circle at 30% 26%, rgba(255,255,255,0.28), transparent 42%),
-      radial-gradient(circle at 72% 80%, rgba(5,12,44,0.45), transparent 62%);
-    pointer-events: none;
-  }
-  .windshield .little-moon {
-    position: absolute;
-    left: 12%; top: 18%;
-    width: 7%; aspect-ratio: 1;
+    left: 11%; top: 13%;
+    width: clamp(56px, 6.5vw, 104px);
+    aspect-ratio: 1;
     border-radius: 50%;
     background:
       radial-gradient(circle at 62% 58%, rgba(118,114,103,0.5) 0 14%, transparent 18%),
       radial-gradient(circle at 32% 30%, rgba(118,114,103,0.45) 0 10%, transparent 14%),
       radial-gradient(circle at 35% 32%, #eeece6 0%, #d2cfc5 55%, #a9a599 100%);
     opacity: 0.95;
-    box-shadow: 0 0 16px rgba(230,228,220,0.35);
+    box-shadow: 0 0 24px rgba(230,228,220,0.3);
+  }
+  .w-shoot {
+    position: absolute;
+    width: 110px; height: 2px;
+    border-radius: 2px;
+    background: linear-gradient(to right, transparent, #fff);
+    opacity: 0;
+    pointer-events: none;
+  }
+  .w-shoot.s1 {
+    top: 12%; left: 6%;
+    animation: wshoot1 8s linear infinite;
+    animation-delay: 1.5s;
+  }
+  .w-shoot.s2 {
+    top: 40%; left: 40%;
+    width: 85px;
+    animation: wshoot2 11s linear infinite;
+    animation-delay: 6s;
+  }
+  @keyframes wshoot1 {
+    0%  { opacity: 0; transform: translate(0, 0) rotate(16deg); }
+    3%  { opacity: 1; }
+    11% { opacity: 0; transform: translate(34vw, 10vw) rotate(16deg); }
+    100%{ opacity: 0; transform: translate(34vw, 10vw) rotate(16deg); }
+  }
+  @keyframes wshoot2 {
+    0%  { opacity: 0; transform: translate(0, 0) rotate(24deg); }
+    3%  { opacity: 1; }
+    10% { opacity: 0; transform: translate(26vw, 12vw) rotate(24deg); }
+    100%{ opacity: 0; transform: translate(26vw, 12vw) rotate(24deg); }
+  }
+  .dome-earth {
+    position: absolute;
+    right: -7%;
+    bottom: 9vh;
+    width: clamp(400px, 52vw, 980px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #5fc4f5 0%, #2e8fd8 45%, #14509a 82%);
+    box-shadow: 0 0 60px rgba(110,200,255,0.45), 0 0 160px rgba(110,200,255,0.18);
+    overflow: hidden;
+  }
+  .dome-earth svg {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+  }
+  .dome-earth::after {
+    content: '';
+    position: absolute; inset: 0; border-radius: 50%;
+    background:
+      radial-gradient(circle at 30% 26%, rgba(255,255,255,0.25), transparent 42%),
+      radial-gradient(circle at 72% 80%, rgba(5,12,44,0.5), transparent 62%);
+    pointer-events: none;
+  }
+  /* Glass dome glare: brightens toward the top and outer edges */
+  .dome-glass {
+    position: absolute; inset: 0;
+    pointer-events: none;
+    z-index: 2;
+    background: radial-gradient(ellipse 145% 125% at 50% 118%,
+      transparent 60%,
+      rgba(190,225,255,0.04) 72%,
+      rgba(215,238,255,0.09) 83%,
+      rgba(235,248,255,0.15) 93%,
+      rgba(250,253,255,0.22) 100%);
+    overflow: hidden;
+  }
+  .dome-glass::before,
+  .dome-glass::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 220vw;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: rgba(255,255,255,0.22);
+    filter: blur(2px);
+  }
+  .dome-glass::before { top: 5vh; }
+  .dome-glass::after {
+    top: 9.5vh;
+    border-top-width: 7px;
+    border-top-color: rgba(210,235,255,0.10);
+    filter: blur(5px);
   }
 
-  /* Specimen tube */
+  /* Specimen tube — center stage */
   .tube {
     position: absolute;
-    left: clamp(0.6rem, 2.5vw, 3rem);
-    bottom: clamp(14rem, 31vh, 19rem);
-    width: clamp(70px, 8vw, 110px);
-    z-index: 2;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: clamp(13rem, 28vh, 18rem);
+    width: clamp(110px, 13vw, 190px);
+    z-index: 4;
     text-align: center;
+  }
+  .tube .glow-pool {
+    position: absolute;
+    left: 50%;
+    bottom: 1.4rem;
+    transform: translateX(-50%);
+    width: 230%;
+    height: 34px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(126,240,190,0.35) 0%, rgba(126,240,190,0.12) 45%, transparent 72%);
+    filter: blur(6px);
+    z-index: -1;
+    pointer-events: none;
   }
   .tube .pedestal {
     height: 16px;
@@ -600,7 +630,7 @@
     border-top: 6px solid #3d5b78;
     box-shadow: 0 -14px 34px rgba(0,0,0,0.55);
     padding: clamp(1rem, 2.6vh, 1.8rem) clamp(0.8rem, 3vw, 2.5rem) clamp(0.8rem, 2vh, 1.4rem);
-    z-index: 3;
+    z-index: 5;
   }
   .dashboard::before {
     content: '';
@@ -892,13 +922,14 @@
     }
   }
   @media (max-width: 900px) {
-    .tube, .gizmo { display: none; }
+    .gizmo { display: none; }
     .dash-row { flex-wrap: wrap; transform: none; }
     .console { width: 44%; }
+    .tube { width: clamp(84px, 20vw, 130px); bottom: clamp(15rem, 30vh, 20rem); }
+    .dome-earth { width: 88vw; right: -18%; }
   }
   @media (max-width: 640px) {
     .beam { width: 78vw; }
-    .windshield { width: 90vw; height: 30vh; }
   }
 </style>
 </head>
@@ -987,7 +1018,7 @@
         <!-- head, tilted up -->
         <g transform="rotate(-10 30 24)">
           <circle cx="30" cy="24" r="13" fill="#f0c9a2"/>
-          <path d="M18 20 Q22 8 34 11 Q44 13 42 22 Q38 16 30 16 Q22 16 18 20 Z" fill="#3b2a1e"/>
+          <path d="M18,21 Q18,12 25,9.5 Q28,8 31,9.4 Q33,7.4 36,8.8 Q40,10.5 42,14.5 Q43.2,17.5 43,21 Q40,15.5 34.5,14.6 Q28.5,13.6 23.5,16 Q19.5,18 18,21 Z" fill="#3b2a1e"/>
           <circle cx="27" cy="23" r="1.6" fill="#1a1a1a"/>
           <circle cx="35" cy="22" r="1.6" fill="#1a1a1a"/>
           <ellipse cx="31" cy="29" rx="2.6" ry="3" fill="#1a1a1a"/> <!-- mouth open, looking up -->
@@ -1048,16 +1079,9 @@
 
   <!-- Interior -->
   <div class="interior" id="interior">
-    <div class="alarm-overlay" aria-hidden="true"></div>
-    <div class="interior-header">
-      <p class="sys">◉ SPECIMEN ACQUIRED</p>
-      <h2>ABOARD THE SHIP</h2>
-      <p>SELECT A CONSOLE TO ANALYZE SUBJECT</p>
-    </div>
-
-    <div class="windshield" id="windshield">
-      <span class="little-moon"></span>
-      <div class="earth">
+    <div class="dome-space" id="domeSpace">
+      <span class="dome-moon"></span>
+      <div class="dome-earth">
         <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <!-- Greenland -->
           <path d="M82,24 Q92,18 99,26 Q97,36 87,37 Q80,31 82,24 Z" fill="#eef6f2"/>
@@ -1081,12 +1105,19 @@
       </div>
       <span class="w-shoot s1"></span>
       <span class="w-shoot s2"></span>
-      <span class="strut left"></span>
-      <span class="strut right"></span>
-      <span class="glare"></span>
+    </div>
+
+    <div class="dome-glass" aria-hidden="true"></div>
+
+    <div class="alarm-overlay" aria-hidden="true"></div>
+    <div class="interior-header">
+      <p class="sys">◉ SPECIMEN ACQUIRED</p>
+      <h2>ABOARD THE SHIP</h2>
+      <p>SELECT A CONSOLE TO ANALYZE SUBJECT</p>
     </div>
 
     <div class="tube" aria-hidden="true">
+      <span class="glow-pool"></span>
       <div class="glass-wrap">
       <span class="rim top"></span>
       <div class="glass">
@@ -1099,7 +1130,7 @@
           <rect x="9"  y="42" width="9" height="26" rx="4.5" fill="#c94a40"/>
           <rect x="42" y="42" width="9" height="26" rx="4.5" fill="#c94a40"/>
           <circle cx="30" cy="24" r="13" fill="#f0c9a2"/>
-          <path d="M18 20 Q22 8 34 11 Q44 13 42 22 Q38 16 30 16 Q22 16 18 20 Z" fill="#3b2a1e"/>
+          <path d="M18,21 Q18,12 25,9.5 Q28,8 31,9.4 Q33,7.4 36,8.8 Q40,10.5 42,14.5 Q43.2,17.5 43,21 Q40,15.5 34.5,14.6 Q28.5,13.6 23.5,16 Q19.5,18 18,21 Z" fill="#3b2a1e"/>
           <line x1="25" y1="23" x2="29" y2="23" stroke="#1a1a1a" stroke-width="1.6"/>
           <line x1="33" y1="23" x2="37" y2="23" stroke="#1a1a1a" stroke-width="1.6"/>
           <path d="M26 31 Q30 33 34 31" stroke="#1a1a1a" stroke-width="1.6" fill="none"/>
@@ -1222,8 +1253,8 @@
     f.style.animationDuration = (5 + Math.random() * 5) + 's';
     exterior.appendChild(f);
   }
-  const windshield = document.getElementById('windshield');
-  for (let i = 0; i < 46; i++) {
+  const domeSpace = document.getElementById('domeSpace');
+  for (let i = 0; i < 85; i++) {
     const s = document.createElement('span');
     s.className = 'p-star';
     const size = Math.random() * 2.2 + 1;
@@ -1231,7 +1262,7 @@
     s.style.left = Math.random() * 100 + '%';
     s.style.top = Math.random() * 100 + '%';
     s.style.animationDelay = (Math.random() * 2.5) + 's';
-    windshield.appendChild(s);
+    domeSpace.appendChild(s);
   }
 
   /* ---------- Scroll-driven timeline ---------- */
