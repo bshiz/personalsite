@@ -977,72 +977,126 @@
     opacity: 0.8;
   }
 
-  .shelves {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: clamp(0.6rem, 1.6vw, 1.1rem);
+  /* Cargo rack: open metal shelving, items sit on planks */
+  .rack {
     width: min(1060px, 94vw);
     margin: clamp(0.8rem, 2.2vh, 1.6rem) auto 0;
-  }
-  .alcove {
-    appearance: none; border: none; cursor: pointer; font-family: inherit;
     position: relative;
-    background: linear-gradient(to bottom, #0b141e, #08101a 70%, #0d1826);
-    border: 3px solid #2a4258;
-    border-radius: 10px;
-    padding: clamp(0.5rem, 1.2vh, 0.9rem) 0.4rem calc(clamp(0.5rem, 1.2vh, 0.9rem) + 16px);
-    box-shadow: inset 0 0 24px rgba(0,0,0,0.75), inset 0 -8px 14px rgba(126,230,212,0.05), 0 4px 0 #060c14;
-    transition: transform 0.15s, box-shadow 0.15s;
-    overflow: hidden;
   }
-  .alcove::after {
+  .rack::before, .rack::after {
     content: '';
-    position: absolute; inset: 0;
-    background: linear-gradient(115deg, transparent 32%, rgba(126,240,190,0.07) 46%, transparent 60%);
-    pointer-events: none;
+    position: absolute;
+    top: -10px; bottom: -4px;
+    width: 11px;
+    background:
+      repeating-linear-gradient(to bottom, transparent 0 26px, rgba(0,0,0,0.35) 26px 30px),
+      linear-gradient(to right, #2e3f50, #1a2632 60%, #121b26);
+    border-radius: 2px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.6);
   }
-  .alcove:hover, .alcove:focus-visible {
+  .rack::before { left: -4px; }
+  .rack::after { right: -4px; }
+  .shelf-row {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    align-items: end;
+    padding: 10px 20px 16px;
+    position: relative;
+  }
+  .plank {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 12px;
+    background: linear-gradient(to bottom, #3a4a5c, #1c2732 60%, #141d28);
+    border-radius: 2px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.55);
+  }
+  .plank::after {
+    /* red LED strip under the shelf edge */
+    content: '';
+    position: absolute;
+    left: 8px; right: 8px; bottom: -2px;
+    height: 2.5px;
+    border-radius: 2px;
+    background: #ff5a4a;
+    box-shadow:
+      0 0 8px 2px rgba(255,80,60,0.7),
+      0 8px 22px 8px rgba(255,80,60,0.22);
+    opacity: 0.9;
+  }
+  .item {
+    appearance: none;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    padding: 0 6px 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 7px;
+    transition: transform 0.15s, filter 0.15s;
+  }
+  .item:hover, .item:focus-visible {
     transform: translateY(-4px);
-    box-shadow: inset 0 0 24px rgba(0,0,0,0.75), 0 8px 0 #060c14, 0 0 18px rgba(126,240,190,0.25);
+    filter: drop-shadow(0 0 10px rgba(255,120,100,0.45));
   }
-  .alcove:focus-visible { outline: 3px solid var(--alien); outline-offset: 2px; }
-  .alcove svg {
-    width: auto;
+  .item:focus-visible { outline: 3px solid var(--alien); outline-offset: 3px; border-radius: 8px; }
+  .item svg {
     height: clamp(62px, 11vh, 100px);
-    max-width: 88%;
+    width: auto;
+    max-width: 100%;
     display: block;
-    margin: 0 auto;
   }
-  .alcove .tag {
-    position: absolute; left: 0; right: 0; bottom: 7px;
+  .item .tag {
     font-family: var(--hud);
     font-size: 6.5px;
     letter-spacing: 0.1em;
-    color: var(--alien);
-    opacity: 0.85;
+    color: #c9d2dc;
+    opacity: 0.75;
     line-height: 1.6;
   }
-  .alcove .floaty-item { animation: itemFloat 4s ease-in-out infinite; }
+  .item .floaty-item { animation: itemFloat 4s ease-in-out infinite; }
   @keyframes itemFloat { 50% { transform: translateY(-3px); } }
   .blink-red { animation: blinkLight 1.4s steps(2) infinite; }
+  /* the triangle */
+  .item.dark svg { filter: drop-shadow(0 0 12px rgba(160,110,255,0.5)); }
+  .item.dark .tag { color: #cdaaff; }
+  .item.dark:hover, .item.dark:focus-visible {
+    filter: drop-shadow(0 0 14px rgba(160,110,255,0.65));
+  }
 
-  /* the triangle's alcove */
-  .alcove.dark {
-    background: linear-gradient(to bottom, #05080e, #04070c 70%, #071018);
-    border-color: #3a2a4e;
-  }
-  .alcove.dark::before {
-    content: '';
-    position: absolute; left: 50%; top: 0;
-    transform: translateX(-50%);
-    width: 58%; height: 100%;
-    background: linear-gradient(to bottom, rgba(200,160,255,0.15), transparent 75%);
-    clip-path: polygon(38% 0, 62% 0, 100% 100%, 0 100%);
+  /* Ceiling light fixtures */
+  .hold-lights {
+    position: absolute; inset: 0;
     pointer-events: none;
+    z-index: 7;
   }
-  .alcove.dark .tag { color: #cdaaff; }
-  .alcove.dark:hover, .alcove.dark:focus-visible {
-    box-shadow: inset 0 0 24px rgba(0,0,0,0.8), 0 8px 0 #060c14, 0 0 20px rgba(200,160,255,0.3);
+  .lamp { position: absolute; top: 0; transform: translateX(-50%); }
+  .lamp .stem {
+    display: block;
+    width: 4px; height: 14px;
+    margin: 0 auto;
+    background: #1c2732;
+  }
+  .lamp .shade {
+    display: block;
+    width: 36px; height: 14px;
+    margin: 0 auto;
+    background: linear-gradient(to bottom, #3a4a5c, #22303e);
+    clip-path: polygon(22% 0, 78% 0, 100% 100%, 0 100%);
+    position: relative;
+  }
+  .lamp .shade::after {
+    /* the bulb */
+    content: '';
+    position: absolute;
+    left: 50%; bottom: -3px;
+    width: 11px; height: 6px;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: #ff6a58;
+    box-shadow: 0 0 22px 9px rgba(255,80,60,0.75), 0 0 60px 26px rgba(255,80,60,0.18);
   }
 
   .hold-terminal-row {
@@ -1140,7 +1194,7 @@
     --r: 180px;
     background:
       radial-gradient(circle var(--r) at var(--mx) var(--my), rgba(255,90,74,0.08), transparent 72%),
-      radial-gradient(circle calc(var(--r) * 1.2) at var(--mx) var(--my), transparent 52%, rgba(2,4,10,0.62) 76%, rgba(1,3,8,0.965) 100%);
+      radial-gradient(circle calc(var(--r) * 1.2) at var(--mx) var(--my), transparent 52%, rgba(2,4,10,0.34) 76%, rgba(1,3,8,0.62) 100%);
   }
   .ir-ring {
     position: absolute;
@@ -1178,7 +1232,7 @@
     .hold-darkness {
       background:
         radial-gradient(circle var(--r) at var(--mx) var(--my), rgba(255,90,74,0.08), transparent 72%),
-        radial-gradient(circle calc(var(--r) * 1.2) at var(--mx) var(--my), transparent 52%, rgba(2,4,10,0.5) 76%, rgba(1,3,8,0.88) 100%);
+        radial-gradient(circle calc(var(--r) * 1.2) at var(--mx) var(--my), transparent 52%, rgba(2,4,10,0.28) 76%, rgba(1,3,8,0.52) 100%);
     }
     .hold.active, .hold.active * { cursor: auto; }
   }
@@ -1191,17 +1245,20 @@
     .gauge::after, .interior.alarm, .interior.alarm .alarm-overlay,
     .god-rays, .mote, .w-shoot,
     .interior.gravity, .interior.gravity .dash-row, .interior.gravity .tube .glass svg,
-    .alcove .floaty-item, .blink-red, .hold-hint, .hold-header .sys {
+    .item .floaty-item, .blink-red, .hold-hint, .hold-header .sys {
       animation: none !important;
     }
   }
   @media (max-width: 900px) {
-    .gizmo { display: none; }
+    .gizmo:not(.gizmo-red) { display: none; }
+    .gizmo-red { width: 100%; order: 9; margin-top: 4px; }
     .dash-row { flex-wrap: wrap; transform: none; }
     .console { width: 44%; }
     .tube { width: clamp(84px, 20vw, 130px); bottom: clamp(15rem, 30vh, 20rem); }
     .dome-earth { width: 88vw; right: -18%; }
-    .shelves { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .item svg { height: clamp(44px, 8vh, 66px); }
+    .item .tag { font-size: 5.5px; }
+    .shelf-row { padding: 8px 10px 14px; }
   }
   @media (max-width: 640px) {
     .beam { width: 78vw; }
@@ -1441,7 +1498,7 @@
           </span>
           <span class="lights"><i></i><i></i><i></i></span>
         </button>
-        <div class="gizmo">
+        <div class="gizmo gizmo-red">
           <button class="big-red" id="bigRed" aria-label="Do not press"></button>
           <p class="gizmo-label">DO NOT PRESS</p>
         </div>
@@ -1477,210 +1534,274 @@
       <p>ITEMS RECOVERED FROM EARTH: 12</p>
     </div>
 
-    <div class="shelves">
-      <button class="alcove" data-panel="itemCow">
-        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <ellipse cx="50" cy="90" rx="26" ry="4" fill="rgba(126,240,190,0.15)"/>
-          <g class="floaty-item">
-            <ellipse cx="54" cy="50" rx="23" ry="14" fill="#f2efe8"/>
-            <ellipse cx="48" cy="46" rx="7" ry="5" fill="#2b2b33"/>
-            <ellipse cx="63" cy="55" rx="6" ry="4" fill="#2b2b33"/>
-            <rect x="42" y="61" width="4" height="11" rx="2" fill="#e8e4da"/>
-            <rect x="50" y="62" width="4" height="11" rx="2" fill="#e8e4da"/>
-            <rect x="60" y="61" width="4" height="11" rx="2" fill="#e8e4da"/>
-            <ellipse cx="30" cy="42" rx="9" ry="8" fill="#f2efe8"/>
-            <ellipse cx="27" cy="46" rx="6" ry="4" fill="#e8b8c8"/>
-            <circle cx="29" cy="40" r="1.5" fill="#1a1a1a"/>
-            <ellipse cx="36" cy="35" rx="3.5" ry="2" fill="#e8e4da"/>
-          </g>
-        </svg>
-        <span class="tag">ITEM 001 · BOVINE</span>
-      </button>
+    <div class="rack">
+      <div class="shelf-row">
+        <button class="item" data-panel="itemCow">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <ellipse cx="50" cy="90" rx="26" ry="4" fill="rgba(126,240,190,0.15)"/>
+            <g class="floaty-item">
+              <ellipse cx="54" cy="50" rx="23" ry="14" fill="#f2efe8"/>
+              <ellipse cx="48" cy="46" rx="7" ry="5" fill="#2b2b33"/>
+              <ellipse cx="63" cy="55" rx="6" ry="4" fill="#2b2b33"/>
+              <rect x="42" y="61" width="4" height="11" rx="2" fill="#e8e4da"/>
+              <rect x="50" y="62" width="4" height="11" rx="2" fill="#e8e4da"/>
+              <rect x="60" y="61" width="4" height="11" rx="2" fill="#e8e4da"/>
+              <ellipse cx="30" cy="42" rx="9" ry="8" fill="#f2efe8"/>
+              <ellipse cx="27" cy="46" rx="6" ry="4" fill="#e8b8c8"/>
+              <circle cx="29" cy="40" r="1.5" fill="#1a1a1a"/>
+              <ellipse cx="36" cy="35" rx="3.5" ry="2" fill="#e8e4da"/>
+            </g>
+          </svg>
+          <span class="tag">ITEM 001 · BOVINE</span>
+        </button>
 
-      <button class="alcove" data-panel="itemStrat">
-        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <defs>
-            <radialGradient id="sbGrad" cx="50%" cy="50%" r="62%">
-              <stop offset="0%" stop-color="#f0b04a"/>
-              <stop offset="55%" stop-color="#a85820"/>
-              <stop offset="100%" stop-color="#26120a"/>
-            </radialGradient>
-          </defs>
-          <g transform="rotate(-10 50 50)">
-            <path d="M45,4 q11,-3 13,4 l-3,7 h-10 z" fill="#c9a06a"/>
-            <circle cx="49" cy="7" r="1" fill="#3b2f1a"/>
-            <circle cx="53" cy="8.5" r="1" fill="#3b2f1a"/>
-            <rect x="46" y="13" width="8" height="32" rx="1.5" fill="#caa06a"/>
-            <line x1="46" y1="20" x2="54" y2="20" stroke="#9a7648" stroke-width="1"/>
-            <line x1="46" y1="27" x2="54" y2="27" stroke="#9a7648" stroke-width="1"/>
-            <line x1="46" y1="34" x2="54" y2="34" stroke="#9a7648" stroke-width="1"/>
-            <path d="M50,44 q-5,-4 -11,-2 q-9,3 -10,12 q-1,10 5,16 q6,7 16,7 q10,0 16,-7 q6,-6 5,-16 q-1,-9 -10,-12 q-6,-2 -11,2 z" fill="url(#sbGrad)" stroke="#1d0f06" stroke-width="1.5"/>
-            <path d="M50,50 q-6,-2 -9,3 q-3,5 0,10 q3,6 9,6 q4,0 6,-3 l-2,-14 q-2,-2 -4,-2 z" fill="#f2eee2" opacity="0.92"/>
-            <rect x="45" y="54" width="10" height="3" rx="1.5" fill="#2a2a30"/>
-            <rect x="45" y="60" width="10" height="3" rx="1.5" fill="#2a2a30"/>
-            <line x1="50" y1="8" x2="50" y2="68" stroke="#e8e4da" stroke-width="0.9"/>
-            <circle cx="61" cy="63" r="2" fill="#e8e4da"/>
-            <circle cx="63" cy="57" r="2" fill="#e8e4da"/>
-          </g>
-        </svg>
-        <span class="tag">ITEM 002 · STRATOCASTER</span>
-      </button>
+        <button class="item" data-panel="itemStrat">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <radialGradient id="sbGrad" cx="50%" cy="50%" r="65%">
+                <stop offset="0%" stop-color="#e8a83c"/>
+                <stop offset="45%" stop-color="#a34e18"/>
+                <stop offset="100%" stop-color="#1d0d06"/>
+              </radialGradient>
+            </defs>
+            <g transform="rotate(-10 50 50)">
+              <!-- headstock + tuners -->
+              <path d="M45,3 q9,-2 12,2 q3,3 -1,6 l-2,4 h-9 z" fill="#d8b476"/>
+              <circle cx="45.8" cy="5.6" r="0.9" fill="#8a8f98"/>
+              <circle cx="47.8" cy="4.6" r="0.9" fill="#8a8f98"/>
+              <circle cx="49.8" cy="4.2" r="0.9" fill="#8a8f98"/>
+              <circle cx="51.8" cy="4.3" r="0.9" fill="#8a8f98"/>
+              <circle cx="53.6" cy="5" r="0.9" fill="#8a8f98"/>
+              <circle cx="55" cy="6.4" r="0.9" fill="#8a8f98"/>
+              <!-- rosewood neck with frets and dots -->
+              <rect x="46" y="12" width="8" height="33" rx="1.5" fill="#4a2c18"/>
+              <line x1="46" y1="17" x2="54" y2="17" stroke="#7a5a3a" stroke-width="0.9"/>
+              <line x1="46" y1="23" x2="54" y2="23" stroke="#7a5a3a" stroke-width="0.9"/>
+              <line x1="46" y1="29" x2="54" y2="29" stroke="#7a5a3a" stroke-width="0.9"/>
+              <line x1="46" y1="35" x2="54" y2="35" stroke="#7a5a3a" stroke-width="0.9"/>
+              <line x1="46" y1="41" x2="54" y2="41" stroke="#7a5a3a" stroke-width="0.9"/>
+              <circle cx="50" cy="20" r="0.8" fill="#e8e4da"/>
+              <circle cx="50" cy="26" r="0.8" fill="#e8e4da"/>
+              <circle cx="50" cy="32" r="0.8" fill="#e8e4da"/>
+              <!-- sunburst body -->
+              <path d="M50,44 q-5,-4 -11,-2 q-9,3 -10,12 q-1,10 5,16 q6,7 16,7 q10,0 16,-7 q6,-6 5,-16 q-1,-9 -10,-12 q-6,-2 -11,2 z" fill="url(#sbGrad)" stroke="#150a04" stroke-width="1.5"/>
+              <!-- tortoiseshell pickguard -->
+              <path d="M50,48 q-7,-2 -10,3 q-3,6 0,11 q3,7 10,7 q4,0 6,-3 l-2,-16 q-2,-2 -4,-2 z" fill="#4e2414"/>
+              <ellipse cx="44.5" cy="55" rx="1.8" ry="1.2" fill="#8a4a22" opacity="0.8"/>
+              <ellipse cx="47" cy="61" rx="2" ry="1.3" fill="#a85e28" opacity="0.7"/>
+              <ellipse cx="43" cy="60" rx="1.4" ry="1" fill="#b06a30" opacity="0.7"/>
+              <ellipse cx="49" cy="52" rx="1.5" ry="1" fill="#8a4a22" opacity="0.75"/>
+              <!-- three single-coil pickups -->
+              <rect x="44" y="50" width="12" height="3" rx="1.5" fill="#f4f0e6"/>
+              <rect x="44" y="55.5" width="12" height="3" rx="1.5" fill="#f4f0e6"/>
+              <rect x="43.5" y="61" width="12" height="3" rx="1.5" fill="#f4f0e6" transform="rotate(-6 49.5 62.5)"/>
+              <!-- bridge -->
+              <rect x="44.5" y="66.5" width="11" height="2.6" rx="1" fill="#b9c4d0"/>
+              <!-- strings -->
+              <line x1="50" y1="7" x2="50" y2="67" stroke="#e8e4da" stroke-width="0.8"/>
+              <!-- knobs -->
+              <circle cx="59.5" cy="61" r="1.8" fill="#f4f0e6"/>
+              <circle cx="61.5" cy="56" r="1.8" fill="#f4f0e6"/>
+              <circle cx="62.5" cy="51" r="1.8" fill="#f4f0e6"/>
+            </g>
+          </svg>
+          <span class="tag">ITEM 002 · STRATOCASTER</span>
+        </button>
 
-      <button class="alcove" data-panel="itemTicTac">
-        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <rect x="24" y="24" width="52" height="56" rx="6" fill="rgba(160,220,255,0.10)" stroke="#7ee6d4" stroke-width="2"/>
-          <rect x="38" y="32" width="24" height="40" rx="12" fill="#f4f6f8"/>
-          <rect x="42" y="36" width="6" height="18" rx="3" fill="#ffffff"/>
-          <rect x="28" y="80" width="44" height="6" rx="2" fill="#2a4258"/>
-        </svg>
-        <span class="tag">ITEM 003 · "TIC TAC"</span>
-      </button>
+        <button class="item" data-panel="itemTicTac">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="24" y="24" width="52" height="56" rx="6" fill="rgba(160,220,255,0.10)" stroke="#7ee6d4" stroke-width="2"/>
+            <rect x="38" y="32" width="24" height="40" rx="12" fill="#f4f6f8"/>
+            <rect x="42" y="36" width="6" height="18" rx="3" fill="#ffffff"/>
+            <rect x="28" y="80" width="44" height="6" rx="2" fill="#2a4258"/>
+          </svg>
+          <span class="tag">ITEM 003 · "TIC TAC"</span>
+        </button>
 
-      <button class="alcove" data-panel="itemE115">
-        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <rect x="32" y="26" width="36" height="10" rx="4" fill="#37536e"/>
-          <rect x="34" y="34" width="32" height="42" rx="8" fill="rgba(150,110,235,0.22)" stroke="#9a7ad8" stroke-width="2.5"/>
-          <ellipse cx="50" cy="60" rx="11" ry="10" fill="#b48aff"/>
-          <ellipse cx="50" cy="58" rx="5.5" ry="5" fill="#e8d2ff"/>
-          <line x1="40" y1="44" x2="46" y2="41" stroke="rgba(232,210,255,0.6)" stroke-width="1.6"/>
-          <rect x="40" y="80" width="20" height="7" rx="2" fill="#e8e0c8"/>
-          <line x1="44" y1="83.5" x2="56" y2="83.5" stroke="#8a6c3e" stroke-width="1.6"/>
-        </svg>
-        <span class="tag">ITEM 004 · ELEMENT 115</span>
-      </button>
+        <button class="item" data-panel="itemE115">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="32" y="26" width="36" height="10" rx="4" fill="#37536e"/>
+            <rect x="34" y="34" width="32" height="42" rx="8" fill="rgba(150,110,235,0.22)" stroke="#9a7ad8" stroke-width="2.5"/>
+            <ellipse cx="50" cy="60" rx="11" ry="10" fill="#b48aff"/>
+            <ellipse cx="50" cy="58" rx="5.5" ry="5" fill="#e8d2ff"/>
+            <line x1="40" y1="44" x2="46" y2="41" stroke="rgba(232,210,255,0.6)" stroke-width="1.6"/>
+            <rect x="40" y="80" width="20" height="7" rx="2" fill="#e8e0c8"/>
+            <line x1="44" y1="83.5" x2="56" y2="83.5" stroke="#8a6c3e" stroke-width="1.6"/>
+          </svg>
+          <span class="tag">ITEM 004 · ELEMENT 115</span>
+        </button>
+        <span class="plank" aria-hidden="true"></span>
+      </div>
 
-      <button class="alcove" data-panel="itemWatch">
-        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M34,18 q-10,10 2,18" stroke="#c9a96e" fill="none" stroke-width="2.5"/>
-          <rect x="45" y="18" width="10" height="7" rx="2.5" fill="#c9a96e"/>
-          <circle cx="50" cy="54" r="25" fill="#efe6cc" stroke="#c9a96e" stroke-width="4"/>
-          <line x1="50" y1="33" x2="50" y2="37" stroke="#8a6c3e" stroke-width="2"/>
-          <line x1="50" y1="71" x2="50" y2="75" stroke="#8a6c3e" stroke-width="2"/>
-          <line x1="29" y1="54" x2="33" y2="54" stroke="#8a6c3e" stroke-width="2"/>
-          <line x1="67" y1="54" x2="71" y2="54" stroke="#8a6c3e" stroke-width="2"/>
-          <line x1="50" y1="54" x2="34.5" y2="50.8" stroke="#3b2f1a" stroke-width="2.4" stroke-linecap="round"/>
-          <line x1="50" y1="54" x2="48.6" y2="43.5" stroke="#3b2f1a" stroke-width="3.2" stroke-linecap="round"/>
-          <circle cx="50" cy="54" r="2" fill="#3b2f1a"/>
-        </svg>
-        <span class="tag">ITEM 005 · 11:47 PM</span>
-      </button>
+      <div class="shelf-row">
+        <button class="item" data-panel="itemWatch">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M34,18 q-10,10 2,18" stroke="#c9a96e" fill="none" stroke-width="2.5"/>
+            <rect x="45" y="18" width="10" height="7" rx="2.5" fill="#c9a96e"/>
+            <circle cx="50" cy="54" r="25" fill="#efe6cc" stroke="#c9a96e" stroke-width="4"/>
+            <line x1="50" y1="33" x2="50" y2="37" stroke="#8a6c3e" stroke-width="2"/>
+            <line x1="50" y1="71" x2="50" y2="75" stroke="#8a6c3e" stroke-width="2"/>
+            <line x1="29" y1="54" x2="33" y2="54" stroke="#8a6c3e" stroke-width="2"/>
+            <line x1="67" y1="54" x2="71" y2="54" stroke="#8a6c3e" stroke-width="2"/>
+            <line x1="50" y1="54" x2="34.5" y2="50.8" stroke="#3b2f1a" stroke-width="2.4" stroke-linecap="round"/>
+            <line x1="50" y1="54" x2="48.6" y2="43.5" stroke="#3b2f1a" stroke-width="3.2" stroke-linecap="round"/>
+            <circle cx="50" cy="54" r="2" fill="#3b2f1a"/>
+          </svg>
+          <span class="tag">ITEM 005 · 11:47 PM</span>
+        </button>
 
-      <button class="alcove" data-panel="itemOris">
-        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <rect x="41" y="8" width="18" height="9" rx="2" fill="#b9c4d0"/>
-          <rect x="42.5" y="19" width="15" height="8" rx="2" fill="#a8b4c2"/>
-          <rect x="42.5" y="77" width="15" height="8" rx="2" fill="#a8b4c2"/>
-          <rect x="41" y="87" width="18" height="9" rx="2" fill="#b9c4d0"/>
-          <circle cx="50" cy="52" r="22" fill="#b9c4d0"/>
-          <rect x="71" y="49" width="5" height="6" rx="2" fill="#b9c4d0"/>
-          <circle cx="50" cy="52" r="19" fill="#0d141d" stroke="#8fa2b8" stroke-width="2.5"/>
-          <line x1="50" y1="34.5" x2="50" y2="38" stroke="#e8e4da" stroke-width="2"/>
-          <circle cx="50" cy="52" r="13.5" fill="#0a2a44"/>
-          <circle cx="50" cy="41.5" r="1.3" fill="#d8f4e8"/>
-          <circle cx="60.5" cy="52" r="1.3" fill="#d8f4e8"/>
-          <circle cx="50" cy="62.5" r="1.3" fill="#d8f4e8"/>
-          <circle cx="39.5" cy="52" r="1.3" fill="#d8f4e8"/>
-          <line x1="50" y1="52" x2="41.5" y2="50.2" stroke="#d8f4e8" stroke-width="2" stroke-linecap="round"/>
-          <line x1="50" y1="52" x2="49.2" y2="45.5" stroke="#d8f4e8" stroke-width="2.6" stroke-linecap="round"/>
-          <circle cx="50" cy="52" r="1.5" fill="#d8f4e8"/>
-        </svg>
-        <span class="tag">ITEM 006 · ORIS DIVER</span>
-      </button>
+        <button class="item" data-panel="itemOris">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <!-- 3-link steel bracelet -->
+            <g fill="#98a4b2">
+              <rect x="40" y="6" width="20" height="9" rx="2"/>
+              <rect x="40" y="17" width="20" height="9" rx="2"/>
+              <rect x="40" y="80" width="20" height="9" rx="2"/>
+              <rect x="40" y="91" width="20" height="9" rx="2"/>
+            </g>
+            <g fill="#c9d3e0">
+              <rect x="46" y="6" width="8" height="9" rx="1.5"/>
+              <rect x="46" y="17" width="8" height="9" rx="1.5"/>
+              <rect x="46" y="80" width="8" height="9" rx="1.5"/>
+              <rect x="46" y="91" width="8" height="9" rx="1.5"/>
+            </g>
+            <!-- case + crown -->
+            <circle cx="50" cy="52" r="23" fill="#c9d3e0"/>
+            <rect x="72" y="48" width="5.5" height="7" rx="2.5" fill="#c9d3e0"/>
+            <!-- black bezel with markers -->
+            <circle cx="50" cy="52" r="20" fill="#0b0e13"/>
+            <polygon points="50,34 48.3,37.6 51.7,37.6" fill="#e8ecf2"/>
+            <g stroke="#e8ecf2" stroke-width="1.5" stroke-linecap="round">
+              <line x1="68.5" y1="52" x2="65.5" y2="52"/>
+              <line x1="50" y1="70.5" x2="50" y2="67.5"/>
+              <line x1="31.5" y1="52" x2="34.5" y2="52"/>
+              <line x1="63.1" y1="38.9" x2="61" y2="41"/>
+              <line x1="63.1" y1="65.1" x2="61" y2="63"/>
+              <line x1="36.9" y1="65.1" x2="39" y2="63"/>
+              <line x1="36.9" y1="38.9" x2="39" y2="41"/>
+            </g>
+            <!-- black dial -->
+            <circle cx="50" cy="52" r="14" fill="#10151c"/>
+            <!-- shield marker at 12, batons at 3/6/9, lume dots elsewhere -->
+            <polygon points="47.9,42.5 52.1,42.5 51.3,45.8 48.7,45.8" fill="#e8f4ec"/>
+            <rect x="58.8" y="51" width="3.6" height="2" rx="0.8" fill="#e8f4ec"/>
+            <rect x="37.6" y="51" width="3.6" height="2" rx="0.8" fill="#e8f4ec"/>
+            <rect x="49" y="58.8" width="2" height="3.6" rx="0.8" fill="#e8f4ec"/>
+            <circle cx="55.3" cy="42.9" r="1.4" fill="#e8f4ec"/>
+            <circle cx="59.1" cy="46.8" r="1.4" fill="#e8f4ec"/>
+            <circle cx="59.1" cy="57.3" r="1.4" fill="#e8f4ec"/>
+            <circle cx="55.3" cy="61.1" r="1.4" fill="#e8f4ec"/>
+            <circle cx="44.7" cy="61.1" r="1.4" fill="#e8f4ec"/>
+            <circle cx="40.9" cy="57.3" r="1.4" fill="#e8f4ec"/>
+            <circle cx="40.9" cy="46.8" r="1.4" fill="#e8f4ec"/>
+            <circle cx="44.7" cy="42.9" r="1.4" fill="#e8f4ec"/>
+            <!-- hands at 11:47 -->
+            <line x1="50" y1="52" x2="38.3" y2="49.5" stroke="#eef4fa" stroke-width="2" stroke-linecap="round"/>
+            <line x1="50" y1="52" x2="49.1" y2="45.1" stroke="#eef4fa" stroke-width="2.8" stroke-linecap="round"/>
+            <circle cx="50" cy="52" r="1.6" fill="#eef4fa"/>
+          </svg>
+          <span class="tag">ITEM 006 · ORIS DIVER</span>
+        </button>
 
-      <button class="alcove" data-panel="itemShoes">
-        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <g opacity="0.7" transform="translate(10,-10)">
-            <path d="M22,60 q-1,-10 8,-13 q7,-2 11,2 l13,8 q6,3 6,7 v2 h-38 q-1,-3 0,-6 z" fill="#3d6f8e"/>
-            <rect x="20" y="64" width="41" height="6" rx="3" fill="#e8e4da"/>
-          </g>
-          <path d="M20,74 q-1,-11 9,-14 q7,-2 11,2 l14,9 q6,3 6,7 v2 h-40 q-1,-3 0,-6 z" fill="#4aa8c8"/>
-          <path d="M30,63 l4,5 M36,61 l4,5 M42,63 l4,4" stroke="#e8f4fa" stroke-width="1.6"/>
-          <path d="M22,74 q8,-4 16,0" stroke="#2a6a86" stroke-width="2" fill="none"/>
-          <rect x="18" y="78" width="43" height="7" rx="3.5" fill="#f2efe8"/>
-          <rect x="18" y="83" width="43" height="3" rx="1.5" fill="#e2574c"/>
-          <g transform="rotate(6 75 46)">
-            <rect x="66" y="40" width="18" height="12" rx="2" fill="#f2efe8"/>
-            <line x1="70" y1="45" x2="80" y2="46" stroke="#2b2b33" stroke-width="1.6"/>
-            <line x1="70" y1="48.5" x2="77" y2="49.3" stroke="#e2574c" stroke-width="1.6"/>
-          </g>
-        </svg>
-        <span class="tag">ITEM 007 · 13.1 FOOTWEAR</span>
-      </button>
+        <button class="item" data-panel="itemShoes">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <g opacity="0.7" transform="translate(10,-10)">
+              <path d="M22,60 q-1,-10 8,-13 q7,-2 11,2 l13,8 q6,3 6,7 v2 h-38 q-1,-3 0,-6 z" fill="#3d6f8e"/>
+              <rect x="20" y="64" width="41" height="6" rx="3" fill="#e8e4da"/>
+            </g>
+            <path d="M20,74 q-1,-11 9,-14 q7,-2 11,2 l14,9 q6,3 6,7 v2 h-40 q-1,-3 0,-6 z" fill="#4aa8c8"/>
+            <path d="M30,63 l4,5 M36,61 l4,5 M42,63 l4,4" stroke="#e8f4fa" stroke-width="1.6"/>
+            <path d="M22,74 q8,-4 16,0" stroke="#2a6a86" stroke-width="2" fill="none"/>
+            <rect x="18" y="78" width="43" height="7" rx="3.5" fill="#f2efe8"/>
+            <rect x="18" y="83" width="43" height="3" rx="1.5" fill="#e2574c"/>
+            <g transform="rotate(6 75 46)">
+              <rect x="66" y="40" width="18" height="12" rx="2" fill="#f2efe8"/>
+              <line x1="70" y1="45" x2="80" y2="46" stroke="#2b2b33" stroke-width="1.6"/>
+              <line x1="70" y1="48.5" x2="77" y2="49.3" stroke="#e2574c" stroke-width="1.6"/>
+            </g>
+          </svg>
+          <span class="tag">ITEM 007 · 13.1 FOOTWEAR</span>
+        </button>
 
-      <button class="alcove" data-panel="item240">
-        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M8,64 l5,-9 q3,-4 11,-5 l9,-9 q3,-3 10,-3 h9 q7,0 10,4 l7,8 q11,1 14,6 l2,5 q1,3 -3,3 h-70 q-4,0 -4,-2 z" fill="#a83832"/>
-          <path d="M35,50 l8,-9 q2,-2 7,-2 h6 q6,0 8,3 l6,8 z" fill="#0d1a26" opacity="0.85"/>
-          <rect x="12" y="56" width="8" height="2.5" rx="1" fill="#5f1f1c"/>
-          <line x1="12" y1="61" x2="86" y2="61" stroke="#5f1f1c" stroke-width="1.6"/>
-          <circle cx="30" cy="66" r="8" fill="#0a0d12"/>
-          <circle cx="30" cy="66" r="6.5" fill="#15181d"/>
-          <circle cx="30" cy="66" r="3.2" fill="#8fa2b8"/>
-          <circle cx="72" cy="66" r="8" fill="#0a0d12"/>
-          <circle cx="72" cy="66" r="6.5" fill="#15181d"/>
-          <circle cx="72" cy="66" r="3.2" fill="#8fa2b8"/>
-        </svg>
-        <span class="tag">ITEM 008 · 240SX</span>
-      </button>
+        <button class="item" data-panel="item240">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M8,64 l5,-9 q3,-4 11,-5 l9,-9 q3,-3 10,-3 h9 q7,0 10,4 l7,8 q11,1 14,6 l2,5 q1,3 -3,3 h-70 q-4,0 -4,-2 z" fill="#a83832"/>
+            <path d="M35,50 l8,-9 q2,-2 7,-2 h6 q6,0 8,3 l6,8 z" fill="#0d1a26" opacity="0.85"/>
+            <rect x="12" y="56" width="8" height="2.5" rx="1" fill="#5f1f1c"/>
+            <line x1="12" y1="61" x2="86" y2="61" stroke="#5f1f1c" stroke-width="1.6"/>
+            <circle cx="30" cy="66" r="8" fill="#0a0d12"/>
+            <circle cx="30" cy="66" r="6.5" fill="#15181d"/>
+            <circle cx="30" cy="66" r="3.2" fill="#8fa2b8"/>
+            <circle cx="72" cy="66" r="8" fill="#0a0d12"/>
+            <circle cx="72" cy="66" r="6.5" fill="#15181d"/>
+            <circle cx="72" cy="66" r="3.2" fill="#8fa2b8"/>
+          </svg>
+          <span class="tag">ITEM 008 · 240SX</span>
+        </button>
+        <span class="plank" aria-hidden="true"></span>
+      </div>
 
-      <button class="alcove" data-panel="itemDumbbells">
-        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <g transform="rotate(-18 50 46)">
-            <rect x="30" y="43" width="40" height="6" rx="3" fill="#8fa2b8"/>
-            <rect x="20" y="34" width="8" height="24" rx="3" fill="#3b4552"/>
-            <rect x="13" y="37" width="7" height="18" rx="3" fill="#2c3540"/>
-            <rect x="72" y="34" width="8" height="24" rx="3" fill="#3b4552"/>
-            <rect x="80" y="37" width="7" height="18" rx="3" fill="#2c3540"/>
-          </g>
-          <g transform="translate(0,26) rotate(8 50 50)">
-            <rect x="36" y="47" width="28" height="5" rx="2.5" fill="#8fa2b8"/>
-            <rect x="28" y="41" width="7" height="17" rx="3" fill="#3b4552"/>
-            <rect x="65" y="41" width="7" height="17" rx="3" fill="#3b4552"/>
-          </g>
-        </svg>
-        <span class="tag">ITEM 009 · HEAVY OBJECTS</span>
-      </button>
+      <div class="shelf-row">
+        <button class="item" data-panel="itemDumbbells">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <g transform="rotate(-18 50 46)">
+              <rect x="30" y="43" width="40" height="6" rx="3" fill="#8fa2b8"/>
+              <rect x="20" y="34" width="8" height="24" rx="3" fill="#3b4552"/>
+              <rect x="13" y="37" width="7" height="18" rx="3" fill="#2c3540"/>
+              <rect x="72" y="34" width="8" height="24" rx="3" fill="#3b4552"/>
+              <rect x="80" y="37" width="7" height="18" rx="3" fill="#2c3540"/>
+            </g>
+            <g transform="translate(0,26) rotate(8 50 50)">
+              <rect x="36" y="47" width="28" height="5" rx="2.5" fill="#8fa2b8"/>
+              <rect x="28" y="41" width="7" height="17" rx="3" fill="#3b4552"/>
+              <rect x="65" y="41" width="7" height="17" rx="3" fill="#3b4552"/>
+            </g>
+          </svg>
+          <span class="tag">ITEM 009 · HEAVY OBJECTS</span>
+        </button>
 
-      <button class="alcove" data-panel="itemGlocke">
-        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <line x1="28" y1="14" x2="42" y2="30" stroke="#55606e" stroke-width="2.5" stroke-dasharray="4 3"/>
-          <line x1="72" y1="14" x2="58" y2="30" stroke="#55606e" stroke-width="2.5" stroke-dasharray="4 3"/>
-          <path d="M50,26 q-19,4 -21,30 q-1,13 6,17 h30 q7,-4 6,-17 q-2,-26 -21,-30 z" fill="#3a4450" stroke="#242c36" stroke-width="2"/>
-          <line x1="31" y1="48" x2="69" y2="48" stroke="#242c36" stroke-width="2"/>
-          <line x1="30" y1="60" x2="70" y2="60" stroke="#242c36" stroke-width="2"/>
-          <path d="M40,54 l3,-3 M48,54 l3,-3 M56,54 l3,-3" stroke="#8a5ce0" stroke-width="1.8"/>
-          <path d="M62,73 q2,6 0,10" stroke="#8a5ce0" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-          <ellipse cx="50" cy="86" rx="17" ry="4" fill="#8a5ce0" opacity="0.75"/>
-        </svg>
-        <span class="tag">ITEM 010 · DIE GLOCKE</span>
-      </button>
+        <button class="item" data-panel="itemGlocke">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <line x1="28" y1="14" x2="42" y2="30" stroke="#55606e" stroke-width="2.5" stroke-dasharray="4 3"/>
+            <line x1="72" y1="14" x2="58" y2="30" stroke="#55606e" stroke-width="2.5" stroke-dasharray="4 3"/>
+            <path d="M50,26 q-19,4 -21,30 q-1,13 6,17 h30 q7,-4 6,-17 q-2,-26 -21,-30 z" fill="#3a4450" stroke="#242c36" stroke-width="2"/>
+            <line x1="31" y1="48" x2="69" y2="48" stroke="#242c36" stroke-width="2"/>
+            <line x1="30" y1="60" x2="70" y2="60" stroke="#242c36" stroke-width="2"/>
+            <path d="M40,54 l3,-3 M48,54 l3,-3 M56,54 l3,-3" stroke="#8a5ce0" stroke-width="1.8"/>
+            <path d="M62,73 q2,6 0,10" stroke="#8a5ce0" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <ellipse cx="50" cy="86" rx="17" ry="4" fill="#8a5ce0" opacity="0.75"/>
+          </svg>
+          <span class="tag">ITEM 010 · DIE GLOCKE</span>
+        </button>
 
-      <button class="alcove dark" data-panel="itemTriangle">
-        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <rect x="40" y="68" width="20" height="8" fill="#1d1830"/>
-          <rect x="32" y="76" width="36" height="8" rx="2" fill="#2a2138"/>
-          <polygon points="50,24 75,64 25,64" fill="#0b0b12" stroke="#241d33" stroke-width="2"/>
-          <circle cx="50" cy="31" r="2" fill="#55556a"/>
-          <circle cx="30" cy="60" r="2" fill="#55556a"/>
-          <circle cx="70" cy="60" r="2" fill="#55556a"/>
-          <circle class="blink-red" cx="50" cy="51" r="3.2" fill="#ff3b30"/>
-        </svg>
-        <span class="tag">ITEM 011 · [REDACTED]</span>
-      </button>
+        <button class="item dark" data-panel="itemTriangle">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="40" y="68" width="20" height="8" fill="#1d1830"/>
+            <rect x="32" y="76" width="36" height="8" rx="2" fill="#2a2138"/>
+            <polygon points="50,24 75,64 25,64" fill="#0b0b12" stroke="#241d33" stroke-width="2"/>
+            <circle cx="50" cy="31" r="2" fill="#55556a"/>
+            <circle cx="30" cy="60" r="2" fill="#55556a"/>
+            <circle cx="70" cy="60" r="2" fill="#55556a"/>
+            <circle class="blink-red" cx="50" cy="51" r="3.2" fill="#ff3b30"/>
+          </svg>
+          <span class="tag">ITEM 011 · [REDACTED]</span>
+        </button>
 
-      <button class="alcove" data-panel="itemHighjump">
-        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <polygon points="30,38 62,30 76,50 70,80 36,84 22,58" fill="rgba(160,220,255,0.32)" stroke="#bfe6ff" stroke-width="2"/>
-          <line x1="30" y1="38" x2="46" y2="56" stroke="rgba(191,230,255,0.5)" stroke-width="1.4"/>
-          <line x1="62" y1="30" x2="58" y2="48" stroke="rgba(191,230,255,0.5)" stroke-width="1.4"/>
-          <rect x="45" y="50" width="13" height="20" rx="1.5" fill="#37536e" stroke="#22364a" stroke-width="1.6"/>
-          <circle cx="55" cy="60" r="1.4" fill="#c9a96e"/>
-          <circle cx="23" cy="88" r="5" fill="none" stroke="#3b3f4a" stroke-width="2.5"/>
-          <circle cx="35" cy="88" r="5" fill="none" stroke="#3b3f4a" stroke-width="2.5"/>
-          <line x1="28" y1="88" x2="30" y2="88" stroke="#3b3f4a" stroke-width="2.5"/>
-        </svg>
-        <span class="tag">ITEM 012 · HIGHJUMP '47</span>
-      </button>
+        <button class="item" data-panel="itemHighjump">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <polygon points="30,38 62,30 76,50 70,80 36,84 22,58" fill="rgba(160,220,255,0.32)" stroke="#bfe6ff" stroke-width="2"/>
+            <line x1="30" y1="38" x2="46" y2="56" stroke="rgba(191,230,255,0.5)" stroke-width="1.4"/>
+            <line x1="62" y1="30" x2="58" y2="48" stroke="rgba(191,230,255,0.5)" stroke-width="1.4"/>
+            <rect x="45" y="50" width="13" height="20" rx="1.5" fill="#37536e" stroke="#22364a" stroke-width="1.6"/>
+            <circle cx="55" cy="60" r="1.4" fill="#c9a96e"/>
+            <circle cx="23" cy="88" r="5" fill="none" stroke="#3b3f4a" stroke-width="2.5"/>
+            <circle cx="35" cy="88" r="5" fill="none" stroke="#3b3f4a" stroke-width="2.5"/>
+            <line x1="28" y1="88" x2="30" y2="88" stroke="#3b3f4a" stroke-width="2.5"/>
+          </svg>
+          <span class="tag">ITEM 012 · HIGHJUMP '47</span>
+        </button>
+        <span class="plank" aria-hidden="true"></span>
+      </div>
     </div>
 
     <div class="hold-terminal-row">
@@ -1694,6 +1815,14 @@
     <p class="hold-hint">▲ RETURN TO MAIN DECK</p>
 
     <div class="hold-darkness" id="holdDarkness" aria-hidden="true"></div>
+    <div class="hold-lights" aria-hidden="true">
+      <div class="lamp" style="left: 28%">
+        <span class="stem"></span><span class="shade"></span>
+      </div>
+      <div class="lamp" style="left: 72%">
+        <span class="stem"></span><span class="shade"></span>
+      </div>
+    </div>
     <div class="ir-ring" id="irRing" aria-hidden="true"></div>
   </div>
 
@@ -2139,7 +2268,7 @@
     if (lastFocused) lastFocused.focus();
   }
 
-  document.querySelectorAll('.console, .alcove, .terminal').forEach(btn => {
+  document.querySelectorAll('.console, .item, .terminal').forEach(btn => {
     btn.addEventListener('click', () => openPanel(btn.dataset.panel));
   });
   /* archive file navigation inside the readout */
