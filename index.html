@@ -1099,49 +1099,6 @@
     box-shadow: 0 0 22px 9px rgba(255,80,60,0.75), 0 0 60px 26px rgba(255,80,60,0.18);
   }
 
-  .hold-terminal-row {
-    display: flex;
-    justify-content: center;
-    margin: clamp(0.9rem, 2.4vh, 1.8rem) auto clamp(0.4rem, 1.2vh, 0.8rem);
-  }
-  .terminal {
-    appearance: none; border: none; cursor: pointer; font-family: inherit;
-    background: linear-gradient(to bottom, #12202e, #0a121c);
-    border-radius: 12px;
-    padding: 10px 14px 12px;
-    width: min(560px, 88vw);
-    box-shadow: inset 0 2px 0 rgba(255,255,255,0.07), 0 5px 0 #050b12, 0 10px 20px rgba(0,0,0,0.45);
-    transition: transform 0.15s, box-shadow 0.15s;
-  }
-  .terminal:hover, .terminal:focus-visible {
-    transform: translateY(-4px);
-    box-shadow: inset 0 2px 0 rgba(255,255,255,0.07), 0 9px 0 #050b12, 0 16px 26px rgba(0,0,0,0.5), 0 0 20px rgba(255,217,122,0.2);
-  }
-  .terminal:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
-  .terminal .screen {
-    display: block;
-    background: radial-gradient(ellipse at 50% 30%, #3c2c10, #1d1406);
-    border: 2px solid #120c04;
-    border-radius: 8px;
-    padding: clamp(0.7rem, 1.6vh, 1rem) 0.6rem;
-    color: var(--gold);
-    text-shadow: 0 0 8px rgba(255,217,122,0.7);
-    box-shadow: inset 0 0 18px rgba(0,0,0,0.7), 0 0 14px rgba(255,217,122,0.12);
-    font-family: var(--hud);
-    font-size: clamp(7.5px, 1.1vw, 10px);
-    letter-spacing: 0.08em;
-    line-height: 2;
-    position: relative;
-    overflow: hidden;
-  }
-  .terminal .screen::after {
-    content: '';
-    position: absolute; inset: 0;
-    background: repeating-linear-gradient(to bottom, rgba(255,255,255,0.04) 0 1px, transparent 1px 3px);
-    pointer-events: none;
-  }
-  .terminal .screen .sub { display: block; opacity: 0.7; font-size: 0.82em; }
-
   .hold-hint {
     text-align: center;
     margin: auto auto clamp(0.8rem, 2vh, 1.4rem);
@@ -1153,7 +1110,7 @@
     pointer-events: none;
   }
 
-  /* Classified archive readouts */
+  /* Classified file readouts */
   .file-row {
     display: block; width: 100%; text-align: left;
     appearance: none; cursor: pointer;
@@ -1804,14 +1761,6 @@
       </div>
     </div>
 
-    <div class="hold-terminal-row">
-      <button class="terminal" data-panel="archive">
-        <span class="screen">⚠ RESTRICTED — ARCHIVE ACCESS
-          <span class="sub">CLASSIFIED DOCUMENTS: 5 · CLEARANCE REQUIRED: NONE, APPARENTLY</span>
-        </span>
-      </button>
-    </div>
-
     <p class="hold-hint">▲ RETURN TO MAIN DECK</p>
 
     <div class="hold-darkness" id="holdDarkness" aria-hidden="true"></div>
@@ -2096,7 +2045,9 @@
         <p class="row">CONTENTS ....... ONE (1) BREATH MINT</p>
         <hr class="divider">
         <p>The pilots' description was accurate.</p>
-        <p><strong>NOTE:</strong> Engineering keeps this mint on the shelf as a reminder to consider silhouettes earlier in the design process.</p>`
+        <p><strong>NOTE:</strong> Engineering keeps this mint on the shelf as a reminder to consider silhouettes earlier in the design process.</p>
+        <hr class="divider">
+        <button class="file-row" data-doc="l4">⚠ ATTACHED FILE — INTERNAL COMPLAINT, 2004 <span class="stamp">HR REVIEWED</span></button>`
     },
     itemE115: {
       title: '>> ITEM 004 — ELEMENT 115',
@@ -2105,7 +2056,9 @@
         <p class="row">STATE .......... GLOWING. ALWAYS GLOWING.</p>
         <hr class="divider">
         <p>Lazar described the fuel correctly. This remains a problem.</p>
-        <p><strong>WARNING:</strong> do not shake. Seriously. Not like the red button — this one matters.</p>`
+        <p><strong>WARNING:</strong> do not shake. Seriously. Not like the red button — this one matters.</p>
+        <hr class="divider">
+        <button class="file-row" data-doc="l1">⚠ ATTACHED FILE — INCIDENT REPORT: ROSWELL, 1947 <span class="stamp">DECLASSIFIED-ISH</span></button>`
     },
     itemWatch: {
       title: '>> ITEM 005 — POCKET WATCH, STOPPED',
@@ -2161,7 +2114,9 @@
         <p class="row">LEAKING ........ XERUM 525 (VIOLET)</p>
         <hr class="divider">
         <p>The humans got uncomfortably close to antigravity. We took it back.</p>
-        <p><strong>WARNING:</strong> do not touch the violet goo.</p>`
+        <p><strong>WARNING:</strong> do not touch the violet goo.</p>
+        <hr class="divider">
+        <button class="file-row" data-doc="l2">⚠ ATTACHED FILE — RECOVERY MEMO: SILESIA, 1945 <span class="stamp">SEALED</span></button>`
     },
     itemTriangle: {
       title: '>> ITEM 011 — [DESIGNATION WITHHELD]',
@@ -2171,7 +2126,9 @@
         <p class="row">CONTAINMENT .... POINTS BOTH WAYS</p>
         <hr class="divider">
         <p>Our competitor's model. We keep it for benchmarking.</p>
-        <p><strong>NOTE:</strong> if it is facing you, it was already facing you.</p>`
+        <p><strong>NOTE:</strong> if it is facing you, it was already facing you.</p>
+        <hr class="divider">
+        <button class="file-row lvl5" data-doc="l5">⚠ EYES ONLY — WHAT THE HUMANS ACTUALLY KNOW <span class="stamp">REAL</span></button>`
     },
     itemHighjump: {
       title: '>> ITEM 012 — HIGHJUMP ICE CORE',
@@ -2180,19 +2137,10 @@
         <p class="row">CONTENTS ....... ONE (1) SEALED ENTRANCE</p>
         <hr class="divider">
         <p>The Admiral got too close in '47. The entrance remains sealed.</p>
-        <p><strong>NOTE:</strong> the penguins signed NDAs.</p>`
+        <p><strong>NOTE:</strong> the penguins signed NDAs.</p>
+        <hr class="divider">
+        <button class="file-row" data-doc="l3">⚠ ATTACHED FILE — AFTER-ACTION: HIGHJUMP, 1947 <span class="stamp">FROZEN</span></button>`
     },
-    /* ---- classified terminal ---- */
-    archive: {
-      title: '>> CLASSIFIED ARCHIVE — FILE INDEX',
-      body: `
-        <p style="margin-bottom:0.9rem">Five files recovered from Earth intelligence services. Hover the black bars.</p>
-        <button class="file-row" data-doc="l1">LEVEL 1 — INCIDENT REPORT: ROSWELL <span class="stamp">DECLASSIFIED-ISH</span></button>
-        <button class="file-row" data-doc="l2">LEVEL 2 — RECOVERY MEMO: DIE GLOCKE <span class="stamp">SEALED</span></button>
-        <button class="file-row" data-doc="l3">LEVEL 3 — AFTER-ACTION: OPERATION HIGHJUMP <span class="stamp">FROZEN</span></button>
-        <button class="file-row" data-doc="l4">LEVEL 4 — INTERNAL COMPLAINT: "TIC TAC" <span class="stamp">HR REVIEWED</span></button>
-        <button class="file-row lvl5" data-doc="l5">LEVEL 5 — EYES ONLY: WHAT THE HUMANS ACTUALLY KNOW <span class="stamp">REAL</span></button>`
-    }
   };
 
   /* Classified documents (levels 1-4 parody, level 5 factual) */
@@ -2253,10 +2201,12 @@
   const readoutTitle = document.getElementById('readoutTitle');
   const readoutBody = document.getElementById('readoutBody');
   let lastFocused = null;
+  let lastPanelKey = null;
 
   function openPanel(key) {
     const data = panels[key];
     if (!data) return;
+    lastPanelKey = key;
     readoutTitle.textContent = data.title;
     readoutBody.innerHTML = data.body;
     backdrop.classList.add('open');
@@ -2268,20 +2218,20 @@
     if (lastFocused) lastFocused.focus();
   }
 
-  document.querySelectorAll('.console, .item, .terminal').forEach(btn => {
+  document.querySelectorAll('.console, .item').forEach(btn => {
     btn.addEventListener('click', () => openPanel(btn.dataset.panel));
   });
-  /* archive file navigation inside the readout */
+  /* classified file navigation inside item readouts */
   readoutBody.addEventListener('click', e => {
     const t = e.target.closest('[data-doc]');
     if (!t) return;
     const key = t.dataset.doc;
-    if (key === 'archive') { openPanel('archive'); return; }
+    if (key === '__back') { openPanel(lastPanelKey); return; }
     const doc = docs[key];
     if (!doc) return;
     readoutTitle.textContent = doc.title;
     readoutBody.innerHTML =
-      `<button class="file-row back" data-doc="archive">◀ BACK TO ARCHIVE</button>` + doc.body;
+      `<button class="file-row back" data-doc="__back">◀ BACK TO ITEM</button>` + doc.body;
   });
   document.getElementById('readoutClose').addEventListener('click', closePanel);
   backdrop.addEventListener('click', e => { if (e.target === backdrop) closePanel(); });
