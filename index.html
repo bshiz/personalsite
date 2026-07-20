@@ -7,7 +7,7 @@
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Press+Start+2P&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Goldman:wght@400;700&family=Press+Start+2P&family=Space+Mono:wght@400;700&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -28,8 +28,9 @@
     --metal-light: #2c445c;
     --screen-glow: #0c2b1a;
     --white: #f2f4ff;
-    --hud: 'Press Start 2P', monospace;
-    --display: 'Bungee', sans-serif;
+    --hud: 'Space Mono', monospace;
+    --pixel: 'Press Start 2P', monospace;
+    --display: 'Goldman', sans-serif;
     --body: 'Outfit', sans-serif;
   }
 
@@ -89,7 +90,7 @@
     position: absolute;
     bottom: -2.5vh;
     width: clamp(190px, 27vw, 400px);
-    filter: blur(5px);
+    filter: blur(3px);
     opacity: 0.97;
     z-index: 7;
     pointer-events: none;
@@ -278,10 +279,11 @@
     position: absolute;
     left: 50%; bottom: 6vh;
     transform: translateX(-50%);
-    font-family: var(--hud);
-    font-size: clamp(9px, 1.4vw, 13px);
-    line-height: 1.9;
-    letter-spacing: 0.06em;
+    font-family: var(--body);
+    font-weight: 600;
+    font-size: clamp(15px, 1.9vw, 19px);
+    line-height: 1.7;
+    letter-spacing: 0.03em;
     color: var(--white);
     text-shadow: 0 2px 0 rgba(0,0,0,0.6);
     text-align: center;
@@ -296,7 +298,7 @@
   .hud-meter {
     position: absolute;
     top: 1.4rem; left: 1.4rem;
-    font-family: var(--hud);
+    font-family: var(--pixel);
     font-size: 8px;
     letter-spacing: 0.08em;
     color: var(--alien);
@@ -322,14 +324,16 @@
     padding: 0 1rem;
   }
   .title-screen .eyebrow {
-    font-family: var(--hud);
-    font-size: clamp(8px, 1.2vw, 11px);
+    font-family: var(--body);
+    font-size: clamp(13px, 1.5vw, 16px);
+    font-weight: 600;
     color: var(--gold);
     letter-spacing: 0.25em;
     margin-bottom: 1.4rem;
   }
   .title-screen h1 {
     font-family: var(--display);
+    font-weight: 700;
     font-size: clamp(2.2rem, 7.5vw, 5.5rem);
     line-height: 1.05;
     color: var(--teal);
@@ -338,8 +342,9 @@
   }
   .title-screen h1 span { color: var(--teal); }
   .title-screen .press-start {
-    font-family: var(--hud);
-    font-size: clamp(8px, 1.3vw, 12px);
+    font-family: var(--body);
+    font-size: clamp(13px, 1.6vw, 16px);
+    font-weight: 600;
     color: var(--white);
     letter-spacing: 0.15em;
     animation: pulse 1.4s steps(2) infinite;
@@ -378,7 +383,7 @@
   }
   .interior-header .sys {
     font-family: var(--hud);
-    font-size: clamp(7px, 1vw, 10px);
+    font-size: clamp(10px, 1.2vw, 13px);
     color: var(--alien);
     letter-spacing: 0.2em;
     margin-bottom: 0.7rem;
@@ -386,13 +391,14 @@
   }
   .interior-header h2 {
     font-family: var(--display);
+    font-weight: 700;
     font-size: clamp(1.3rem, 3.4vw, 2.4rem);
     color: var(--white);
     text-shadow: 0 4px 0 rgba(0,0,0,0.4);
   }
   .interior-header p {
     font-family: var(--hud);
-    font-size: clamp(7px, 1vw, 10px);
+    font-size: clamp(10px, 1.2vw, 13px);
     color: var(--teal);
     letter-spacing: 0.1em;
     margin-top: 0.8rem;
@@ -615,8 +621,13 @@
   }
   .tube .tube-label {
     margin-top: 0.6rem;
+    white-space: nowrap;
+    width: max-content;
+    margin-left: 50%;
+    transform: translateX(-50%);
     font-family: var(--hud);
-    font-size: 7px;
+    font-size: 9px;
+    font-weight: 700;
     letter-spacing: 0.1em;
     color: var(--alien);
     line-height: 1.8;
@@ -695,7 +706,8 @@
   .console .icon { font-size: clamp(1.3rem, 2.6vw, 1.9rem); line-height: 1; display: block; }
   .console .name {
     font-family: var(--hud);
-    font-size: clamp(6.5px, 0.85vw, 8.5px);
+    font-size: clamp(9px, 1vw, 11px);
+    font-weight: 700;
     letter-spacing: 0.08em;
     margin-top: 0.6rem;
     display: block;
@@ -726,7 +738,8 @@
   }
   .gizmo .gizmo-label {
     font-family: var(--hud);
-    font-size: 6.5px;
+    font-size: 9px;
+    font-weight: 700;
     letter-spacing: 0.14em;
     color: rgba(242,244,255,0.45);
   }
@@ -820,7 +833,7 @@
     text-align: center;
     margin-top: clamp(0.7rem, 1.8vh, 1.2rem);
     font-family: var(--hud);
-    font-size: 7.5px;
+    font-size: 10px;
     letter-spacing: 0.12em;
     color: rgba(242,244,255,0.55);
     animation: pulse 1.6s steps(2) infinite;
@@ -830,7 +843,7 @@
   }
   .interior-hint.warn {
     color: #ff8a7a;
-    font-size: clamp(9px, 1.3vw, 12px);
+    font-size: clamp(11px, 1.4vw, 14px);
     text-shadow: 0 0 10px rgba(255,90,74,0.6);
     animation: pulse 0.7s steps(2) infinite;
   }
@@ -868,7 +881,8 @@
   }
   .readout-title {
     font-family: var(--hud);
-    font-size: clamp(10px, 1.6vw, 14px);
+    font-size: clamp(13px, 1.7vw, 16px);
+    font-weight: 700;
     letter-spacing: 0.1em;
     margin-bottom: 1.2rem;
     text-shadow: 0 0 10px rgba(126,240,160,0.8);
@@ -884,7 +898,7 @@
   }
   .readout-body .row {
     font-family: var(--hud);
-    font-size: clamp(7.5px, 1.1vw, 9.5px);
+    font-size: clamp(10px, 1.2vw, 12px);
     line-height: 2.4;
     letter-spacing: 0.05em;
     color: var(--alien);
@@ -911,7 +925,8 @@
     border-radius: 6px;
     color: var(--alien);
     font-family: var(--hud);
-    font-size: 9px;
+    font-size: 11px;
+    font-weight: 700;
     padding: 7px 9px;
     cursor: pointer;
     z-index: 2;
@@ -956,7 +971,7 @@
   .hold-header { text-align: center; padding-top: clamp(1rem, 2.4vh, 2rem); }
   .hold-header .sys {
     font-family: var(--hud);
-    font-size: clamp(7px, 1vw, 10px);
+    font-size: clamp(10px, 1.2vw, 13px);
     color: #cdaaff;
     letter-spacing: 0.2em;
     margin-bottom: 0.7rem;
@@ -964,13 +979,14 @@
   }
   .hold-header h2 {
     font-family: var(--display);
+    font-weight: 700;
     font-size: clamp(1.3rem, 3.4vw, 2.4rem);
     color: var(--white);
     text-shadow: 0 4px 0 rgba(0,0,0,0.4);
   }
   .hold-header p:last-child {
     font-family: var(--hud);
-    font-size: clamp(7px, 1vw, 10px);
+    font-size: clamp(10px, 1.2vw, 13px);
     color: var(--teal);
     letter-spacing: 0.1em;
     margin-top: 0.8rem;
@@ -1050,7 +1066,8 @@
   }
   .item .tag {
     font-family: var(--hud);
-    font-size: 6.5px;
+    font-size: 9px;
+    font-weight: 700;
     letter-spacing: 0.1em;
     color: #c9d2dc;
     opacity: 0.75;
@@ -1103,7 +1120,7 @@
     text-align: center;
     margin: auto auto clamp(0.8rem, 2vh, 1.4rem);
     font-family: var(--hud);
-    font-size: 7.5px;
+    font-size: 10px;
     letter-spacing: 0.12em;
     color: rgba(242,244,255,0.55);
     animation: pulse 1.6s steps(2) infinite;
@@ -1119,7 +1136,7 @@
     border-radius: 6px;
     color: var(--alien);
     font-family: var(--hud);
-    font-size: clamp(7.5px, 1.1vw, 9.5px);
+    font-size: clamp(10px, 1.2vw, 12px);
     letter-spacing: 0.05em;
     line-height: 1.9;
     padding: 9px 11px;
@@ -1214,7 +1231,7 @@
     .tube { width: clamp(84px, 20vw, 130px); bottom: clamp(15rem, 30vh, 20rem); }
     .dome-earth { width: 88vw; right: -18%; }
     .item svg { height: clamp(44px, 8vh, 66px); }
-    .item .tag { font-size: 5.5px; }
+    .item .tag { font-size: 8px; }
     .shelf-row { padding: 8px 10px 14px; }
   }
   @media (max-width: 640px) {
@@ -1325,26 +1342,70 @@
     <!-- Blurred foreground framing (depth of field) -->
     <div class="foliage left" aria-hidden="true">
       <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0,200 L0,60 Q10,90 22,70 Q26,110 40,88 Q48,130 62,105 L58,200 Z" fill="#0a0620"/>
-        <ellipse cx="70" cy="150" rx="46" ry="34" fill="#140a2e"/>
-        <ellipse cx="120" cy="178" rx="58" ry="30" fill="#0a0620"/>
-        <path d="M96,150 Q100,96 122,84 Q118,120 128,132 Q142,100 160,102 Q146,126 150,144 Z" fill="#171040"/>
-        <ellipse cx="176" cy="188" rx="52" ry="22" fill="#241030"/>
-        <path d="M210,190 Q214,140 236,128 Q250,150 244,176 Z" fill="#54203a"/>
-        <ellipse cx="248" cy="196" rx="40" ry="16" fill="#0a0620"/>
-        <path d="M26,200 Q22,150 8,140 M52,200 Q56,158 44,148" stroke="#171040" stroke-width="7" fill="none" stroke-linecap="round"/>
+        <!-- ground mound -->
+        <ellipse cx="150" cy="204" rx="170" ry="26" fill="#0a0620"/>
+        <!-- tall grass blades -->
+        <path d="M22,200 Q26,140 12,104 Q34,132 34,200 Z" fill="#140a2e"/>
+        <path d="M40,200 Q40,128 30,96 Q52,124 52,200 Z" fill="#171040"/>
+        <path d="M58,200 Q64,150 54,122 Q74,146 72,200 Z" fill="#140a2e"/>
+        <!-- cattails -->
+        <path d="M96,200 L96,120" stroke="#171040" stroke-width="5" stroke-linecap="round"/>
+        <rect x="90" y="92" width="12" height="34" rx="6" fill="#241030"/>
+        <path d="M112,200 Q112,150 108,130" stroke="#140a2e" stroke-width="4" stroke-linecap="round" fill="none"/>
+        <path d="M84,200 Q78,160 62,140 Q84,152 90,200 Z" fill="#171040"/>
+        <!-- berry stem -->
+        <path d="M132,200 Q134,166 128,152" stroke="#171040" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        <circle cx="128" cy="148" r="4" fill="#a84052"/>
+        <circle cx="134" cy="156" r="3.2" fill="#8a3446"/>
+        <!-- broad-leaf plant -->
+        <path d="M158,200 Q128,168 118,138 Q152,158 160,196 Z" fill="#171040"/>
+        <path d="M164,200 Q160,142 150,118 Q176,144 172,198 Z" fill="#1d1348"/>
+        <path d="M172,200 Q196,162 210,146 Q186,166 176,200 Z" fill="#171040"/>
+        <!-- curling fern frond -->
+        <path d="M228,200 Q224,150 240,124 Q252,106 246,96" stroke="#140a2e" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <path d="M234,184 l-13,-4 M232,168 l-12,-6 M236,150 l-12,-8 M242,134 l-11,-9" stroke="#140a2e" stroke-width="4" stroke-linecap="round"/>
+        <!-- foxtail seed heads -->
+        <path d="M256,200 Q258,158 252,138" stroke="#241030" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        <ellipse cx="251" cy="128" rx="6" ry="15" fill="#8a6c3e" transform="rotate(-8 251 128)"/>
+        <ellipse cx="251" cy="120" rx="3.5" ry="7" fill="#a8874a" transform="rotate(-8 251 120)"/>
+        <path d="M274,200 Q272,164 278,148" stroke="#241030" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <ellipse cx="279" cy="139" rx="5" ry="12" fill="#8a6c3e" transform="rotate(10 279 139)"/>
+        <path d="M290,200 Q292,172 288,160" stroke="#241030" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+        <ellipse cx="287" cy="152" rx="4" ry="10" fill="#6e5530" transform="rotate(-6 287 152)"/>
       </svg>
     </div>
     <div class="foliage right" aria-hidden="true">
       <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0,200 L0,60 Q10,90 22,70 Q26,110 40,88 Q48,130 62,105 L58,200 Z" fill="#0a0620"/>
-        <ellipse cx="70" cy="150" rx="46" ry="34" fill="#140a2e"/>
-        <ellipse cx="120" cy="178" rx="58" ry="30" fill="#0a0620"/>
-        <path d="M96,150 Q100,96 122,84 Q118,120 128,132 Q142,100 160,102 Q146,126 150,144 Z" fill="#171040"/>
-        <ellipse cx="176" cy="188" rx="52" ry="22" fill="#2a1030"/>
-        <path d="M210,190 Q214,140 236,128 Q250,150 244,176 Z" fill="#6e2438"/>
-        <ellipse cx="248" cy="196" rx="40" ry="16" fill="#0a0620"/>
-        <path d="M26,200 Q22,150 8,140 M52,200 Q56,158 44,148" stroke="#171040" stroke-width="7" fill="none" stroke-linecap="round"/>
+        <!-- ground mound -->
+        <ellipse cx="150" cy="204" rx="170" ry="26" fill="#0a0620"/>
+        <!-- tall grass blades -->
+        <path d="M22,200 Q26,140 12,104 Q34,132 34,200 Z" fill="#140a2e"/>
+        <path d="M40,200 Q40,128 30,96 Q52,124 52,200 Z" fill="#171040"/>
+        <path d="M58,200 Q64,150 54,122 Q74,146 72,200 Z" fill="#140a2e"/>
+        <!-- cattails -->
+        <path d="M96,200 L96,120" stroke="#171040" stroke-width="5" stroke-linecap="round"/>
+        <rect x="90" y="92" width="12" height="34" rx="6" fill="#241030"/>
+        <path d="M112,200 Q112,150 108,130" stroke="#140a2e" stroke-width="4" stroke-linecap="round" fill="none"/>
+        <path d="M84,200 Q78,160 62,140 Q84,152 90,200 Z" fill="#171040"/>
+        <!-- berry stem -->
+        <path d="M132,200 Q134,166 128,152" stroke="#171040" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        <circle cx="128" cy="148" r="4" fill="#a84052"/>
+        <circle cx="134" cy="156" r="3.2" fill="#8a3446"/>
+        <!-- broad-leaf plant -->
+        <path d="M158,200 Q128,168 118,138 Q152,158 160,196 Z" fill="#171040"/>
+        <path d="M164,200 Q160,142 150,118 Q176,144 172,198 Z" fill="#1d1348"/>
+        <path d="M172,200 Q196,162 210,146 Q186,166 176,200 Z" fill="#171040"/>
+        <!-- curling fern frond -->
+        <path d="M228,200 Q224,150 240,124 Q252,106 246,96" stroke="#140a2e" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <path d="M234,184 l-13,-4 M232,168 l-12,-6 M236,150 l-12,-8 M242,134 l-11,-9" stroke="#140a2e" stroke-width="4" stroke-linecap="round"/>
+        <!-- foxtail seed heads -->
+        <path d="M256,200 Q258,158 252,138" stroke="#241030" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        <ellipse cx="251" cy="128" rx="6" ry="15" fill="#8a6c3e" transform="rotate(-8 251 128)"/>
+        <ellipse cx="251" cy="120" rx="3.5" ry="7" fill="#a8874a" transform="rotate(-8 251 120)"/>
+        <path d="M274,200 Q272,164 278,148" stroke="#241030" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <ellipse cx="279" cy="139" rx="5" ry="12" fill="#8a6c3e" transform="rotate(10 279 139)"/>
+        <path d="M290,200 Q292,172 288,160" stroke="#241030" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+        <ellipse cx="287" cy="152" rx="4" ry="10" fill="#6e5530" transform="rotate(-6 287 152)"/>
       </svg>
     </div>
   </div>
@@ -1402,7 +1463,6 @@
     <div class="interior-header">
       <p class="sys">◉ SPECIMEN ACQUIRED</p>
       <h2>ABOARD THE SHIP</h2>
-      <p>SELECT A CONSOLE TO ANALYZE SUBJECT</p>
     </div>
 
     <div class="tube" aria-hidden="true">
@@ -1431,7 +1491,7 @@
       <span class="rim bottom"></span>
       </div>
       <div class="pedestal"></div>
-      <p class="tube-label">SPECIMEN<br>B.HOULIHAN</p>
+      <p class="tube-label">SPECIMEN B.HOULIHAN</p>
     </div>
 
     <div class="dashboard">
@@ -1474,12 +1534,12 @@
         <button class="console" data-panel="channel">
           <span class="screen">
             <span class="icon">📡</span>
-            <span class="name">OPEN CHANNEL</span>
+            <span class="name">MAKE CONTACT</span>
           </span>
           <span class="lights"><i></i><i></i><i></i></span>
         </button>
       </div>
-      <p class="interior-hint">TAP A CONSOLE · SCROLL UP TO ESCAPE</p>
+      <p class="interior-hint"></p>
     </div>
   </div>
 
@@ -1867,10 +1927,10 @@
   let holdUnlocked = false;
 
   const captions = [
-    { s: 0.05, e: 0.16, text: "A QUIET FIELD. 11:47 PM.<br>NOTHING EVER HAPPENS HERE." },
-    { s: 0.20, e: 0.35, text: "...WHAT IS THAT LIGHT?" },
-    { s: 0.41, e: 0.58, text: "OH. OH NO." },
-    { s: 0.63, e: 0.80, text: "UH, I GUESS THIS IS HAPPENING" }
+    { s: 0.05, e: 0.16, text: "A quiet field. 11:47 PM.<br>Nothing ever happens here." },
+    { s: 0.20, e: 0.35, text: "...what is that light?" },
+    { s: 0.41, e: 0.58, text: "Oh. Oh no." },
+    { s: 0.63, e: 0.80, text: "Uh, I guess this is happening" }
   ];
 
   let currentCaption = '';
@@ -2009,7 +2069,7 @@
         <p>◆ <a href="#" target="_blank" rel="noopener">LISTEN ON SPOTIFY →</a></p>`
     },
     channel: {
-      title: '>> OPEN A CHANNEL',
+      title: '>> MAKE CONTACT',
       body: `
         <p class="row">STATUS ......... RECEIVING</p>
         <hr class="divider">
