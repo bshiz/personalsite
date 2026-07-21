@@ -226,17 +226,18 @@
   .beam {
     position: absolute;
     left: 50%;
-    bottom: 14.5vh;
+    top: 0;
     width: min(46vw, 560px);
-    height: 86vh;
+    height: 60vh;
     transform: translateX(-50%) scaleY(0);
     transform-origin: top center;
-    clip-path: polygon(41% 0, 59% 0, 100% 100%, 0 100%);
+    /* narrow at the top (UFO underside), flaring wide toward the ground */
+    clip-path: polygon(40% 0, 60% 0, 100% 100%, 0 100%);
     background: linear-gradient(to bottom,
-      rgba(255,255,255,0.95) 0%,
-      rgba(255,246,214,0.55) 28%,
-      rgba(255,217,122,0.38) 58%,
-      rgba(255,217,122,0.08) 100%);
+      rgba(255,255,255,0.9) 0%,
+      rgba(255,246,214,0.5) 30%,
+      rgba(255,217,122,0.32) 62%,
+      rgba(255,217,122,0.06) 100%);
     filter: blur(1.5px);
     mix-blend-mode: screen;
     opacity: 0;
@@ -1953,20 +1954,27 @@
     el.title.style.opacity = 1 - tOut;
     el.title.style.transform = `translateY(${-tOut * 12}vh)`;
 
-    /* Beam: descends from sky (0.18 → 0.33) */
-    const b = ease(phase(p, 0.18, 0.33));
-    el.beam.style.opacity = b * 0.95;
+    /* UFO: descends into view first (0.16 → 0.40) */
+    const u = ease(phase(p, 0.16, 0.40));
+    const ufoY = -120 + u * 122; /* % of its own height: parks near top */
+    el.ufo.style.transform = `translate(-50%, ${ufoY}%)`;
+
+    /* Beam: fired from the UFO's underside once it's parked, flaring to the ground (0.42 → 0.56) */
+    const b = ease(phase(p, 0.42, 0.56));
+    el.beam.style.opacity = b * 0.9;
+    /* anchor the beam's top edge to the saucer underside, its foot at the field */
+    const ufoRect = el.ufo.getBoundingClientRect();
+    const groundTop = window.innerHeight * 0.84;      /* ~top of the ground band */
+    const beamTop = ufoRect.bottom - ufoRect.height * 0.16; /* just under the saucer rim */
+    const beamHeight = Math.max(0, groundTop - beamTop);
+    el.beam.style.top = beamTop + 'px';
+    el.beam.style.height = beamHeight + 'px';
     el.beam.style.transform = `translateX(-50%) scaleY(${b})`;
     el.beamGlow.style.opacity = b;
     /* painted rim light: cool moonlight at rest, warm gold once the beam hits */
     el.person.style.filter = b < 0.02
       ? 'drop-shadow(0 0 5px rgba(126,230,212,0.25))'
       : `drop-shadow(0 0 ${5 + b * 13}px rgba(255,220,140,${0.2 + b * 0.55}))`;
-
-    /* UFO: drops into view (0.36 → 0.58) */
-    const u = ease(phase(p, 0.36, 0.58));
-    const ufoY = -120 + u * 122; /* % of its own height: parks near top */
-    el.ufo.style.transform = `translate(-50%, ${ufoY}%)`;
 
     /* Person: gets yoinked (0.63 → 0.84), rising no higher than the dome */
     const lift = ease(phase(p, 0.63, 0.84));
